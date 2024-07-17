@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
           child: LabelText(
-        label: 'NatureMedix',
+        label: 'Naturemedix',
         fontSize: 25,
         letterSpace: 5,
       )),
