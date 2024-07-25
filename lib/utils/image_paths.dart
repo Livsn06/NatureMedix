@@ -1,20 +1,27 @@
-class Logo {
-  static const _LOGO_Path = 'assets/images/LOGO.png';
-  static String get path => _LOGO_Path;
+class ImagePath {
+  final _BG_PATH = {
+    'LOGO': ImageController.addFile('LOGO.png'),
+    'BG1': ImageController.addFile('BG1.png'),
+    'BG2': ImageController.addFile('BG2.png'),
+    'BG3': ImageController.addFile('BG3.png'),
+    'BG4': ImageController.addFile('BG4.png'),
+  };
+
+  Map get images => _BG_PATH;
 }
 
-class BackgroundImage {
-  static const _BG_PATH = [
-    'assets/images/BG1.png',
-    'assets/images/BG2.png',
-  ];
-  static String path(int pathIndex) {
-    int numberOfImage = _BG_PATH.length;
+class ImageController {
+  static String addFile(file) {
+    const basePath = 'assets/images/';
+    return basePath + file;
+  }
 
-    if (pathIndex >= numberOfImage) {
-      return throw Exception('Index is beyond number of background!');
+  static String get(String pathName) {
+    Map images = ImagePath().images;
+    if (images[pathName] == null) {
+      return throw Exception('Path name does not found!');
     } else {
-      return _BG_PATH[pathIndex];
+      return images[pathName]!;
     }
   }
 }
