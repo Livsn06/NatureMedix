@@ -35,7 +35,7 @@ class AppColor {
   Color get whiteOpacity20 => const Color(0xFFFFFFFF).withOpacity(0.2);
   Color get whiteOpacity40 => const Color(0xFFFFFFFF).withOpacity(0.4);
   Color get dark => const Color(0xFF101720);
-  Color get darkOpacity70 => const Color(0xFF000000).withOpacity(0.7);
+  Color get darkOpacity70 => const Color(0xFF000000).withOpacity(0.6);
   Color get darkOpacity50 => const Color(0xFF000000).withOpacity(0.5);
 }
 
