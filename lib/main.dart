@@ -20,7 +20,7 @@ class MainApp extends StatelessWidget {
       initialBinding: InitDep(),
       initialRoute: ScreenRouter.getHomescreenRoute,
       getPages: ScreenRouter.routes,
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/screens/authentication/login_screen.dart';
 import 'package:naturemedix/screens/authentication/register_screen.dart';
@@ -30,26 +31,31 @@ class ScreenRouter {
       name: _splash,
       page: () => SplashScreen(),
       preventDuplicates: true,
+      transitionDuration: 500.milliseconds,
     ),
     GetPage(
       name: _home,
       page: () => const HomeScreen(),
       preventDuplicates: true,
+      transitionDuration: 500.milliseconds,
     ),
     GetPage(
       name: _getstarted,
       page: () => GetstartedScreen(),
       preventDuplicates: true,
+      transitionDuration: 500.milliseconds,
     ),
     GetPage(
       name: _onboarding,
       page: () => OnboardingScreen(),
       preventDuplicates: true,
+      transitionDuration: 500.milliseconds,
     ),
     GetPage(
       name: _chooseaction,
       page: () => const ChooseactionScreen(),
       preventDuplicates: true,
+      transitionDuration: 500.milliseconds,
     ),
     GetPage(
       name: _login,
@@ -60,6 +66,7 @@ class ScreenRouter {
       name: _register,
       page: () => const RegisterScreen(),
       preventDuplicates: true,
+      transitionDuration: 500.milliseconds,
     ),
   ];
 }
