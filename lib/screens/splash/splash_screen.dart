@@ -4,6 +4,7 @@ import 'package:naturemedix/controllers/splash_controller.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
 
+
 class SplashScreen extends StatelessWidget with Application {
   SplashScreen({super.key});
 
@@ -26,18 +27,22 @@ class SplashScreen extends StatelessWidget with Application {
                   image: AssetImage(image.BG1),
                   fit: BoxFit.cover,
                   colorFilter:
-                      ColorFilter.mode(color.darkOpacity70, BlendMode.darken),
+                      ColorFilter.mode(color.darkOpacity50, BlendMode.darken),
                 ),
               ),
             ),
             Align(
               alignment: Alignment.center,
-              child: CircleAvatar(
-                radius: setResponsiveSize(context, baseSize: 70),
-                backgroundColor: color.darkOpacity50,
-                backgroundImage: AssetImage(logo.first),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    logo.first,
+                    scale: setResponsiveSize(context, baseSize: 2),
+                  ),
+                ],
               ),
-            )
+            ),
           ],
         ),
       ),

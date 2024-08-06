@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-
+import 'package:slide_to_act/slide_to_act.dart';
 import '../../routes/screen_routes.dart';
 import '../../utils/_initApp.dart';
 import '../../utils/responsive.dart';
@@ -42,8 +41,9 @@ class GetstartedScreen extends StatelessWidget with Application {
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Gap(setResponsiveSize(context, baseSize: 150)),
                   CircleAvatar(
-                    radius: setResponsiveSize(context, baseSize: 70),
+                    radius: setResponsiveSize(context, baseSize: 60),
                     backgroundColor: color.darkOpacity50,
                     backgroundImage: AssetImage(logo.first),
                   ),
@@ -62,37 +62,25 @@ class GetstartedScreen extends StatelessWidget with Application {
                       style: style.TitleMedium(context, color: color.white),
                     ),
                   ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: setResponsiveSize(context, baseSize: 20),
+                        vertical: setResponsiveSize(context, baseSize: 60)),
+                    child: SlideAction(
+                      borderRadius: setResponsiveSize(context, baseSize: 15),
+                      elevation: setResponsiveSize(context, baseSize: 0),
+                      innerColor: Colors.green[900],
+                      outerColor: Colors.green[300],
+                      text: 'Get Started',
+                      textStyle: style.TitleLarge(context, color: color.white),
+                      onSubmit: () =>
+                          Get.toNamed(ScreenRouter.getChooseactionRoute),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
-          Align(
-            alignment: Alignment(0, setResponsiveSize(context, baseSize: 0.80)),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: setResponsiveSize(context, baseSize: 18)),
-              child: TextButton(
-                style: style.button1(
-                  size: Size(
-                    double.maxFinite,
-                    setResponsiveSize(context, baseSize: 48),
-                  ),
-                  backgroundColor: color.whiteOpacity20,
-                  borderColor: color.white,
-                  borderWidth: 1.5,
-                  overlayColor: color.whiteOpacity40,
-                  radius: 10,
-                ),
-                onPressed: () {
-                  Get.toNamed(ScreenRouter.getChooseactionRoute);
-                },
-                child: Text(
-                  'Get Started',
-                  style: style.TitleMedium(context, color: color.white),
-                ),
-              ),
-            ),
-          )
         ],
       ),
     );

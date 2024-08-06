@@ -15,7 +15,7 @@ class AppName {
 }
 
 class AppLogo {
-  String get first => AppDirectory.dir('LOGO.png');
+  String get first => AppDirectory.dir('Logo.gif');
 }
 
 class AppImage {
@@ -23,10 +23,12 @@ class AppImage {
   String get BG2 => AppDirectory.dir('BG2.png');
   String get BG3 => AppDirectory.dir('BG3.png');
   String get BG4 => AppDirectory.dir('BG4.png');
+  String get BG5 => AppDirectory.dir('BG5.png');
 }
 
 class AppColor {
-  Color get primary => const Color(0xFF008263);
+  Color get primary => const Color(0xFF18988B);
+  Color get primarylow => const Color(0xFF74C5BD);
   Color get secondary => const Color(0xFF9C7300);
   Color get error => const Color(0xFFE62300);
   Color get correct => const Color(0xFF17E900);
