@@ -37,7 +37,7 @@ class CustomAnimatedIndicator extends StatelessWidget {
             height: index == initial ? size.height : size.height,
             decoration: BoxDecoration(
                 color: index == initial ? activeColor : color,
-                borderRadius: const BorderRadius.all(Radius.circular(5))),
+                borderRadius: const BorderRadius.all(Radius.circular(3))),
           ),
         ),
       ),

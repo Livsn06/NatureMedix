@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:naturemedix/components/custom_indicator.dart';
+import 'package:naturemedix/components/cust_indicator.dart';
 import 'package:naturemedix/controllers/onboarding_controller.dart';
 import 'package:naturemedix/models/onboarding_model.dart';
 import 'package:naturemedix/utils/_initApp.dart';
@@ -10,14 +10,12 @@ import 'package:naturemedix/utils/responsive.dart';
 import '../../utils/NeoBox.dart';
 
 class OnboardingScreen extends StatelessWidget with Application {
-  OnboardingScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     final OnboardingController onboardContoller = Get.find();
 
     return Scaffold(
-      backgroundColor: color.dark,
+      backgroundColor: Colors.transparent,
       body: Stack(
         fit: StackFit.loose,
         alignment: Alignment.topCenter,
@@ -55,76 +53,48 @@ class FeatureDetail extends StatelessWidget with Application {
       curve: Curves.linear,
       width: double.maxFinite,
       height: double.maxFinite,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          alignment: Alignment.center,
-          image: AssetImage(image.BG5),
-          fit: BoxFit.cover,
-        ),
-      ),
+      decoration: BoxDecoration(color: color.background),
       child: Padding(
         padding: EdgeInsets.all(setResponsiveSize(context, baseSize: 18)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            NeoBox(
-              child: Image.asset(
-                onboard.imageAsset,
-                fit: BoxFit.fill,
-                scale: setResponsiveSize(context, baseSize: 3),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: setResponsiveSize(context, baseSize: 50),
+                  horizontal: setResponsiveSize(context, baseSize: 5)),
+              child: NeoBox(
+                child: Image.asset(
+                  onboard.imageAsset,
+                  fit: BoxFit.fill,
+                  scale: setResponsiveSize(context, baseSize: 1),
+                ),
               ),
             ),
-            Gap(setResponsiveSize(context, baseSize: 15)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Obx(
-                  () => CustomAnimatedIndicator(
-                    initial: onboardContoller.selectedPage.value,
-                    count: 3,
-                    curve: Curves.bounceInOut,
-                    duration: Durations.medium2,
-                    gap: setResponsiveSize(context, baseSize: 4),
-                    color: color.primarylow,
-                    activeColor: color.primary,
-                    size: Size(
-                      setResponsiveSize(context, baseSize: 10),
-                      setResponsiveSize(context, baseSize: 10),
-                    ),
-                    activeWidth: setResponsiveSize(context, baseSize: 2.2),
-                  ),
-                ),
-              ],
-            ),
-            Gap(setResponsiveSize(context, baseSize: 30)),
             Text(
-              splitTitle(onboard.title, 0),
+              textAlign: TextAlign.center,
+              onboard.title,
               style: style.displayLarge(context, color: color.primary),
             ),
-            Text(
-              splitTitle(onboard.title, 1),
-              style: style.displayLarge(context, color: color.primary),
-            ),
-            Gap(setResponsiveSize(context, baseSize: 17)),
+            Gap(setResponsiveSize(context, baseSize: 20)),
             Text(
               onboard.description,
+              textAlign: TextAlign.center,
               style: style.TitleMedium(context, color: color.primarylow),
             ),
+            Gap(setResponsiveSize(context, baseSize: 120)),
           ],
         ),
       ),
     );
-  }
-
-  String splitTitle(title, index) {
-    return title.split(' ')[index];
   }
 }
 
 class TopNavigation extends StatelessWidget with Application {
   TopNavigation({super.key});
   OnboardingController onboardContoller = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -135,19 +105,33 @@ class TopNavigation extends StatelessWidget with Application {
           horizontal: setResponsiveSize(context, baseSize: 13),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Image.asset(
-                  logo.first,
-                  scale: setResponsiveSize(context, baseSize: 7),
+            Image.asset(
+              logo.first,
+              scale: setResponsiveSize(context, baseSize: 8),
+            ),
+            Padding(
+              padding:
+                  EdgeInsets.only(top: setResponsiveSize(context, baseSize: 8)),
+              child: Text("| ${name.first}",
+                  style: style.displayMedium(context,
+                      color: color.primarylow,
+                      fontspace: 2,
+                      fontsize: setResponsiveSize(context, baseSize: 13))),
+            ),
+            const Spacer(),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: setResponsiveSize(context, baseSize: 10)),
+              child: InkWell(
+                onTap: () {
+                  onboardContoller.skipPage();
+                },
+                child: Text(
+                  'Skip',
+                  style: style.displayMedium(context, color: color.primarylow),
                 ),
-                Text(
-                  name.first,
-                  style: style.headlineLarge(context, color: color.primary),
-                ),
-              ],
+              ),
             ),
           ],
         ),
@@ -174,20 +158,26 @@ class BottomNavigation extends StatelessWidget with Application {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            InkWell(
-              onTap: () {
-                onboardContoller.skipPage();
-              },
-              child: Text(
-                'Skip',
-                textAlign: TextAlign.right,
-                style: style.TitleMedium(context, color: color.primary),
+            Obx(
+              () => CustomAnimatedIndicator(
+                initial: onboardContoller.selectedPage.value,
+                count: 3,
+                curve: Curves.bounceInOut,
+                duration: Durations.medium2,
+                gap: setResponsiveSize(context, baseSize: 4),
+                color: color.primarylow,
+                activeColor: color.primary,
+                size: Size(
+                  setResponsiveSize(context, baseSize: 9),
+                  setResponsiveSize(context, baseSize: 9),
+                ),
+                activeWidth: setResponsiveSize(context, baseSize: 2.5),
               ),
             ),
             IconButton(
               style: style.button1(
                 size: Size(
-                  setResponsiveSize(context, baseSize: 70),
+                  setResponsiveSize(context, baseSize: 55),
                   setResponsiveSize(context, baseSize: 50),
                 ),
                 backgroundColor: color.primary,

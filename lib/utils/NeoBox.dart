@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:naturemedix/utils/responsive.dart';
 
 class NeoBox extends StatelessWidget {
-  const NeoBox({Key? key, this.child});
+  const NeoBox({Key? key, this.child, this.borderRadius});
   final Widget? child;
+  final BorderRadius? borderRadius;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: MediaQuery.of(context).size.height * 0.02,
-        horizontal: MediaQuery.of(context).size.width * 0.02,
-      ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: borderRadius ??
+            BorderRadius.circular(setResponsiveSize(context, baseSize: 15)),
         color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
