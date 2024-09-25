@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:naturemedix/components/custom_indicator.dart';
+import 'package:naturemedix/components/cust_indicator.dart';
 import 'package:naturemedix/controllers/onboarding_controller.dart';
 import 'package:naturemedix/models/onboarding_model.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
 
-class OnboardingScreen extends StatelessWidget with Application {
-  OnboardingScreen({super.key});
+import '../../utils/NeoBox.dart';
 
+class OnboardingScreen extends StatelessWidget with Application {
   @override
   Widget build(BuildContext context) {
     final OnboardingController onboardContoller = Get.find();
 
     return Scaffold(
-      backgroundColor: color.dark,
+      backgroundColor: Colors.transparent,
       body: Stack(
         fit: StackFit.loose,
         alignment: Alignment.topCenter,
@@ -44,6 +44,7 @@ class FeatureDetail extends StatelessWidget with Application {
   FeatureDetail({super.key, required this.onboard});
 
   final OnboardingModel onboard;
+  OnboardingController onboardContoller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -52,52 +53,48 @@ class FeatureDetail extends StatelessWidget with Application {
       curve: Curves.linear,
       width: double.maxFinite,
       height: double.maxFinite,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          alignment: Alignment.center,
-          image: AssetImage(onboard.imageAsset),
-          fit: BoxFit.cover,
-          colorFilter: ColorFilter.mode(color.darkOpacity70, BlendMode.darken),
-        ),
-      ),
+      decoration: BoxDecoration(color: color.background),
       child: Padding(
         padding: EdgeInsets.all(setResponsiveSize(context, baseSize: 18)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              splitTitle(onboard.title, 0),
-              style: style.displayLarge(context, color: color.white),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: setResponsiveSize(context, baseSize: 50),
+                  horizontal: setResponsiveSize(context, baseSize: 5)),
+              child: NeoBox(
+                child: Image.asset(
+                  onboard.imageAsset,
+                  fit: BoxFit.fill,
+                  scale: setResponsiveSize(context, baseSize: 1),
+                ),
+              ),
             ),
             Text(
-              splitTitle(onboard.title, 1),
-              style: style.displayLarge(context, color: color.white),
+              textAlign: TextAlign.center,
+              onboard.title,
+              style: style.displayLarge(context, color: color.primary),
             ),
-            Divider(
-              color: color.white,
-              thickness: setResponsiveSize(context, baseSize: 2),
-              height: 0,
-            ),
-            Gap(setResponsiveSize(context, baseSize: 17)),
+            Gap(setResponsiveSize(context, baseSize: 20)),
             Text(
               onboard.description,
-              style: style.TitleMedium(context, color: color.white),
+              textAlign: TextAlign.center,
+              style: style.TitleMedium(context, color: color.primarylow),
             ),
+            Gap(setResponsiveSize(context, baseSize: 120)),
           ],
         ),
       ),
     );
-  }
-
-  String splitTitle(title, index) {
-    return title.split(' ')[index];
   }
 }
 
 class TopNavigation extends StatelessWidget with Application {
   TopNavigation({super.key});
   OnboardingController onboardContoller = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -105,23 +102,35 @@ class TopNavigation extends StatelessWidget with Application {
       child: Padding(
         padding: EdgeInsets.symmetric(
           vertical: setResponsiveSize(context, baseSize: 36),
-          horizontal: setResponsiveSize(context, baseSize: 18),
+          horizontal: setResponsiveSize(context, baseSize: 13),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              name.first,
-              style: style.TitleMedium(context, color: color.white),
+            Image.asset(
+              logo.first,
+              scale: setResponsiveSize(context, baseSize: 8),
             ),
-            InkWell(
-              onTap: () {
-                onboardContoller.skipPage();
-              },
-              child: Text(
-                'SKIP',
-                textAlign: TextAlign.right,
-                style: style.TitleMedium(context, color: color.white),
+            Padding(
+              padding:
+                  EdgeInsets.only(top: setResponsiveSize(context, baseSize: 8)),
+              child: Text("| ${name.first}",
+                  style: style.displayMedium(context,
+                      color: color.primarylow,
+                      fontspace: 2,
+                      fontsize: setResponsiveSize(context, baseSize: 13))),
+            ),
+            const Spacer(),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: setResponsiveSize(context, baseSize: 10)),
+              child: InkWell(
+                onTap: () {
+                  onboardContoller.skipPage();
+                },
+                child: Text(
+                  'Skip',
+                  style: style.displayMedium(context, color: color.primarylow),
+                ),
               ),
             ),
           ],
@@ -147,7 +156,7 @@ class BottomNavigation extends StatelessWidget with Application {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Obx(
               () => CustomAnimatedIndicator(
@@ -156,24 +165,24 @@ class BottomNavigation extends StatelessWidget with Application {
                 curve: Curves.bounceInOut,
                 duration: Durations.medium2,
                 gap: setResponsiveSize(context, baseSize: 4),
+                color: color.primarylow,
                 activeColor: color.primary,
                 size: Size(
-                  setResponsiveSize(context, baseSize: 12),
-                  setResponsiveSize(context, baseSize: 12),
+                  setResponsiveSize(context, baseSize: 9),
+                  setResponsiveSize(context, baseSize: 9),
                 ),
-                activeWidth: setResponsiveSize(context, baseSize: 2.2),
+                activeWidth: setResponsiveSize(context, baseSize: 2.5),
               ),
             ),
             IconButton(
               style: style.button1(
                 size: Size(
-                  setResponsiveSize(context, baseSize: 50),
+                  setResponsiveSize(context, baseSize: 55),
                   setResponsiveSize(context, baseSize: 50),
                 ),
-                overlayColor: color.whiteOpacity40,
-                backgroundColor: color.whiteOpacity20,
+                backgroundColor: color.primary,
                 borderWidth: 1.5,
-                borderColor: color.white,
+                borderColor: color.primary,
                 radius: setResponsiveSize(context, baseSize: 10),
               ),
               onPressed: () {
@@ -188,4 +197,3 @@ class BottomNavigation extends StatelessWidget with Application {
     );
   }
 }
-

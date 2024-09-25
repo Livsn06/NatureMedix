@@ -1,8 +1,6 @@
 {
-    "cSpell.words": [
-        "Contoller",
-        "Getstarted",
-        "Getx",
-        "NATUREMEDIX"
-    ]
+  "cSpell.words": ["Contoller", "Getstarted", "Getx", "NATUREMEDIX"],
+  "vscode-pets.theme": "forest",
+  "vscode-pets.position": "panel",
+  "java.configuration.updateBuildConfiguration": "interactive"
 }
