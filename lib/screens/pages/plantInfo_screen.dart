@@ -140,7 +140,7 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                           IconButton(
                             onPressed: () {
                               if (isBookmarked) {
-                                controller.removeBookmark(widget.plant);
+                                controller.removeBookmark(widget.plant, context);
                               } else {
                                 controller.addBookmark(widget.plant);
                               }

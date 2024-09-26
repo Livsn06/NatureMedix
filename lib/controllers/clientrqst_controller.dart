@@ -129,7 +129,14 @@ class ClientRequestController extends GetxController {
     requests[index] = updatedRequest;
   }
 
-  
+  void deleteRequest(BuildContext context, int index) {
+    showConfirmValidation(
+        context, 'Delete Request', 'Do you want to delete request?', () {
+      requests.removeAt(index);
+      Get.back();
+    });
+    update();
+  }
 
   void clearFields() {
     titleController.clear();

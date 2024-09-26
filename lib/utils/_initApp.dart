@@ -74,7 +74,7 @@ class AppColor {
   Color get lightGrey => const Color(0xFFD9D9D9);
   Color get background => const Color(0xFFF2F7FA);
   Color get primary => const Color(0xFF008263);
-  Color get primaryhigh => const Color(0xFF24422E);
+  Color get primaryhigh => const Color(0xFF2F604B);
   Color get primarylow => const Color(0xff50727B);
   Color get secondary => const Color(0xFF9C7300);
   Color get invalid => const Color(0xFFFF8F91);

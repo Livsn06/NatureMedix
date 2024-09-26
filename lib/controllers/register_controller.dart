@@ -79,11 +79,15 @@ class RegisterController extends GetxController {
 
       // Add the user's name to Firestore collection
       await FirebaseFirestore.instance
-          .collection('DataStore')
-          .doc(userCredential.user!.uid)
+          .collection('Users')
+          .doc(userCredential.user!.email)
           .set({
-        'name': fnameControl.text,
-        'email': emailControl.text,
+        'Name': fnameControl.text,
+        'Email': emailControl.text,
+        'Phone': '+63 999 999 9999',
+        'Address': 'xxxxxx-xxxxx',
+        'Date Birth': 'yyyy-mm-dd',
+        'Gender': 'xxxxxx',
       });
 
       // Show success alert

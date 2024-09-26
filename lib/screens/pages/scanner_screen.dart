@@ -36,15 +36,16 @@ class _ScannerScreenState extends State<ScannerScreen> with Application {
               fontstyle: FontStyle.normal),
         ),
       ),
-      body: Center(
-        child: Text(
-          'This is scanner screen',
-          style: style.displaySmall(context,
-              color: color.primarylow,
-              fontsize: setResponsiveSize(context, baseSize: 15),
-              fontweight: FontWeight.w400,
-              fontstyle: FontStyle.normal),
-        ),
+      body: ListView.builder(
+        itemBuilder: (context, index) {
+          return Card(
+            child: ListTile(
+              title: Text('Title'),
+              subtitle: Text('Subtitle'),
+            ),
+          );
+        },
+        itemCount: 2,
       ),
     );
   }

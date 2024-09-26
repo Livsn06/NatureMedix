@@ -7,6 +7,7 @@ import '../controllers/bookmark_controller.dart';
 import '../controllers/home_controller.dart';
 import '../controllers/login_controller.dart';
 import '../controllers/plantInfo_controller.dart';
+import '../controllers/profile_controller.dart';
 import '../controllers/register_controller.dart';
 
 class InitDep implements Bindings {
@@ -22,5 +23,6 @@ class InitDep implements Bindings {
     Get.lazyPut(() => PlantInfoController());
     Get.lazyPut(() => BookmarkController());
     Get.lazyPut(() => ClientRequestController());
+    Get.lazyPut(() => ProfileController());
   }
 }
