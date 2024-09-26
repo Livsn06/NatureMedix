@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 
+import '../../controllers/profile_controller.dart';
 import '../../utils/responsive.dart';
 import 'control_screen.dart';
 
@@ -16,15 +17,24 @@ class ProfileScreen extends StatefulWidget with Application {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> with Application {
+  final ProfileController controller = Get.put(ProfileController());
+
   final currentUser = FirebaseAuth.instance.currentUser!;
-  final List<Map<String, dynamic>> profileData = [
-    {'icon': Icons.edit, 'label': 'Edit Profile Name', 'action': () {}},
-    {'icon': Icons.history, 'label': 'History', 'action': () {}},
-    {'icon': Icons.lock, 'label': 'Change Password', 'action': () {}},
-    {'icon': Icons.email, 'label': 'Change Email Address', 'action': () {}},
-    {'icon': Icons.settings, 'label': 'Settings', 'action': () {}},
-    {'icon': Icons.logout, 'label': 'Logout', 'action': () {}},
-  ];
+
+  late List<Map<String, dynamic>> profileData;
+
+  @override
+  void initState() {
+    super.initState();
+    profileData = [
+      {'icon': Icons.edit, 'label': 'Edit Profile Name', 'action': () {}},
+      {'icon': Icons.history, 'label': 'History', 'action': () {}},
+      {'icon': Icons.lock, 'label': 'Change Password', 'action': () {}},
+      {'icon': Icons.email, 'label': 'Change Email Address', 'action': () {}},
+      {'icon': Icons.settings, 'label': 'Settings', 'action': () {}},
+      {'icon': Icons.logout, 'label': 'Logout', 'action': () {}},
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> with Application {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasData) {
-            final userdata = snapshot.data!.data();
+            final userdata = snapshot.data?.data();
             if (userdata != null) {
               return Stack(
                 children: [
@@ -59,23 +69,24 @@ class _ProfileScreenState extends State<ProfileScreen> with Application {
                     children: [
                       Container(
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 0.40,
+                        height: MediaQuery.of(context).size.height * 0.10,
                         decoration: BoxDecoration(
                           color: color.primaryhigh,
                         ),
                       ),
                       Container(
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 0.50,
+                        height: MediaQuery.of(context).size.height * 0.80,
                         decoration: BoxDecoration(
-                          color: color.lightGrey,
+                          color: color.white,
                         ),
                       ),
                     ],
                   ),
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      Gap(setResponsiveSize(context, baseSize: 130)),
                       Stack(
                         clipBehavior: Clip.none,
                         children: [
@@ -83,76 +94,87 @@ class _ProfileScreenState extends State<ProfileScreen> with Application {
                             width: double.infinity,
                             height: setResponsiveSize(context, baseSize: 100),
                             decoration: BoxDecoration(
-                              color: color.primaryhigh,
+                              color: color.white,
                               borderRadius: BorderRadius.circular(
                                   setResponsiveSize(context, baseSize: 15)),
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Gap(setResponsiveSize(context, baseSize: 20)),
+                                Gap(setResponsiveSize(context, baseSize: 35)),
                                 Text(
                                   ' ${userdata['Name']}',
                                   style: style.displaySmall(context,
-                                      color: color.white,
+                                      color: color.primary,
                                       fontsize: setResponsiveSize(context,
-                                          baseSize: 25),
+                                          baseSize: 30),
                                       fontweight: FontWeight.w500,
+                                      fontstyle: FontStyle.normal),
+                                ),
+                                Text(
+                                  ' ${userdata['Email']}',
+                                  style: style.displaySmall(context,
+                                      color: color.primary,
+                                      fontsize: setResponsiveSize(context,
+                                          baseSize: 16),
+                                      fontweight: FontWeight.w400,
                                       fontstyle: FontStyle.normal),
                                 ),
                               ],
                             ),
                           ),
                           Positioned(
-                            top: -120,
+                            top: -130,
                             left: 0,
                             right: 0,
                             child: Center(
                               child: Material(
                                 shape: CircleBorder(
                                     side: BorderSide(
-                                        color: color.white, width: 5)),
+                                        color: color.white, width: 6)),
                                 child: CircleAvatar(
                                   backgroundImage: AssetImage(image.BG5),
                                   radius:
-                                      setResponsiveSize(context, baseSize: 70),
+                                      setResponsiveSize(context, baseSize: 80),
                                 ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      Gap(setResponsiveSize(context, baseSize: 15)),
-                      Padding(
-                        padding: EdgeInsets.all(
-                            setResponsiveSize(context, baseSize: 15)),
-                        child: Material(
-                          elevation: setResponsiveSize(context, baseSize: 5),
-                          borderRadius: BorderRadius.circular(
-                              setResponsiveSize(context, baseSize: 5)),
-                          child: Container(
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height * 0.40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.zero,
-                              color: color.white,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: profileData.length,
-                                    itemBuilder: (context, index) {
-                                      final item = profileData[index];
-                                      return Card(
-                                        margin: EdgeInsets.symmetric(
-                                            vertical: setResponsiveSize(context,
-                                                baseSize: 0.5)),
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.zero,
+                      Gap(setResponsiveSize(context, baseSize: 40)),
+                      Material(
+                        elevation: setResponsiveSize(context, baseSize: 5),
+                        borderRadius: BorderRadius.circular(
+                            setResponsiveSize(context, baseSize: 5)),
+                        child: Container(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 0.50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.zero,
+                            color: color.white,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: profileData.length,
+                                  itemBuilder: (context, index) {
+                                    final item = profileData[index];
+                                    return Card(
+                                      color: color.white,
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: setResponsiveSize(context,
+                                              baseSize: 0.5)),
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.zero,
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: setResponsiveSize(context,
+                                              baseSize: 4),
                                         ),
                                         child: ListTile(
                                           leading: Icon(item['icon']),
@@ -161,14 +183,20 @@ class _ProfileScreenState extends State<ProfileScreen> with Application {
                                             Icons.arrow_forward_ios_outlined,
                                             size: 13,
                                           ),
-                                          onTap: item['action'],
+                                          onTap: () {
+                                            if (item['label'] == 'Logout') {
+                                              controller.logoutAccount();
+                                            } else {
+                                              // Handle other actions
+                                            }
+                                          },
                                         ),
-                                      );
-                                    },
-                                  ),
+                                      ),
+                                    );
+                                  },
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       )
