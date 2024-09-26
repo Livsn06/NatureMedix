@@ -3,8 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/components/cust_textformfield.dart';
 import 'package:naturemedix/components/cust_tilelist.dart';
-import 'package:naturemedix/controllers/bookmark_controller.dart';
-import 'package:naturemedix/controllers/dashboard_controller.dart';
+import 'package:naturemedix/controllers/Home_Control/bookmark_controller.dart';
+import 'package:naturemedix/controllers/Home_Control/dashboard_controller.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
 

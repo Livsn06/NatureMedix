@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:naturemedix/controllers/clientrqst_controller.dart';
+import 'package:naturemedix/controllers/Home_Control/clientrqst_controller.dart';
 import 'package:naturemedix/utils/NeoBox.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import '../../components/cust_tilelist.dart';

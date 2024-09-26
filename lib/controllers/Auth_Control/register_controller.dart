@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../components/cust_validation.dart';
+import '../../components/cust_validation.dart';
 
 class RegisterController extends GetxController {
   bool _isPasswordVisible = false;

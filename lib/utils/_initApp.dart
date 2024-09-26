@@ -79,7 +79,7 @@ class AppColor {
   Color get secondary => const Color(0xFF9C7300);
   Color get invalid => const Color(0xFFFF8F91);
   Color get valid => const Color(0xFF99E661);
-  Color get question => const Color(0xFF227B94);
+  Color get question => const Color(0xFF78B7D0);
   Color get warning => const Color(0xFFFFBF00);
   Color get white => const Color(0xFFF5F5F5);
   Color get whiteOpacity20 => const Color(0xFFFFFFFF).withOpacity(0.2);

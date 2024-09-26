@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../models/plant_model.dart';
-import '../routes/screen_routes.dart';
+import '../../models/plant_model.dart';
+import '../../routes/screen_routes.dart';
 
 class DashboardController extends GetxController {
   var selectedCategory = 'All'.obs;

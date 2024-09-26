@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:naturemedix/controllers/register_controller.dart';
+import 'package:naturemedix/controllers/Auth_Control/register_controller.dart';
 import 'package:naturemedix/routes/screen_routes.dart';
 import 'package:naturemedix/utils/NeoBox.dart';
 import 'package:naturemedix/utils/responsive.dart';

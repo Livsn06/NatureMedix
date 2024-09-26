@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/components/cust_textformfield.dart';
-import 'package:naturemedix/controllers/dashboard_controller.dart';
+import 'package:naturemedix/controllers/Home_Control/dashboard_controller.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
 
-import '../../data/plant_data.dart';
+import '../../data/PlantData/plant_data.dart';
 import '../../models/plant_model.dart';
 
 class DashboardScreen extends StatefulWidget with Application {

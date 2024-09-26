@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import '../components/cust_confirmation.dart';
-import '../models/plant_model.dart';
+import '../../components/cust_confirmation.dart';
+import '../../models/plant_model.dart';
 
 class BookmarkController extends GetxController {
   var ascendingSort = true.obs;

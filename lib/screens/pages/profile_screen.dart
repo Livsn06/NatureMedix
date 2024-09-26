@@ -5,7 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 
-import '../../controllers/profile_controller.dart';
+import '../../controllers/Home_Control/profile_controller.dart';
 import '../../utils/responsive.dart';
 import 'control_screen.dart';
 
