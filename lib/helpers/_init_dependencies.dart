@@ -1,13 +1,14 @@
 import 'package:get/get.dart';
-import 'package:naturemedix/controllers/clientrqst_controller.dart';
-import 'package:naturemedix/controllers/dashboard_controller.dart';
-import 'package:naturemedix/controllers/onboarding_controller.dart';
-import 'package:naturemedix/controllers/splash_controller.dart';
-import '../controllers/bookmark_controller.dart';
-import '../controllers/home_controller.dart';
-import '../controllers/login_controller.dart';
-import '../controllers/plantInfo_controller.dart';
-import '../controllers/register_controller.dart';
+import 'package:naturemedix/controllers/Home_Control/clientrqst_controller.dart';
+import 'package:naturemedix/controllers/Home_Control/dashboard_controller.dart';
+import 'package:naturemedix/controllers/WalkThru_Control/onboarding_controller.dart';
+import 'package:naturemedix/controllers/WalkThru_Control/splash_controller.dart';
+import '../controllers/Home_Control/bookmark_controller.dart';
+import '../controllers/Home_Control/home_controller.dart';
+import '../controllers/Auth_Control/login_controller.dart';
+import '../controllers/PlantInfo_Control/plantInfo_controller.dart';
+import '../controllers/Home_Control/profile_controller.dart';
+import '../controllers/Auth_Control/register_controller.dart';
 
 class InitDep implements Bindings {
   @override
@@ -22,5 +23,6 @@ class InitDep implements Bindings {
     Get.lazyPut(() => PlantInfoController());
     Get.lazyPut(() => BookmarkController());
     Get.lazyPut(() => ClientRequestController());
+    Get.lazyPut(() => ProfileController());
   }
 }

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/components/cust_textformfield.dart';
-import 'package:naturemedix/controllers/dashboard_controller.dart';
+import 'package:naturemedix/controllers/Home_Control/dashboard_controller.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
 
-import '../../data/plant_data.dart';
+import '../../data/PlantData/plant_data.dart';
 import '../../models/plant_model.dart';
 
 class DashboardScreen extends StatefulWidget with Application {
@@ -100,7 +100,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
             backgroundColor: color.white,
             child: Icon(Icons.notifications_outlined,
                 color: color.primarylow,
-                size: setResponsiveSize(context, baseSize: 28)),
+                size: setResponsiveSize(context, baseSize: 25)),
           ),
         ),
       ],
@@ -197,8 +197,10 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
                   child: Card(
                     elevation: setResponsiveSize(context, baseSize: 3),
                     child: Padding(
-                      padding: EdgeInsets.all(
-                          setResponsiveSize(context, baseSize: 10)),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: setResponsiveSize(context, baseSize: 10),
+                        vertical: setResponsiveSize(context, baseSize: 10),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -222,7 +224,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
                             style: style.displaySmall(context,
                                 color: color.primaryhigh,
                                 fontsize:
-                                    setResponsiveSize(context, baseSize: 14),
+                                    setResponsiveSize(context, baseSize: 15),
                                 fontweight: FontWeight.w600),
                           ),
                           Gap(setResponsiveSize(context, baseSize: 3)),
@@ -233,7 +235,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
                             style: style.displaySmall(context,
                                 color: color.darkGrey,
                                 fontsize:
-                                    setResponsiveSize(context, baseSize: 12),
+                                    setResponsiveSize(context, baseSize: 13),
                                 fontweight: FontWeight.w400),
                           )
                         ],
@@ -318,7 +320,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
                               style: style.displaySmall(context,
                                   color: color.primaryhigh,
                                   fontsize:
-                                      setResponsiveSize(context, baseSize: 14),
+                                      setResponsiveSize(context, baseSize: 15),
                                   fontweight: FontWeight.w600),
                             ),
                             Gap(setResponsiveSize(context, baseSize: 3)),
@@ -329,7 +331,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
                               style: style.displaySmall(context,
                                   color: color.darkGrey,
                                   fontsize:
-                                      setResponsiveSize(context, baseSize: 12),
+                                      setResponsiveSize(context, baseSize: 13),
                                   fontweight: FontWeight.w400),
                             )
                           ],
@@ -417,7 +419,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
                               style: style.displaySmall(context,
                                   color: color.primaryhigh,
                                   fontsize:
-                                      setResponsiveSize(context, baseSize: 14),
+                                      setResponsiveSize(context, baseSize: 15),
                                   fontweight: FontWeight.w600),
                             ),
                             Gap(setResponsiveSize(context, baseSize: 3)),
@@ -428,7 +430,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
                               style: style.displaySmall(context,
                                   color: color.darkGrey,
                                   fontsize:
-                                      setResponsiveSize(context, baseSize: 12),
+                                      setResponsiveSize(context, baseSize: 13),
                                   fontweight: FontWeight.w400),
                             )
                           ],

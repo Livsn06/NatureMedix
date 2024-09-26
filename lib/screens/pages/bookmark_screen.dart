@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/components/cust_textformfield.dart';
-import 'package:naturemedix/controllers/bookmark_controller.dart';
-import 'package:naturemedix/controllers/dashboard_controller.dart';
+import 'package:naturemedix/components/cust_tilelist.dart';
+import 'package:naturemedix/controllers/Home_Control/bookmark_controller.dart';
+import 'package:naturemedix/controllers/Home_Control/dashboard_controller.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
 
+import '../../components/cust_confirmation.dart';
 import 'control_screen.dart';
 
 class BookmarkScreen extends StatefulWidget with Application {
@@ -20,6 +22,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> with Application {
   @override
   Widget build(BuildContext context) {
     final DashboardController dashControl = Get.put(DashboardController());
+
     return GetBuilder<BookmarkController>(
       init: Get.find<BookmarkController>(),
       builder: (controller) => Scaffold(
@@ -95,45 +98,24 @@ class _BookmarkScreenState extends State<BookmarkScreen> with Application {
                           itemCount: bookmarks.length,
                           itemBuilder: (context, index) {
                             final plant = bookmarks[index];
-                            return Dismissible(
-                              key: Key(plant.plantName),
-                              background: Container(color: Colors.red),
-                              onDismissed: (direction) {
-                                controller.removeBookmark(plant);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                            '${plant.plantName} removed')));
-                              },
-                              child: Padding(
+                            return Padding(
                                 padding: EdgeInsets.symmetric(
                                     vertical: setResponsiveSize(context,
                                         baseSize: 5)),
-                                child: Card(
-                                  elevation:
-                                      setResponsiveSize(context, baseSize: 4),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          setResponsiveSize(context,
-                                              baseSize: 5))),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: setResponsiveSize(context,
-                                            baseSize: 6)),
-                                    child: ListTile(
-                                      leading: Image.asset(plant.plantImage,
-                                          width: 70, height: 70),
-                                      title: Text(plant.plantName),
-                                      subtitle: Text(
-                                          'Scientific Name: ${plant.scientificName}'),
-                                      onTap: () {
-                                        dashControl.selectPlant(plant, context);
-                                      },
-                                    ),
+                                child: InkWell(
+                                  onTap: () =>
+                                      dashControl.selectPlant(plant, context),
+                                  child: CardList(
+                                    requestImage: Image.asset(plant.plantImage,
+                                        width: 70, height: 70),
+                                    requestTitle: Text(plant.plantName),
+                                    subRequestTitle: Text(
+                                        'Scientific Name: ${plant.scientificName}'),
+                                    settingsTapped: null,
+                                    deleteTapped: (context) => controller
+                                        .removeBookmark(plant, context),
                                   ),
-                                ),
-                              ),
-                            );
+                                ));
                           },
                         );
                 }),
