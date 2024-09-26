@@ -16,36 +16,32 @@ class _ScannerScreenState extends State<ScannerScreen> with Application {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: color.white),
-        centerTitle: true,
-        backgroundColor: color.primary,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Get.offAll(() => const ControlScreen(), arguments: 0);
-          },
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: color.white),
+          centerTitle: true,
+          backgroundColor: color.primary,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Get.offAll(() => const ControlScreen(), arguments: 0);
+            },
+          ),
+          title: Text(
+            'SCANNER',
+            style: style.displaySmall(context,
+                color: color.white,
+                fontsize: setResponsiveSize(context, baseSize: 15),
+                fontweight: FontWeight.w500,
+                fontspace: 2,
+                fontstyle: FontStyle.normal),
+          ),
         ),
-        title: Text(
-          'SCANNER',
-          style: style.displaySmall(context,
-              color: color.white,
-              fontsize: setResponsiveSize(context, baseSize: 15),
-              fontweight: FontWeight.w500,
-              fontspace: 2,
-              fontstyle: FontStyle.normal),
-        ),
-      ),
-      body: Center(
-        child: Text(
-          'This is scanner screen',
-          style: style.displaySmall(context,
-              color: color.primarylow,
-              fontsize: setResponsiveSize(context, baseSize: 15),
-              fontweight: FontWeight.w400,
-              fontstyle: FontStyle.normal),
-        ),
-      ),
-    );
+        body: Center(
+          child: Icon(
+            Icons.camera_alt_outlined,
+            color: color.lightGrey,
+            size: setResponsiveSize(context, baseSize: 150),
+          ),
+        ));
   }
 }

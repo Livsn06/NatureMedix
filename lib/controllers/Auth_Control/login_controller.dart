@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-import '../components/cust_validation.dart';
+import '../../components/cust_validation.dart';
 
 class LoginController extends GetxController {
   // State for password visibility

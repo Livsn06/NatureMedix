@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/components/cust_indicator.dart';
-import 'package:naturemedix/controllers/onboarding_controller.dart';
+import 'package:naturemedix/controllers/WalkThru_Control/onboarding_controller.dart';
 import 'package:naturemedix/models/onboarding_model.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';

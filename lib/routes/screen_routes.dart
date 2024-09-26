@@ -55,7 +55,6 @@ class ScreenRouter {
     GetPage(
       name: _bookmark,
       page: () => BookmarkScreen(),
-      arguments: {'onPageChange': (index) => Get.back()},
       preventDuplicates: true,
       transitionDuration: 500.milliseconds,
     ),

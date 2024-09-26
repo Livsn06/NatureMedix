@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../components/cust_validation.dart';
+import '../../components/cust_validation.dart';
 
 class RegisterController extends GetxController {
   bool _isPasswordVisible = false;
@@ -79,11 +79,15 @@ class RegisterController extends GetxController {
 
       // Add the user's name to Firestore collection
       await FirebaseFirestore.instance
-          .collection('DataStore')
-          .doc(userCredential.user!.uid)
+          .collection('Users')
+          .doc(userCredential.user!.email)
           .set({
-        'name': fnameControl.text,
-        'email': emailControl.text,
+        'Name': fnameControl.text,
+        'Email': emailControl.text,
+        'Phone': '+63 999 999 9999',
+        'Address': 'xxxxxx-xxxxx',
+        'Date Birth': 'yyyy-mm-dd',
+        'Gender': 'xxxxxx',
       });
 
       // Show success alert

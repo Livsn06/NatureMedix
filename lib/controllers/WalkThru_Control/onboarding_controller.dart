@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../data/list.dart';
-import '../routes/screen_routes.dart';
+import '../../data/list.dart';
+import '../../routes/screen_routes.dart';
 
 class OnboardingController extends GetxController {
   final _pageController = PageController();

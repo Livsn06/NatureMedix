@@ -5,7 +5,7 @@ import 'package:naturemedix/utils/NeoBox.dart';
 import 'package:naturemedix/utils/responsive.dart';
 
 import '../../components/cust_textformfield.dart';
-import '../../controllers/login_controller.dart';
+import '../../controllers/Auth_Control/login_controller.dart';
 import '../../routes/screen_routes.dart';
 import '../../utils/_initApp.dart';
 

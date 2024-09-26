@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import '../models/plant_model.dart';
+import '../../components/cust_confirmation.dart';
+import '../../models/plant_model.dart';
 
 class BookmarkController extends GetxController {
   var ascendingSort = true.obs;
@@ -28,8 +29,12 @@ class BookmarkController extends GetxController {
     update();
   }
 
-  void removeBookmark(PlantBasicInfo plant) {
-    bookmarkedPlants.remove(plant);
+  void removeBookmark(PlantBasicInfo plant, BuildContext context) {
+    showConfirmValidation(context, 'Delete Bookmark', 'Do you want to delete ?',
+        () {
+      bookmarkedPlants.remove(plant);
+      Get.back();
+    });
     update();
   }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:naturemedix/controllers/bookmark_controller.dart';
-import 'package:naturemedix/controllers/dashboard_controller.dart';
+import 'package:naturemedix/controllers/Home_Control/bookmark_controller.dart';
+import 'package:naturemedix/controllers/Home_Control/dashboard_controller.dart';
 import 'package:naturemedix/utils/NeoBox.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
@@ -140,7 +140,7 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                           IconButton(
                             onPressed: () {
                               if (isBookmarked) {
-                                controller.removeBookmark(widget.plant);
+                                controller.removeBookmark(widget.plant, context);
                               } else {
                                 controller.addBookmark(widget.plant);
                               }

@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:naturemedix/controllers/clientrqst_controller.dart';
+import 'package:naturemedix/controllers/Home_Control/clientrqst_controller.dart';
 import 'package:naturemedix/utils/NeoBox.dart';
 import 'package:naturemedix/utils/_initApp.dart';
-import '../../components/cust_confirmation.dart';
 import '../../components/cust_tilelist.dart';
 import '../../utils/responsive.dart';
 import 'control_screen.dart';
@@ -21,19 +20,6 @@ class RequestScreen extends StatefulWidget with Application {
 
 class _RequestScreenState extends State<RequestScreen> with Application {
   final ClientRequestController controller = Get.put(ClientRequestController());
-  void deleteRequest(int index) {
-    if (index >= 0 && index < controller.requests.length) {
-      showConfirmValidation(
-          context, 'Delete Request', 'Do you want to delete request?', () {
-        setState(() {
-          controller.requests.removeAt(index);
-        });
-        Get.back();
-      });
-    } else {
-      Get.back();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +151,8 @@ class _RequestScreenState extends State<RequestScreen> with Application {
                     subRequestTitle:
                         Text(DateFormat.yMMMd().format(request['createdAt'])),
                     settingsTapped: null,
-                    deleteTapped: (context) => deleteRequest(index),
+                    deleteTapped: (context) =>
+                        controller.deleteRequest(context, index),
                   ));
             },
           );
