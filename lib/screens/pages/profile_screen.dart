@@ -21,11 +21,14 @@ class _ProfileScreenState extends State<ProfileScreen> with Application {
 
   final currentUser = FirebaseAuth.instance.currentUser!;
 
-  late List<Map<String, dynamic>> profileData;
+  // Declare `profileData` as an instance variable
+  List<Map<String, dynamic>> profileData = [];
 
   @override
   void initState() {
     super.initState();
+
+    // Initialize the profile data
     profileData = [
       {'icon': Icons.edit, 'label': 'Edit Profile Name', 'action': () {}},
       {'icon': Icons.history, 'label': 'History', 'action': () {}},
@@ -185,7 +188,8 @@ class _ProfileScreenState extends State<ProfileScreen> with Application {
                                           ),
                                           onTap: () {
                                             if (item['label'] == 'Logout') {
-                                              controller.logoutAccount();
+                                              controller.showLogoutConfirmation(
+                                                  context);
                                             } else {
                                               // Handle other actions
                                             }
