@@ -77,17 +77,14 @@ class RegisterController extends GetxController {
           .createUserWithEmailAndPassword(
               email: emailControl.text, password: passControl.text);
 
-      // Add the user's name to Firestore collection
       await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(userCredential.user!.email)
+          .collection('users')
+          .doc(userCredential.user!.uid)
           .set({
-        'Name': fnameControl.text,
-        'Email': emailControl.text,
-        'Phone': '+63 999 999 9999',
-        'Address': 'xxxxxx-xxxxx',
-        'Date Birth': 'yyyy-mm-dd',
-        'Gender': 'xxxxxx',
+        'uid': userCredential.user!.uid,
+        'name': fnameControl.text,
+        'email': emailControl.text,
+        'provider': 'EMAIL'
       });
 
       // Show success alert

@@ -238,46 +238,31 @@ class _RegisterScreenState extends State<RegisterScreen> with Application {
                             children: [
                               NeoBox(
                                 borderRadius: BorderRadius.circular(
-                                    setResponsiveSize(context, baseSize: 7)),
+                                    setResponsiveSize(context, baseSize: 25)),
                                 child: Padding(
-                                  padding: EdgeInsets.all(
-                                      setResponsiveSize(context, baseSize: 10)),
-                                  child: Image.asset(
-                                    icon.GOOGLE,
-                                    scale: setResponsiveSize(context,
-                                        baseSize: 15),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: setResponsiveSize(context,
-                                        baseSize: 20)),
-                                child: NeoBox(
-                                  borderRadius: BorderRadius.circular(
-                                      setResponsiveSize(context, baseSize: 7)),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(setResponsiveSize(
-                                        context,
-                                        baseSize: 10)),
-                                    child: Image.asset(
-                                      icon.FACEBOOK,
-                                      scale: setResponsiveSize(context,
-                                          baseSize: 15),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              NeoBox(
-                                borderRadius: BorderRadius.circular(
-                                    setResponsiveSize(context, baseSize: 7)),
-                                child: Padding(
-                                  padding: EdgeInsets.all(
-                                      setResponsiveSize(context, baseSize: 10)),
-                                  child: Image.asset(
-                                    icon.INSTAGRAM,
-                                    scale: setResponsiveSize(context,
-                                        baseSize: 15),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: setResponsiveSize(context,
+                                          baseSize: 20),
+                                      vertical: setResponsiveSize(context,
+                                          baseSize: 10)),
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        icon.GOOGLE,
+                                        scale: setResponsiveSize(context,
+                                            baseSize: 15),
+                                      ),
+                                      Gap(setResponsiveSize(context,
+                                          baseSize: 20)),
+                                      Text(
+                                        'Register with Google',
+                                        textAlign: TextAlign.center,
+                                        style: style.displaySmall(context,
+                                            color: color.primarylow,
+                                            fontsize: 15,
+                                            fontweight: FontWeight.w500),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -299,7 +284,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Application {
                                 onPressed: () =>
                                     Get.toNamed(ScreenRouter.getLoginRoute),
                                 child: Text(
-                                  'Sign In',
+                                  'Login',
                                   textAlign: TextAlign.center,
                                   style: style.displaySmall(context,
                                       color: color.primary,

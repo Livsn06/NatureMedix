@@ -3,7 +3,6 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/utils/NeoBox.dart';
 import 'package:naturemedix/utils/responsive.dart';
-
 import '../../components/cust_textformfield.dart';
 import '../../controllers/Auth_Control/login_controller.dart';
 import '../../routes/screen_routes.dart';
@@ -154,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> with Application {
                         ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              controller.toSignInConfirm(_emailControl,
+                              controller.signInWithEmail(_emailControl,
                                   _passControl, context, 'login');
                             }
                           },
@@ -216,47 +215,37 @@ class _LoginScreenState extends State<LoginScreen> with Application {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            NeoBox(
-                              borderRadius: BorderRadius.circular(
-                                  setResponsiveSize(context, baseSize: 7)),
-                              child: Padding(
-                                padding: EdgeInsets.all(
-                                    setResponsiveSize(context, baseSize: 10)),
-                                child: Image.asset(
-                                  icon.GOOGLE,
-                                  scale:
-                                      setResponsiveSize(context, baseSize: 15),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal:
-                                      setResponsiveSize(context, baseSize: 20)),
+                            InkWell(
+                              onTap: () =>
+                                  controller.signInWithGoogle(context, 'login'),
                               child: NeoBox(
                                 borderRadius: BorderRadius.circular(
-                                    setResponsiveSize(context, baseSize: 7)),
+                                    setResponsiveSize(context, baseSize: 25)),
                                 child: Padding(
-                                  padding: EdgeInsets.all(
-                                      setResponsiveSize(context, baseSize: 10)),
-                                  child: Image.asset(
-                                    icon.FACEBOOK,
-                                    scale: setResponsiveSize(context,
-                                        baseSize: 15),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: setResponsiveSize(context,
+                                          baseSize: 20),
+                                      vertical: setResponsiveSize(context,
+                                          baseSize: 10)),
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        icon.GOOGLE,
+                                        scale: setResponsiveSize(context,
+                                            baseSize: 15),
+                                      ),
+                                      Gap(setResponsiveSize(context,
+                                          baseSize: 20)),
+                                      Text(
+                                        'Login with Google',
+                                        textAlign: TextAlign.center,
+                                        style: style.displaySmall(context,
+                                            color: color.primarylow,
+                                            fontsize: 15,
+                                            fontweight: FontWeight.w500),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ),
-                            ),
-                            NeoBox(
-                              borderRadius: BorderRadius.circular(
-                                  setResponsiveSize(context, baseSize: 7)),
-                              child: Padding(
-                                padding: EdgeInsets.all(
-                                    setResponsiveSize(context, baseSize: 10)),
-                                child: Image.asset(
-                                  icon.INSTAGRAM,
-                                  scale:
-                                      setResponsiveSize(context, baseSize: 15),
                                 ),
                               ),
                             ),
@@ -278,7 +267,7 @@ class _LoginScreenState extends State<LoginScreen> with Application {
                               onPressed: () =>
                                   Get.toNamed(ScreenRouter.getRegisterRoute),
                               child: Text(
-                                'Sign Up',
+                                'Register',
                                 textAlign: TextAlign.center,
                                 style: style.displaySmall(context,
                                     color: color.primary,

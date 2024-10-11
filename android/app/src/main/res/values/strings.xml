@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NatureMedix</string>
+    <string name="facebook_app_id">1243824590093073</string>
+    <string name="fb_login_protocol_scheme">fb1243824590093073</string>
+    <string name="facebook_client_token">7d01479771b47e3344ac6052a4ae57d4</string>
+</resources>

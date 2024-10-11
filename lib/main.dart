@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/helpers/_init_dependencies.dart';
 import 'package:naturemedix/routes/screen_routes.dart';
-import 'package:naturemedix/screens/pages/scanner_screen.dart';
 import 'package:naturemedix/screens/splash/splash_screen.dart';
 import 'firebase_options.dart';
 

@@ -28,7 +28,7 @@ class AppLogo {
 class AppIcon {
   String get GOOGLE => AppDirectory.icon('ICN1.png');
   String get FACEBOOK => AppDirectory.icon('ICN2.png');
-  String get INSTAGRAM => AppDirectory.icon('ICN3.png');
+  String get TWITTER => AppDirectory.icon('ICN3.png');
 }
 
 class AppGif {

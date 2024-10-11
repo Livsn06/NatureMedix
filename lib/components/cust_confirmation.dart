@@ -40,7 +40,7 @@ class _ConfirmValidationAlertState extends State<ConfirmValidationAlert>
               width: double.infinity,
               height: setResponsiveSize(context, baseSize: 120),
               decoration: BoxDecoration(
-                color: color.question,
+                color: color.primary,
                 borderRadius: BorderRadius.only(
                   topLeft:
                       Radius.circular(setResponsiveSize(context, baseSize: 10)),

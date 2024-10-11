@@ -1,20 +1,258 @@
+import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../components/cust_validation.dart';
+import 'package:http/http.dart' as http;
 
 class LoginController extends GetxController {
-  // State for password visibility
-  bool _isPasswordVisible = false;
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  // Getters
-  bool get isPasswordVisible => _isPasswordVisible;
+  //hasError, errorCode, provider,uid, email, name, imageUrl
+  String? _errorCode;
+  String? _name;
+  String? _email;
+  String? _uid;
+  String? _imageUrl;
+  String? _provider;
+  bool _hasError = false;
+  bool _isSignedIn = false;
 
-  // Toggle functions
+  // Getters for each variable
+  String? get name => _name;
+  String? get email => _email;
+  String? get uid => _uid;
+  String? get imageUrl => _imageUrl;
+  String? get provider => _provider;
+  bool get isSignedIn => _isSignedIn;
+  String? get errorCode => _errorCode;
+  bool get hasError => _hasError;
+
+  SignInProvider() {
+    checkSignInUser();
+  }
+
+  Future checkSignInUser() async {
+    final SharedPreferences s = await SharedPreferences.getInstance();
+    _isSignedIn = s.getBool("signed_in") ?? false;
+    update();
+  }
+
+  Future setSignIn() async {
+    final SharedPreferences s = await SharedPreferences.getInstance();
+    s.setBool("signed_in", true);
+    _isSignedIn = true;
+    update();
+  }
+
+  // sign in with google
+  Future signInWithGoogle(BuildContext context, String msgType) async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.signIn();
+
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        final User userDetails =
+            (await firebaseAuth.signInWithCredential(credential)).user!;
+
+        _uid = userDetails.uid;
+
+        // Check if the user is new or existing
+        bool userExists = await checkUserExists();
+        if (!userExists) {
+          // If the user is new, save to Firestore
+          _name = userDetails.displayName;
+          _email = userDetails.email;
+          _imageUrl = userDetails.photoURL;
+          _provider = "GOOGLE";
+          saveDataToFirestore();
+        } else {
+          // If the user exists, fetch data from Firestore
+          await getUserDataFromFirestore(_uid);
+        }
+
+        saveDataToSharedPreferences();
+        showValidationAlert(
+            context, 'Successful', 'Successfully $msgType', msgType, true);
+        update();
+      } else {
+        _hasError = true;
+        update();
+      }
+    } on FirebaseAuthException catch (e) {
+      _handleAuthError(context, e, msgType);
+    } catch (e) {
+      print("Google sign-in error: $e");
+      _hasError = true;
+      update();
+    }
+  }
+
+  // Sign-in with email and password
+  Future<void> signInWithEmail(
+    TextEditingController emailController,
+    TextEditingController passwordController,
+    BuildContext context,
+    String msgType,
+  ) async {
+    try {
+      final userCredential = await firebaseAuth.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+
+      if (userCredential.user != null) {
+        _uid = userCredential.user!.uid;
+
+        bool userExists = await checkUserExists();
+        if (userExists) {
+          await getUserDataFromFirestore(_uid);
+        } else {
+          // Save new user data to Firestore if required
+          _name = userCredential.user!.displayName ?? "No Name";
+          _email = userCredential.user!.email;
+          _provider = "EMAIL";
+          saveDataToFirestore();
+        }
+
+        saveDataToSharedPreferences();
+        showValidationAlert(
+            context, 'Successful', 'Successfully $msgType', msgType, true);
+      }
+    } on FirebaseAuthException catch (e) {
+      _handleAuthError(context, e, msgType);
+    }
+  }
+
+  // ENTRY FOR CLOUDFIRESTORE
+
+  Future getUserDataFromFirestore(uid) async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot snapshot) {
+      if (snapshot.exists) {
+        // Cast the snapshot data to Map<String, dynamic>
+        var data = snapshot.data() as Map<String, dynamic>;
+
+        _uid = data['uid'];
+        _name = data['name'];
+        _email = data['email'];
+        _imageUrl = data['image_url'];
+        _provider = data['provider'];
+      } else {
+        print("User data does not exist");
+      }
+    });
+  }
+
+  Future saveDataToFirestore() async {
+    if (_uid != null) {
+      final DocumentReference r =
+          FirebaseFirestore.instance.collection("users").doc(_uid);
+      await r.set({
+        "uid": _uid,
+        "name": _name,
+        "email": _email,
+        "image_url": _imageUrl,
+        "provider": _provider,
+      });
+    } else {
+      print("Error: uid is null");
+    }
+    update();
+  }
+
+  Future saveDataToSharedPreferences() async {
+    final SharedPreferences s = await SharedPreferences.getInstance();
+
+    await s.setString('name', _name ?? 'Unknown');
+    await s.setString('email', _email ?? 'Unknown email');
+    await s.setString('uid', _uid ?? 'Unknown uid');
+    await s.setString('image_url', _imageUrl ?? 'default_image_url');
+    await s.setString('provider', _provider ?? 'Unknown provider');
+
+    update();
+  }
+
+  Future getDataFromSharedPreferences() async {
+    final SharedPreferences s = await SharedPreferences.getInstance();
+    _name = s.getString('name');
+    _email = s.getString('email');
+    _imageUrl = s.getString('image_url');
+    _uid = s.getString('uid');
+    _provider = s.getString('provider');
+    update();
+  }
+
+  // checkUser exists or not in cloudfirestore
+  Future<bool> checkUserExists() async {
+    DocumentSnapshot snap =
+        await FirebaseFirestore.instance.collection('users').doc(_uid).get();
+    if (snap.exists) {
+      print("EXISTING USER");
+      return true;
+    } else {
+      print("NEW USER");
+      return false;
+    }
+  }
+
+  // signout
+  Future userSignOut() async {
+    await firebaseAuth.signOut;
+    await googleSignIn.signOut();
+
+    _isSignedIn = false;
+    update();
+    // clear all storage information
+    clearStoredData();
+  }
+
+  Future clearStoredData() async {
+    final SharedPreferences s = await SharedPreferences.getInstance();
+    s.clear();
+  }
+
+  bool isPasswordVisible = false;
+
+  // Handle FirebaseAuth exceptions
+  void _handleAuthError(
+      BuildContext context, FirebaseAuthException e, String msgType) {
+    final errorMsg = _getErrorMessage(e.code);
+    showValidationAlert(context, 'Invalid', errorMsg, msgType, false);
+  }
+
+  // Return error message based on FirebaseAuthException code
+  String _getErrorMessage(String errorCode) {
+    switch (errorCode) {
+      case 'invalid-credential':
+        return 'Invalid Credential';
+      case 'invalid-email':
+        return 'Incorrect Email';
+      case 'too-many-requests':
+        return 'Account Temporarily Disabled';
+      default:
+        return 'Unknown Error Occurred';
+    }
+  }
+
+  // Toggle password visibility
   void togglePasswordVisibility() {
-    _isPasswordVisible = !_isPasswordVisible;
+    isPasswordVisible = !isPasswordVisible;
     update();
   }
 
@@ -34,34 +272,5 @@ class LoginController extends GetxController {
       return 'Password is required';
     }
     return null;
-  }
-
-  void toSignInConfirm(
-    TextEditingController userControl,
-    TextEditingController passControl,
-    BuildContext context,
-    String msgType,
-  ) async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: userControl.text, password: passControl.text);
-
-      showValidationAlert(
-          context, 'Successful', 'Successfully $msgType', msgType, true);
-    } on FirebaseException catch (ex) {
-      String msgtext;
-      if (ex.message ==
-          'The supplied auth credential is incorrect, malformed or has expired.') {
-        msgtext = 'Invalid Credential';
-      } else if (ex.message == 'The email address is badly formatted.') {
-        msgtext = 'Incorrect Email';
-      } else if (ex.message ==
-          '[ Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. ]') {
-        msgtext = 'Account Temporarily Disabled';
-      } else {
-        msgtext = 'Unknown Error Occurred';
-      }
-      showValidationAlert(context, 'Invalid', msgtext, msgType, false);
-    }
   }
 }

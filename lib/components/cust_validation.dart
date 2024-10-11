@@ -24,8 +24,7 @@ class ValidationAlert extends StatefulWidget {
   _ValidationAlertState createState() => _ValidationAlertState();
 }
 
-class _ValidationAlertState extends State<ValidationAlert>
-    with Application {
+class _ValidationAlertState extends State<ValidationAlert> with Application {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -45,7 +44,7 @@ class _ValidationAlertState extends State<ValidationAlert>
               width: double.infinity,
               height: setResponsiveSize(context, baseSize: 120),
               decoration: BoxDecoration(
-                color: widget.isValid ? color.valid : color.invalid,
+                color: widget.isValid ? color.primary : color.invalid,
                 borderRadius: BorderRadius.only(
                   topLeft:
                       Radius.circular(setResponsiveSize(context, baseSize: 10)),
@@ -101,7 +100,7 @@ class _ValidationAlertState extends State<ValidationAlert>
               padding: EdgeInsets.symmetric(
                   horizontal: setResponsiveSize(context, baseSize: 35),
                   vertical: setResponsiveSize(context, baseSize: 10)),
-              backgroundColor: widget.isValid ? color.valid : color.invalid,
+              backgroundColor: widget.isValid ? color.primary : color.invalid,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -121,7 +120,9 @@ class _ValidationAlertState extends State<ValidationAlert>
               widget.isValid ? 'Continue' : 'Retry',
               textAlign: TextAlign.center,
               style: style.displaySmall(context,
-                  color: color.dark, fontsize: 15, fontweight: FontWeight.w600),
+                  color: widget.isValid ? color.white : color.dark,
+                  fontsize: 15,
+                  fontweight: FontWeight.w600),
             ),
           ),
         ),

@@ -108,7 +108,8 @@ class GetstartedScreen extends StatelessWidget with Application {
                           borderRadius: BorderRadius.circular(
                               setResponsiveSize(context, baseSize: 10)),
                         )),
-                        backgroundColor: WidgetStatePropertyAll(color.white)),
+                        backgroundColor:
+                            const WidgetStatePropertyAll(Color(0xFFF2F7FA))),
                     onPressed: () => Get.toNamed(ScreenRouter.getRegisterRoute),
                     child: Padding(
                       padding: EdgeInsets.symmetric(

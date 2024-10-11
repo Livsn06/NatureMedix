@@ -17,7 +17,7 @@ class ButtomNav extends StatelessWidget with Application {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: setResponsiveSize(context, baseSize: 80),
+      height: setResponsiveSize(context, baseSize: 90),
       decoration: BoxDecoration(
         color: color.white,
         borderRadius: BorderRadius.circular(
