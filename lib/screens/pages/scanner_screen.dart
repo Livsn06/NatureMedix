@@ -38,9 +38,9 @@ class _ScannerScreenState extends State<ScannerScreen> with Application {
         ),
         body: Center(
           child: Icon(
-            Icons.camera_alt_outlined,
+            Icons.camera_rear_outlined,
             color: color.lightGrey,
-            size: setResponsiveSize(context, baseSize: 150),
+            size: setResponsiveSize(context, baseSize: 100),
           ),
         ));
   }

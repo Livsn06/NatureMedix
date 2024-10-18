@@ -9,7 +9,7 @@ import 'package:naturemedix/utils/responsive.dart';
 import '../../models/plant_model.dart';
 
 class PlantInfoScreen extends StatefulWidget {
-  final PlantBasicInfo plant;
+  final PlantData plant;
   const PlantInfoScreen({super.key, required this.plant});
 
   @override
@@ -70,7 +70,7 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                         padding: EdgeInsets.all(
                             setResponsiveSize(context, baseSize: 12)),
                         child: Image.asset(
-                          widget.plant.plantImage,
+                          widget.plant.plantBasicInfo.plantImage,
                           fit: BoxFit.cover,
                           height: setResponsiveSize(context, baseSize: 200),
                           width: setResponsiveSize(context, baseSize: 200),
@@ -86,7 +86,7 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                           child: Padding(
                             padding: EdgeInsets.all(
                                 setResponsiveSize(context, baseSize: 12)),
-                            child: Icon(Icons.favorite_border),
+                            child: const Icon(Icons.favorite_border),
                           ),
                         ),
                         Padding(
@@ -99,7 +99,7 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                             child: Padding(
                               padding: EdgeInsets.all(
                                   setResponsiveSize(context, baseSize: 12)),
-                              child: Icon(Icons.nature_outlined),
+                              child: const Icon(Icons.nature_outlined),
                             ),
                           ),
                         ),
@@ -109,7 +109,7 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                           child: Padding(
                             padding: EdgeInsets.all(
                                 setResponsiveSize(context, baseSize: 12)),
-                            child: Icon(Icons.text_rotation_angledown),
+                            child: const Icon(Icons.text_rotation_angledown),
                           ),
                         ),
                       ],
@@ -119,7 +119,7 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                 Gap(setResponsiveSize(context, baseSize: 25)),
                 Container(
                   color: color.white,
-                  height: MediaQuery.of(context).size.height * 0.70,
+                  height: MediaQuery.of(context).size.height * 0.80,
                   padding:
                       EdgeInsets.all(setResponsiveSize(context, baseSize: 20)),
                   child: Column(
@@ -130,7 +130,7 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.plant.plantName,
+                            widget.plant.plantBasicInfo.plantName,
                             style: style.displaySmall(context,
                                 color: color.primarylow,
                                 fontsize:
@@ -157,7 +157,7 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                         ],
                       ),
                       Text(
-                        'Scientific Name: ${widget.plant.scientificName}',
+                        'Scientific Name: ${widget.plant.plantBasicInfo.scientificName}',
                         style: style.displaySmall(context,
                             color: color.primarylow,
                             fontsize: setResponsiveSize(context, baseSize: 13),
@@ -169,17 +169,119 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                         'DESCRIPTION:',
                         style: style.displaySmall(context,
                             color: color.primarylow,
-                            fontsize: setResponsiveSize(context, baseSize: 13),
+                            fontsize: setResponsiveSize(context, baseSize: 12),
                             fontweight: FontWeight.w500),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 10)),
                       Text(
-                        widget.plant.description,
+                        widget.plant.plantBasicInfo.description,
                         textAlign: TextAlign.justify,
                         style: style.displaySmall(context,
                             color: color.primarylow,
                             fontsize: setResponsiveSize(context, baseSize: 13),
                             fontweight: FontWeight.w400),
+                      ),
+                      Gap(setResponsiveSize(context, baseSize: 25)),
+                      Text(
+                        'TREATMENT:',
+                        style: style.displaySmall(context,
+                            color: color.primarylow,
+                            fontsize: setResponsiveSize(context, baseSize: 12),
+                            fontweight: FontWeight.w500),
+                      ),
+                      Gap(setResponsiveSize(context, baseSize: 10)),
+                      Wrap(
+                        spacing: setResponsiveSize(context, baseSize: 7),
+                        runSpacing: setResponsiveSize(context,
+                            baseSize: 5), // Vertical space between rows
+                        children: widget.plant.remedyInfo.treatments
+                            .asMap()
+                            .entries
+                            .map((entry) {
+                          String treatment = entry.value;
+
+                          return IntrinsicWidth(
+                            child: TextButton(
+                              onPressed: () {
+                                // Perform action for this treatment
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    WidgetStatePropertyAll(color.primarylow),
+                                shape: WidgetStatePropertyAll<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      setResponsiveSize(context, baseSize: 5),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                treatment,
+                                textAlign: TextAlign.justify,
+                                style: style.displaySmall(
+                                  context,
+                                  color: color.white,
+                                  fontsize:
+                                      setResponsiveSize(context, baseSize: 13),
+                                  fontweight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      Gap(setResponsiveSize(context, baseSize: 20)),
+                      Text(
+                        'REMEDY:',
+                        style: style.displaySmall(context,
+                            color: color.primarylow,
+                            fontsize: setResponsiveSize(context, baseSize: 12),
+                            fontweight: FontWeight.w500),
+                      ),
+                      Gap(setResponsiveSize(context, baseSize: 10)),
+                      Wrap(
+                        spacing: setResponsiveSize(context, baseSize: 7),
+                        runSpacing: setResponsiveSize(context,
+                            baseSize: 5), // Vertical space between rows
+                        children: widget.plant.plantBasicInfo.remedy
+                            .asMap()
+                            .entries
+                            .map((entry) {
+                          String treatment = entry.value;
+
+                          return IntrinsicWidth(
+                            child: TextButton(
+                              onPressed: () {
+                                // Perform action for this treatment
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    WidgetStatePropertyAll(color.primarylow),
+                                shape: WidgetStatePropertyAll<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      setResponsiveSize(context, baseSize: 5),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                treatment,
+                                textAlign: TextAlign.justify,
+                                style: style.displaySmall(
+                                  context,
+                                  color: color.white,
+                                  fontsize:
+                                      setResponsiveSize(context, baseSize: 13),
+                                  fontweight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ],
                   ),

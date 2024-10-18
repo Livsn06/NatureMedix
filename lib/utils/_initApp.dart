@@ -57,6 +57,7 @@ class AppPlant {
   String get PLNTIMG5 => AppDirectory.plant('PLANT5.png');
   String get PLNTIMG6 => AppDirectory.plant('PLANT6.png');
   String get PLNTIMG7 => AppDirectory.plant('PLANT7.png');
+  String get PLNTIMG8 => AppDirectory.plant('PLANT8.png');
 }
 
 class AppRemedy {
@@ -71,7 +72,7 @@ class AppRemedy {
 class AppColor {
   Color get darkGrey => const Color(0xFF808080);
   Color get grey => const Color(0xFFEBEBEB);
-  Color get lightGrey => const Color(0xFFD9D9D9);
+  Color get lightGrey => const Color(0xFFBEBEBE);
   Color get background => const Color(0xFFF2F7FA);
   Color get primary => const Color(0xFF008263);
   Color get primaryhigh => const Color(0xFF2F604B);
@@ -84,6 +85,9 @@ class AppColor {
   Color get white => const Color(0xFFF5F5F5);
   Color get whiteOpacity20 => const Color(0xFFFFFFFF).withOpacity(0.2);
   Color get whiteOpacity40 => const Color(0xFFFFFFFF).withOpacity(0.4);
+  Color get whiteOpacity60 => const Color(0xFFFFFFFF).withOpacity(0.6);
+  Color get whiteOpacity80 => const Color(0xFFFFFFFF).withOpacity(0.8);
+
   Color get dark => const Color(0xFF2B2A29);
   Color get darkOpacity70 => const Color(0xFF000000).withOpacity(0.6);
   Color get darkOpacity50 => const Color(0xFF000000).withOpacity(0.5);

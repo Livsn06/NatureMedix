@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/helpers/_init_dependencies.dart';
 import 'package:naturemedix/routes/screen_routes.dart';
+import 'package:naturemedix/screens/pages/control_screen.dart';
 import 'package:naturemedix/screens/splash/splash_screen.dart';
 import 'firebase_options.dart';
 
@@ -29,10 +30,10 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       initialBinding: InitDep(),
-      initialRoute: ScreenRouter.getSplashscreenRoute,
+      initialRoute: ScreenRouter.getControlscreenRoute,
       getPages: ScreenRouter.routes,
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: ControlScreen(),
     );
   }
 }

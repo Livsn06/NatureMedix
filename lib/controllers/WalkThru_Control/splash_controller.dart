@@ -10,7 +10,7 @@ class SplashController extends GetxController {
   }
 
   Future showNextScreen() async {
-    await Future.delayed(4.seconds);
+    await Future.delayed(7.seconds);
     await Get.toNamed(ScreenRouter.getOnboardingRoute);
   }
 }

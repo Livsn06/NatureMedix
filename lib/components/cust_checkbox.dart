@@ -18,12 +18,12 @@ class CheckBoxs extends StatelessWidget with Application {
             onChanged: onChanged,
           ),
           Text(
-            'Remember me',
+            'By continuing, you agree to our User Agreement and\nacknowledge that you understand the Privacy Policy.',
             textAlign: TextAlign.left,
             style: style.displaySmall(context,
                 color: color.primarylow,
-                fontsize: setResponsiveSize(context, baseSize: 15),
-                fontweight: FontWeight.w500),
+                fontsize: setResponsiveSize(context, baseSize: 11),
+                fontweight: FontWeight.w400),
           ),
         ],
       );

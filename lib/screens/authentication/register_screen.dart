@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:naturemedix/components/cust_elevatedbtn.dart';
+import 'package:naturemedix/controllers/Auth_Control/login_controller.dart';
 import 'package:naturemedix/controllers/Auth_Control/register_controller.dart';
 import 'package:naturemedix/routes/screen_routes.dart';
 import 'package:naturemedix/utils/NeoBox.dart';
@@ -22,6 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Application {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmControl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final LoginController loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) => GetBuilder<RegisterController>(
@@ -71,7 +74,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Application {
                 child: Container(
                   width: double.infinity,
                   padding:
-                      EdgeInsets.all(setResponsiveSize(context, baseSize: 18)),
+                      EdgeInsets.all(setResponsiveSize(context, baseSize: 17)),
                   decoration: BoxDecoration(
                     color: color.white,
                     borderRadius: BorderRadius.only(
@@ -165,7 +168,8 @@ class _RegisterScreenState extends State<RegisterScreen> with Application {
                             },
                           ),
                           Gap(setResponsiveSize(context, baseSize: 20)),
-                          ElevatedButton(
+                          CustElevatedbtn(
+                            colors: color.primarylow,
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 controller.toSignUpConfirm(
@@ -177,31 +181,17 @@ class _RegisterScreenState extends State<RegisterScreen> with Application {
                                     'signup');
                               }
                             },
-                            style: ElevatedButton.styleFrom(
-                              elevation:
-                                  setResponsiveSize(context, baseSize: 3),
-                              backgroundColor: color.primarylow,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    setResponsiveSize(context, baseSize: 50)),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical:
+                            child: Text(
+                              'REGISTER',
+                              textAlign: TextAlign.center,
+                              style: style.buttonText(context,
+                                  color: color.white,
+                                  fontspace: 3,
+                                  fontsize:
                                       setResponsiveSize(context, baseSize: 15)),
-                              child: Text(
-                                'REGISTER',
-                                textAlign: TextAlign.center,
-                                style: style.buttonText(context,
-                                    color: color.white,
-                                    fontspace: 3,
-                                    fontsize: setResponsiveSize(context,
-                                        baseSize: 15)),
-                              ),
                             ),
                           ),
-                          Gap(setResponsiveSize(context, baseSize: 30)),
+                          Gap(setResponsiveSize(context, baseSize: 20)),
                           Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal:
@@ -232,41 +222,32 @@ class _RegisterScreenState extends State<RegisterScreen> with Application {
                               ],
                             ),
                           ),
-                          Gap(setResponsiveSize(context, baseSize: 20)),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              NeoBox(
-                                borderRadius: BorderRadius.circular(
-                                    setResponsiveSize(context, baseSize: 25)),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: setResponsiveSize(context,
-                                          baseSize: 20),
-                                      vertical: setResponsiveSize(context,
-                                          baseSize: 10)),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                        icon.GOOGLE,
-                                        scale: setResponsiveSize(context,
-                                            baseSize: 15),
-                                      ),
-                                      Gap(setResponsiveSize(context,
-                                          baseSize: 20)),
-                                      Text(
-                                        'Register with Google',
-                                        textAlign: TextAlign.center,
-                                        style: style.displaySmall(context,
-                                            color: color.primarylow,
-                                            fontsize: 15,
-                                            fontweight: FontWeight.w500),
-                                      ),
-                                    ],
-                                  ),
+                          Gap(setResponsiveSize(context, baseSize: 15)),
+                          CustElevatedbtn(
+                            colors: color.grey,
+                            onPressed: () {
+                              loginController.signInWithGoogle(
+                                  context, 'login');
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  icon.GOOGLE,
+                                  scale:
+                                      setResponsiveSize(context, baseSize: 20),
                                 ),
-                              ),
-                            ],
+                                Gap(setResponsiveSize(context, baseSize: 20)),
+                                Text(
+                                  'Register with Google',
+                                  textAlign: TextAlign.center,
+                                  style: style.displaySmall(context,
+                                      color: color.primarylow,
+                                      fontsize: 15,
+                                      fontweight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
                           ),
                           Gap(setResponsiveSize(context, baseSize: 30)),
                           Row(

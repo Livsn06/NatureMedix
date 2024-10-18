@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:naturemedix/utils/_initApp.dart';
 import '../../models/plant_model.dart';
 import '../../routes/screen_routes.dart';
+import '../../utils/responsive.dart';
 
 class DashboardController extends GetxController {
   var selectedCategory = 'All'.obs;
@@ -19,10 +21,10 @@ class DashboardController extends GetxController {
     final hour = now.hour;
 
     greeting.value = hour < 12
-        ? 'Hi, Explore NatureMedix! 🌱 '
+        ? 'Discover Your Green Allies'
         : hour < 17
-            ? 'Hi, Discover Herbal Remedies! 🌼'
-            : 'Hi, Relax and Heal! 🌻';
+            ? 'Reveal Your Herbal Plants'
+            : 'Discover Your Herbal Plant';
   }
 
   void selectCategory(String category) {
@@ -30,10 +32,15 @@ class DashboardController extends GetxController {
     update();
   }
 
-  void selectPlant(PlantBasicInfo plant, BuildContext context) {
+  void selectPlant(PlantData plant, BuildContext context) {
     Get.toNamed(
       ScreenRouter.getPlantInfoRoute,
       arguments: plant,
     );
   }
+
+  final borderCust = OutlineInputBorder(
+    borderSide: BorderSide(color: Application().color.white),
+    borderRadius: BorderRadius.circular(15),
+  );
 }

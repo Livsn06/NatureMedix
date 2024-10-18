@@ -3,12 +3,16 @@ class PlantBasicInfo {
   final String scientificName;
   final String plantImage;
   final String description;
+  final List<String> treatments;
+  final List<String> remedy;
 
   PlantBasicInfo({
     required this.plantName,
     required this.scientificName,
     required this.plantImage,
     required this.description,
+    required this.treatments,
+    required this.remedy,
   });
 }
 
@@ -25,5 +29,19 @@ class RemedyInfo {
     required this.description,
     required this.remedyImage,
     required this.treatments,
+  });
+}
+
+class PlantData {
+  final PlantBasicInfo plantBasicInfo;
+  final RemedyInfo remedyInfo;
+  final List<String> ingredients;
+  final List<String> steps;
+
+  PlantData({
+    required this.plantBasicInfo,
+    required this.remedyInfo,
+    required this.ingredients,
+    required this.steps,
   });
 }

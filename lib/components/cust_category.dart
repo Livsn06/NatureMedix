@@ -27,9 +27,9 @@ class CategoryChip extends StatelessWidget with Application {
             margin:
                 EdgeInsets.only(right: setResponsiveSize(context, baseSize: 8)),
             decoration: BoxDecoration(
-              color: isSelected ? color.primary : Colors.grey.shade200,
+              color: isSelected ? color.primary : Colors.white,
               borderRadius: BorderRadius.circular(
-                  setResponsiveSize(context, baseSize: 10)),
+                  setResponsiveSize(context, baseSize: 5)),
             ),
             child: Text(
               label,

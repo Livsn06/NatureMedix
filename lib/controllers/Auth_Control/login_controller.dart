@@ -233,14 +233,14 @@ class LoginController extends GetxController {
   void _handleAuthError(
       BuildContext context, FirebaseAuthException e, String msgType) {
     final errorMsg = _getErrorMessage(e.code);
-    showValidationAlert(context, 'Invalid', errorMsg, msgType, false);
+    showValidationAlert(context, 'Opps...', errorMsg, msgType, false);
   }
 
   // Return error message based on FirebaseAuthException code
   String _getErrorMessage(String errorCode) {
     switch (errorCode) {
       case 'invalid-credential':
-        return 'Invalid Credential';
+        return 'Verify your credentials and try again.';
       case 'invalid-email':
         return 'Incorrect Email';
       case 'too-many-requests':

@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:naturemedix/components/cust_textformfield.dart';
 import 'package:naturemedix/controllers/Auth_Control/login_controller.dart';
 import 'package:naturemedix/controllers/Home_Control/dashboard_controller.dart';
+import 'package:naturemedix/utils/NeoBox.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
 import '../../components/cust_category.dart';
@@ -31,19 +30,20 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
         builder: (sp) {
           sp.getDataFromSharedPreferences();
           return Scaffold(
+              backgroundColor: color.grey,
               body: Column(
-            children: [
-              _buildHeader(context, sp.name.toString()),
-              _buildCategoryChips(context),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: _buildContent(context, controller),
+                children: [
+                  _buildHeader(context, sp.name.toString()),
+                  _buildCategoryChips(context),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: _buildContent(context, controller),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ],
-          ));
+                ],
+              ));
         });
   }
 
@@ -69,20 +69,39 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
   Widget _buildHeader(BuildContext context, String displayName) {
     return Container(
       width: double.infinity,
-      height: setResponsiveSize(context, baseSize: 200),
+      height: setResponsiveSize(context, baseSize: 205),
       decoration: BoxDecoration(
-        color: Colors.blueGrey,
-        borderRadius:
-            BorderRadius.circular(setResponsiveSize(context, baseSize: 15)),
-        image: DecorationImage(image: AssetImage(image.BG7), fit: BoxFit.cover),
-      ),
+          gradient: LinearGradient(
+            colors: [
+              color.primary,
+              color.primarylow,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.only(
+            bottomLeft:
+                Radius.circular(setResponsiveSize(context, baseSize: 20)),
+            bottomRight:
+                Radius.circular(setResponsiveSize(context, baseSize: 20)),
+          )),
       child: Padding(
-        padding: EdgeInsets.all(setResponsiveSize(context, baseSize: 20)),
+        padding: EdgeInsets.symmetric(
+            vertical: setResponsiveSize(context, baseSize: 10),
+            horizontal: setResponsiveSize(context, baseSize: 20)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Gap(setResponsiveSize(context, baseSize: 30)),
             _buildTitleRow(context, displayName),
+            Gap(setResponsiveSize(context, baseSize: 10)),
+            Text(
+              controller.greeting.value,
+              style: style.displaySmall(context,
+                  color: color.white,
+                  fontsize: 22,
+                  fontweight: FontWeight.w800), // Larger text
+            ),
             Gap(setResponsiveSize(context, baseSize: 15)),
             _buildSearchBar(context),
           ],
@@ -95,58 +114,60 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: '${controller.greeting()}\n',
-                style: style.displaySmall(context,
-                    color: color.white,
-                    fontsize: 23,
-                    fontweight: FontWeight.w600), // Larger text
-              ),
-              TextSpan(
-                text: displayName.toUpperCase(),
-                style: style.displaySmall(context,
-                    color: color.white,
-                    fontsize: 20,
-                    fontweight: FontWeight.w600), // Smaller text
-              ),
-            ],
-          ),
-        ),
+        Image.asset(logo.second,
+            scale: setResponsiveSize(context, baseSize: 8)),
         CircleAvatar(
-          radius: setResponsiveSize(context, baseSize: 18),
-          backgroundColor: color.white,
-          child: Icon(Icons.notifications_outlined,
-              color: color.primarylow,
-              size: setResponsiveSize(context, baseSize: 25)),
-        ),
+          backgroundColor: color.primarylow,
+          radius: setResponsiveSize(context, baseSize: 15) +
+              setResponsiveSize(context, baseSize: 4),
+          child: CircleAvatar(
+            backgroundColor: Colors.white,
+            radius: setResponsiveSize(context, baseSize: 18),
+            child: Icon(Icons.notifications_outlined,
+                color: color.primarylow,
+                size: setResponsiveSize(context, baseSize: 25)),
+          ),
+        )
       ],
     );
   }
 
   Widget _buildSearchBar(BuildContext context) {
+    final controller = Get.put(DashboardController());
     return Row(
       children: [
         Expanded(
-          child: TextFormFields(
-            control: _selectControl,
-            labeltext: 'Search anything here...',
-            iconData: Icons.search,
-            isPassword: false,
+            child: Material(
+          borderRadius:
+              BorderRadius.circular(setResponsiveSize(context, baseSize: 7)),
+          elevation: 4,
+          child: TextFormField(
+            controller: _selectControl,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(
+                vertical: setResponsiveSize(context, baseSize: 12),
+                horizontal: setResponsiveSize(context, baseSize: 12),
+              ),
+              border: controller.borderCust,
+              enabledBorder: controller.borderCust,
+              focusedBorder: controller.borderCust,
+              hintText: 'Search...',
+              prefixIcon: Icon(Icons.search,
+                  color: color.primarylow,
+                  size: setResponsiveSize(context, baseSize: 25)),
+            ),
           ),
-        ),
-        Gap(setResponsiveSize(context, baseSize: 5)),
+        )),
+        Gap(setResponsiveSize(context, baseSize: 10)),
         Material(
-          color: color.primary,
+          elevation: 4,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
-                  setResponsiveSize(context, baseSize: 8))),
+                  setResponsiveSize(context, baseSize: 7))),
           child: Padding(
-            padding: EdgeInsets.all(setResponsiveSize(context, baseSize: 12)),
+            padding: EdgeInsets.all(setResponsiveSize(context, baseSize: 10)),
             child: Icon(Icons.filter_alt_outlined,
-                color: color.white,
+                color: color.primarylow,
                 size: setResponsiveSize(context, baseSize: 25)),
           ),
         ),
@@ -159,7 +180,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
       padding: EdgeInsets.symmetric(
           vertical: setResponsiveSize(
             context,
-            baseSize: 10,
+            baseSize: 15,
           ),
           horizontal: setResponsiveSize(context, baseSize: 15)),
       child: SingleChildScrollView(
@@ -185,17 +206,18 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
 
   Widget _buildPopularHerbalPlant(
       BuildContext context, DashboardController controller) {
+    List<PlantData> popularPlant = List.from(plantDatabase);
     return _buildSection(
         context,
         'Popular Herbal Plant',
-        plants
+        popularPlant
             .map((plant) => _buildPlantCard(context, plant, controller))
             .toList());
   }
 
   Widget _buildRecommendedHerbalPlant(
       BuildContext context, DashboardController controller) {
-    List<PlantBasicInfo> randomizedPlants = List.from(plants);
+    List<PlantData> randomizedPlants = List.from(plantDatabase);
     return _buildSection(
         context,
         'Recommended Herbal Plant',
@@ -248,7 +270,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
   Widget _buildCard(BuildContext context, String imagePath, String title,
       String description) {
     return Container(
-      width: setResponsiveSize(context, baseSize: 180),
+      width: setResponsiveSize(context, baseSize: 190),
       margin: EdgeInsets.only(right: setResponsiveSize(context, baseSize: 10)),
       child: Card(
         elevation: setResponsiveSize(context, baseSize: 3),
@@ -257,15 +279,39 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: double.infinity,
-                height: setResponsiveSize(context, baseSize: 160),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                      setResponsiveSize(context, baseSize: 10)),
-                  image: DecorationImage(
-                      image: AssetImage(imagePath), fit: BoxFit.fill),
-                ),
+              Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: setResponsiveSize(context, baseSize: 170),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                          setResponsiveSize(context, baseSize: 10)),
+                      image: DecorationImage(
+                          image: AssetImage(imagePath), fit: BoxFit.cover),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: setResponsiveSize(context, baseSize: 7),
+                    right: setResponsiveSize(context, baseSize: 7),
+                    child: Material(
+                      elevation: setResponsiveSize(context, baseSize: 3),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            setResponsiveSize(context, baseSize: 5)),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(
+                            setResponsiveSize(context, baseSize: 5)),
+                        child: Icon(
+                          Icons.favorite_outline,
+                          color: color.invalid,
+                          size: setResponsiveSize(context, baseSize: 20),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Gap(setResponsiveSize(context, baseSize: 10)),
               Text(
@@ -278,7 +324,8 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
               Gap(setResponsiveSize(context, baseSize: 3)),
               Text(
                 description,
-                maxLines: 2,
+                maxLines: 1,
+                softWrap: false,
                 overflow: TextOverflow.ellipsis,
                 style: style.displaySmall(context,
                     color: color.darkGrey,
@@ -292,12 +339,12 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
     );
   }
 
-  Widget _buildPlantCard(BuildContext context, PlantBasicInfo plant,
-      DashboardController controller) {
+  Widget _buildPlantCard(
+      BuildContext context, PlantData plant, DashboardController controller) {
     return GestureDetector(
       onTap: () => controller.selectPlant(plant, context),
-      child: _buildCard(
-          context, plant.plantImage, plant.plantName, plant.scientificName),
+      child: _buildCard(context, plant.plantBasicInfo.plantImage,
+          plant.plantBasicInfo.plantName, plant.plantBasicInfo.scientificName),
     );
   }
 }

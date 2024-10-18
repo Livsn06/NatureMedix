@@ -5,7 +5,7 @@ import '../../models/plant_model.dart';
 
 class BookmarkController extends GetxController {
   var ascendingSort = true.obs;
-  var bookmarkedPlants = <PlantBasicInfo>[].obs;
+  var bookmarkedPlants = <PlantData>[].obs;
   var searchQuery = ''.obs;
   final searchController = TextEditingController();
 
@@ -22,14 +22,14 @@ class BookmarkController extends GetxController {
     update();
   }
 
-  void addBookmark(PlantBasicInfo plant) {
+  void addBookmark(PlantData plant) {
     if (!bookmarkedPlants.contains(plant)) {
       bookmarkedPlants.add(plant);
     }
     update();
   }
 
-  void removeBookmark(PlantBasicInfo plant, BuildContext context) {
+  void removeBookmark(PlantData plant, BuildContext context) {
     showConfirmValidation(context, 'Delete Bookmark', 'Do you want to delete ?',
         () {
       bookmarkedPlants.remove(plant);
@@ -38,19 +38,19 @@ class BookmarkController extends GetxController {
     update();
   }
 
-  bool isBookmarked(PlantBasicInfo plant) {
+  bool isBookmarked(PlantData plant) {
     return bookmarkedPlants.contains(plant);
   }
 
-  List<PlantBasicInfo> get filteredBookmarks {
+  List<PlantData> get filteredBookmarks {
     var bookmarks = bookmarkedPlants.where((plant) {
-      return plant.plantName.toLowerCase().contains(searchQuery.value);
+      return plant.plantBasicInfo.plantName.toLowerCase().contains(searchQuery.value);
     }).toList();
 
     if (!ascendingSort.value) {
-      bookmarks.sort((a, b) => b.plantName.compareTo(a.plantName));
+      bookmarks.sort((a, b) => b.plantBasicInfo.plantName.compareTo(a.plantBasicInfo.plantName));
     } else {
-      bookmarks.sort((a, b) => a.plantName.compareTo(b.plantName));
+      bookmarks.sort((a, b) => a.plantBasicInfo.plantName.compareTo(b.plantBasicInfo.plantName));
     }
 
     return bookmarks;

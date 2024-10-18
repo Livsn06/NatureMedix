@@ -98,14 +98,14 @@ class _ConfirmValidationAlertState extends State<ConfirmValidationAlert>
                 padding: EdgeInsets.symmetric(
                     horizontal: setResponsiveSize(context, baseSize: 35),
                     vertical: setResponsiveSize(context, baseSize: 10)),
-                backgroundColor: color.valid,
+                backgroundColor: color.invalid,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: widget.onConfirm,
+              onPressed: () => Navigator.pop(context),
               child: Text(
-                'Confirm',
+                'Cancel',
                 textAlign: TextAlign.center,
                 style: style.displaySmall(context,
                     color: color.dark,
@@ -118,14 +118,14 @@ class _ConfirmValidationAlertState extends State<ConfirmValidationAlert>
                 padding: EdgeInsets.symmetric(
                     horizontal: setResponsiveSize(context, baseSize: 35),
                     vertical: setResponsiveSize(context, baseSize: 10)),
-                backgroundColor: color.invalid,
+                backgroundColor: color.valid,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () => Navigator.pop(context),
+              onPressed: widget.onConfirm,
               child: Text(
-                'Cancel',
+                'Confirm',
                 textAlign: TextAlign.center,
                 style: style.displaySmall(context,
                     color: color.dark,

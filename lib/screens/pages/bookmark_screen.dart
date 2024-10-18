@@ -106,11 +106,11 @@ class _BookmarkScreenState extends State<BookmarkScreen> with Application {
                                   onTap: () =>
                                       dashControl.selectPlant(plant, context),
                                   child: CardList(
-                                    requestImage: Image.asset(plant.plantImage,
+                                    requestImage: Image.asset(plant.plantBasicInfo.plantImage,
                                         width: 70, height: 70),
-                                    requestTitle: Text(plant.plantName),
+                                    requestTitle: Text(plant.plantBasicInfo.plantName),
                                     subRequestTitle: Text(
-                                        'Scientific Name: ${plant.scientificName}'),
+                                        'Scientific Name: ${plant.plantBasicInfo.scientificName}'),
                                     settingsTapped: null,
                                     deleteTapped: (context) => controller
                                         .removeBookmark(plant, context),

@@ -48,56 +48,67 @@ class _RequestScreenState extends State<RequestScreen> with Application {
         padding: EdgeInsets.all(setResponsiveSize(context, baseSize: 20)),
         child: Column(
           children: [
-            Obx(() => ToggleButtons(
-                  fillColor: color.primary,
-                  borderColor: color.primarylow,
-                  isSelected: [
-                    controller.isListVisible.value,
-                    !controller.isListVisible.value
-                  ],
-                  onPressed: (index) {
-                    controller.toggleView(index == 0);
-                  },
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: setResponsiveSize(context, baseSize: 20)),
-                      child: Text(
-                        'REQUEST LIST',
-                        style: style.displaySmall(
-                          context,
-                          // Set color based on isSelected value
-                          color: controller.isListVisible.value
-                              ? color.white
-                              : color.primarylow,
-                          fontsize: setResponsiveSize(context, baseSize: 12),
-                          fontweight: FontWeight.w500,
-                          fontspace: setResponsiveSize(context, baseSize: 2),
-                          fontstyle: FontStyle.normal,
+            Container(
+              color: color.grey,
+              height: 70,
+              child: Padding(
+                padding: const EdgeInsets.all(7),
+                child: Obx(() => ToggleButtons(
+                      fillColor: color.primary,
+                      borderColor: color.grey,
+                      isSelected: [
+                        controller.isListVisible.value,
+                        !controller.isListVisible.value
+                      ],
+                      onPressed: (index) {
+                        controller.toggleView(index == 0);
+                      },
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  setResponsiveSize(context, baseSize: 20)),
+                          child: Text(
+                            'REQUEST LIST',
+                            style: style.displaySmall(
+                              context,
+                              // Set color based on isSelected value
+                              color: controller.isListVisible.value
+                                  ? color.white
+                                  : color.primarylow,
+                              fontsize:
+                                  setResponsiveSize(context, baseSize: 12),
+                              fontweight: FontWeight.w500,
+                              fontspace:
+                                  setResponsiveSize(context, baseSize: 2),
+                              fontstyle: FontStyle.normal,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: setResponsiveSize(context, baseSize: 20)),
-                      child: Text(
-                        'CREATE REQUEST',
-                        style: style.displaySmall(
-                          context,
-                          // Set color based on isSelected value
-                          color: !controller.isListVisible.value
-                              ? color.white
-                              : color.primarylow,
-                          fontsize: setResponsiveSize(context, baseSize: 12),
-                          fontweight: FontWeight.w500,
-                          fontspace: 2,
-                          fontstyle: FontStyle.normal,
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  setResponsiveSize(context, baseSize: 20)),
+                          child: Text(
+                            'CREATE REQUEST',
+                            style: style.displaySmall(
+                              context,
+                              // Set color based on isSelected value
+                              color: !controller.isListVisible.value
+                                  ? color.white
+                                  : color.primarylow,
+                              fontsize:
+                                  setResponsiveSize(context, baseSize: 12),
+                              fontweight: FontWeight.w500,
+                              fontspace: 2,
+                              fontstyle: FontStyle.normal,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
-                )),
-            Gap(setResponsiveSize(context, baseSize: 10)),
+                      ],
+                    )),
+              ),
+            ),
             Expanded(
               child: Obx(() {
                 return controller.isListVisible.value
@@ -183,7 +194,7 @@ class _RequestScreenState extends State<RequestScreen> with Application {
                         children: [
                           Container(
                             width: double.infinity,
-                            height: setResponsiveSize(context, baseSize: 180),
+                            height: setResponsiveSize(context, baseSize: 170),
                             color: color.lightGrey,
                             child: fileToDisplay != null
                                 ? Image.file(fileToDisplay, fit: BoxFit.cover)

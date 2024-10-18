@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../components/cust_validation.dart';
+import '../../utils/_initApp.dart';
+import '../../utils/responsive.dart';
 
 class RegisterController extends GetxController {
   bool _isPasswordVisible = false;
@@ -73,23 +75,39 @@ class RegisterController extends GetxController {
     String msgType,
   ) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: emailControl.text, password: passControl.text);
+      if (isRememberMeChecked == true) {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: emailControl.text, password: passControl.text);
 
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .set({
-        'uid': userCredential.user!.uid,
-        'name': fnameControl.text,
-        'email': emailControl.text,
-        'provider': 'EMAIL'
-      });
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
+          'uid': userCredential.user!.uid,
+          'name': fnameControl.text,
+          'email': emailControl.text,
+          'provider': 'EMAIL'
+        });
 
-      // Show success alert
-      showValidationAlert(
-          context, 'Successful', 'Successfully $msgType', msgType, true);
+        // Show success alert
+        showValidationAlert(
+            context, 'Successful', 'Successfully $msgType', msgType, true);
+      } else {
+        Get.snackbar(
+          padding: EdgeInsets.symmetric(
+              vertical: setResponsiveSize(context, baseSize: 20),
+              horizontal: setResponsiveSize(context, baseSize: 30)),
+          icon: Icon(Icons.warning_rounded,
+              color: Colors.white,
+              size: setResponsiveSize(context, baseSize: 40)),
+          backgroundColor: Application().color.primarylow,
+          'Terms and Conditions',
+          colorText: Colors.white,
+          'Please check the terms and conditions',
+          snackPosition: SnackPosition.TOP,
+        );
+      }
     } on FirebaseAuthException catch (ex) {
       String msgtext;
       if (ex.code == 'invalid-credential') {
@@ -105,7 +123,7 @@ class RegisterController extends GetxController {
       }
 
       // Show error alert
-      showValidationAlert(context, 'Invalid', msgtext, msgType, false);
+      showValidationAlert(context, 'Opps...', msgtext, msgType, false);
     }
   }
 }

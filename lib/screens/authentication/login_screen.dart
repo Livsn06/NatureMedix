@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/utils/NeoBox.dart';
 import 'package:naturemedix/utils/responsive.dart';
+import '../../components/cust_elevatedbtn.dart';
 import '../../components/cust_textformfield.dart';
 import '../../controllers/Auth_Control/login_controller.dart';
 import '../../routes/screen_routes.dart';
@@ -150,37 +151,25 @@ class _LoginScreenState extends State<LoginScreen> with Application {
                           ],
                         ),
                         Gap(setResponsiveSize(context, baseSize: 10)),
-                        ElevatedButton(
+                        CustElevatedbtn(
+                          colors: color.primarylow,
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               controller.signInWithEmail(_emailControl,
                                   _passControl, context, 'login');
                             }
                           },
-                          style: ElevatedButton.styleFrom(
-                            elevation: setResponsiveSize(context, baseSize: 3),
-                            backgroundColor: color.primarylow,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  setResponsiveSize(context, baseSize: 50)),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical:
+                          child: Text(
+                            'LOGIN',
+                            textAlign: TextAlign.center,
+                            style: style.buttonText(context,
+                                color: color.white,
+                                fontspace: 3,
+                                fontsize:
                                     setResponsiveSize(context, baseSize: 15)),
-                            child: Text(
-                              'LOGIN',
-                              textAlign: TextAlign.center,
-                              style: style.buttonText(context,
-                                  color: color.white,
-                                  fontspace: 3,
-                                  fontsize:
-                                      setResponsiveSize(context, baseSize: 15)),
-                            ),
                           ),
                         ),
-                        Gap(setResponsiveSize(context, baseSize: 30)),
+                        Gap(setResponsiveSize(context, baseSize: 20)),
                         Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal:
@@ -212,44 +201,29 @@ class _LoginScreenState extends State<LoginScreen> with Application {
                           ),
                         ),
                         Gap(setResponsiveSize(context, baseSize: 20)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            InkWell(
-                              onTap: () =>
-                                  controller.signInWithGoogle(context, 'login'),
-                              child: NeoBox(
-                                borderRadius: BorderRadius.circular(
-                                    setResponsiveSize(context, baseSize: 25)),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: setResponsiveSize(context,
-                                          baseSize: 20),
-                                      vertical: setResponsiveSize(context,
-                                          baseSize: 10)),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                        icon.GOOGLE,
-                                        scale: setResponsiveSize(context,
-                                            baseSize: 15),
-                                      ),
-                                      Gap(setResponsiveSize(context,
-                                          baseSize: 20)),
-                                      Text(
-                                        'Login with Google',
-                                        textAlign: TextAlign.center,
-                                        style: style.displaySmall(context,
-                                            color: color.primarylow,
-                                            fontsize: 15,
-                                            fontweight: FontWeight.w500),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                        CustElevatedbtn(
+                          colors: color.grey,
+                          onPressed: () {
+                            controller.signInWithGoogle(context, 'login');
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                icon.GOOGLE,
+                                scale: setResponsiveSize(context, baseSize: 20),
                               ),
-                            ),
-                          ],
+                              Gap(setResponsiveSize(context, baseSize: 20)),
+                              Text(
+                                'Login with Google',
+                                textAlign: TextAlign.center,
+                                style: style.displaySmall(context,
+                                    color: color.primarylow,
+                                    fontsize: 15,
+                                    fontweight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
                         ),
                         Gap(setResponsiveSize(context, baseSize: 30)),
                         Row(
