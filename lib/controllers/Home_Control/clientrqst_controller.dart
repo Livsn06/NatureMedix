@@ -2,22 +2,33 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:naturemedix/components/cust_confirmation.dart';
+import 'package:hive/hive.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:naturemedix/components/cust_ConfirmAlert.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../components/cust_imagepick.dart';
+import '../../models/client_data.dart';
 
 class ClientRequestController extends GetxController {
-  RxList<Map<String, dynamic>> requests = <Map<String, dynamic>>[].obs;
+  RxList<ClientData> requests = <ClientData>[].obs;
   var isListVisible = true.obs;
+  Box<ClientData>? userRequestBox;
 
-  // State for picked file
   Rx<File?> fileToDisplay = Rx<File?>(null);
-
-  // TextEditingControllers for form inputs
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
-  // Toggle between list and create view
+  // Open a Hive box specific to the user's UID.
+  Future<void> openUserBox() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      userRequestBox = await Hive.openBox<ClientData>('requests_${user.uid}');
+      await loadRequestsFromHive(); // Load requests upon opening the box
+    }
+  }
+
   void toggleView(bool showList) {
     isListVisible.value = showList;
   }
@@ -29,15 +40,40 @@ class ClientRequestController extends GetxController {
     required File image,
     required DateTime createdAt,
   }) {
-    requests.add({
-      'title': title,
-      'description': description,
-      'image': image.path,
-      'createdAt': createdAt,
-    });
+    var clientData = ClientData(
+      title: title,
+      description: description,
+      imagePath: image.path,
+      createdAt: createdAt,
+    );
+
+    // Save request to Hive
+    saveRequestToHive(clientData);
+
+    // Add the request to the list
+    requests.add(clientData);
   }
 
-  // Validate request data
+  Future<void> saveRequestToHive(ClientData clientData) async {
+    if (userRequestBox == null) await openUserBox();
+    if (userRequestBox != null) {
+      String key =
+          '${clientData.title}-${DateTime.now().millisecondsSinceEpoch}';
+      await userRequestBox!.put(key, clientData);
+    }
+  }
+
+  // Load requests from Hive
+  Future<void> loadRequestsFromHive() async {
+    requests.clear();
+    if (userRequestBox == null) await openUserBox();
+    if (userRequestBox != null) {
+      userRequestBox!.values.forEach((value) {
+        requests.add(value);
+      });
+    }
+  }
+
   bool validateRequest({
     required String title,
     required String description,
@@ -46,7 +82,6 @@ class ClientRequestController extends GetxController {
     return title.isNotEmpty && description.isNotEmpty && image != null;
   }
 
-  // Pick image file
   Future<void> pickFile() async {
     try {
       final result = await FilePicker.platform.pickFiles(
@@ -64,7 +99,6 @@ class ClientRequestController extends GetxController {
     }
   }
 
-  // Submit request
   void submitRequest(BuildContext context) {
     final title = titleController.text;
     final description = descriptionController.text;
@@ -75,18 +109,15 @@ class ClientRequestController extends GetxController {
       image: fileToDisplay.value,
     )) {
       Get.snackbar(
-        padding: EdgeInsets.symmetric(
-            vertical: setResponsiveSize(context, baseSize: 20),
-            horizontal: setResponsiveSize(context, baseSize: 30)),
-        icon: Icon(Icons.error,
-            color: Colors.white,
-            size: setResponsiveSize(context, baseSize: 40)),
-        backgroundColor: Application().color.primaryhigh,
         'Success',
-        colorText: Colors.white,
         'Successfully created request.',
+        icon:
+            Icon(Icons.check_circle_outline, color: Application().color.white),
+        colorText: Colors.white,
         snackPosition: SnackPosition.TOP,
+        backgroundColor: Application().color.primaryhigh,
       );
+
       createRequest(
         title: title,
         description: description,
@@ -95,47 +126,62 @@ class ClientRequestController extends GetxController {
       );
 
       clearForm();
-      toggleView(true); // Switch to List view
+      toggleView(true);
     } else {
       Get.snackbar(
-        padding: EdgeInsets.symmetric(
-            vertical: setResponsiveSize(context, baseSize: 20),
-            horizontal: setResponsiveSize(context, baseSize: 30)),
-        icon: Icon(Icons.error,
-            color: Colors.white,
-            size: setResponsiveSize(context, baseSize: 40)),
-        backgroundColor: Application().color.invalid,
         'Field Required',
-        colorText: Colors.white,
         'Please fill out all fields and select an image.',
+        icon: Icon(Icons.error_outline, color: Application().color.white),
+        colorText: Colors.white,
         snackPosition: SnackPosition.TOP,
+        backgroundColor: Application().color.primary,
       );
     }
   }
 
-  // Clear form
   void clearForm() {
     titleController.clear();
     descriptionController.clear();
     fileToDisplay.value = null;
   }
 
-  // Clear all requests
   void clearRequests() {
     requests.clear();
   }
 
-  void updateRequest(int index, Map<String, dynamic> updatedRequest) {
-    requests[index] = updatedRequest;
-  }
-
   void deleteRequest(BuildContext context, int index) {
     showConfirmValidation(
-        context, 'Delete Request', 'Do you want to delete request?', () {
-      requests.removeAt(index);
-      Get.back();
-    });
-    update();
+      context,
+      'Delete Request',
+      'Do you want to delete request?',
+      () async {
+        final request = requests[index];
+
+        // Remove the request from the local list
+        requests.removeAt(index);
+
+        // Remove the request from Hive storage if the box is open
+        if (userRequestBox != null) {
+          await userRequestBox!.deleteAt(index);
+        }
+
+        Get.back(); // Close the dialog
+
+        // Show the success message
+        Get.snackbar(
+          'Success',
+          'Successfully deleted request.',
+          icon: Icon(Icons.delete_outline_outlined,
+              color: Application().color.white),
+          colorText: Application().color.white,
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Application().color.primary,
+        );
+
+        update(); // Update the UI after deletion
+      },
+      Application().gif.removed,
+    );
   }
 
   void clearFields() {
@@ -143,4 +189,19 @@ class ClientRequestController extends GetxController {
     descriptionController.clear();
     fileToDisplay.value = null;
   }
+
+  Future<void> showImagePicker(
+      BuildContext context, Function(XFile?) onImageSelected) async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return ImagePickerDialog(onImageSelected: onImageSelected);
+      },
+    );
+  }
+
+  final borderCust = OutlineInputBorder(
+    borderSide: BorderSide(color: Application().color.dark, width: 2),
+    borderRadius: BorderRadius.circular(5),
+  );
 }

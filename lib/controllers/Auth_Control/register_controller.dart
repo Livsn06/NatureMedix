@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../components/cust_validation.dart';
+import '../../components/cust_validationAlert.dart';
+import '../../routes/screen_routes.dart';
 import '../../utils/_initApp.dart';
 import '../../utils/responsive.dart';
 
@@ -92,7 +93,10 @@ class RegisterController extends GetxController {
 
         // Show success alert
         showValidationAlert(
-            context, 'Successful', 'Successfully $msgType', msgType, true);
+            context, 'Successful', 'Successfully $msgType', msgType, true,
+             () {
+          Get.toNamed(ScreenRouter.getLoginRoute);
+        });
       } else {
         Get.snackbar(
           padding: EdgeInsets.symmetric(
@@ -101,7 +105,7 @@ class RegisterController extends GetxController {
           icon: Icon(Icons.warning_rounded,
               color: Colors.white,
               size: setResponsiveSize(context, baseSize: 40)),
-          backgroundColor: Application().color.primarylow,
+          backgroundColor: Application().color.primary,
           'Terms and Conditions',
           colorText: Colors.white,
           'Please check the terms and conditions',
@@ -123,7 +127,9 @@ class RegisterController extends GetxController {
       }
 
       // Show error alert
-      showValidationAlert(context, 'Opps...', msgtext, msgType, false);
+      showValidationAlert(context, 'Opps...', msgtext, msgType, false, (){
+        Navigator.pop(context);
+      });
     }
   }
 }

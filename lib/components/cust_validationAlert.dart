@@ -4,23 +4,28 @@ import 'package:get/get.dart';
 import 'package:naturemedix/utils/responsive.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 
-class ConfirmValidationAlert extends StatefulWidget {
+import '../routes/screen_routes.dart';
+
+class ValidationAlert extends StatefulWidget {
   final String title;
   final String text;
-  final VoidCallback onConfirm;
-  const ConfirmValidationAlert({
-    super.key,
-    required this.title,
-    required this.text,
-    required this.onConfirm,
-  });
+  final String authType;
+  final bool isValid;
+  final VoidCallback onpress;
+
+  ValidationAlert(
+      {super.key,
+      required this.title,
+      required this.text,
+      required this.authType,
+      required this.isValid,
+      required this.onpress});
 
   @override
-  _ConfirmValidationAlertState createState() => _ConfirmValidationAlertState();
+  _ValidationAlertState createState() => _ValidationAlertState();
 }
 
-class _ConfirmValidationAlertState extends State<ConfirmValidationAlert>
-    with Application {
+class _ValidationAlertState extends State<ValidationAlert> with Application {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -40,7 +45,7 @@ class _ConfirmValidationAlertState extends State<ConfirmValidationAlert>
               width: double.infinity,
               height: setResponsiveSize(context, baseSize: 120),
               decoration: BoxDecoration(
-                color: color.primary,
+                color: widget.isValid ? color.primary : color.invalid,
                 borderRadius: BorderRadius.only(
                   topLeft:
                       Radius.circular(setResponsiveSize(context, baseSize: 10)),
@@ -52,7 +57,7 @@ class _ConfirmValidationAlertState extends State<ConfirmValidationAlert>
                 padding:
                     EdgeInsets.all(setResponsiveSize(context, baseSize: 20)),
                 child: Image.asset(
-                  gif.question,
+                  widget.isValid ? gif.valid : gif.invalid,
                   fit: BoxFit.contain,
                   scale: setResponsiveSize(context, baseSize: 5),
                 ),
@@ -90,50 +95,27 @@ class _ConfirmValidationAlertState extends State<ConfirmValidationAlert>
         ),
       ),
       actions: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.symmetric(
-                    horizontal: setResponsiveSize(context, baseSize: 35),
-                    vertical: setResponsiveSize(context, baseSize: 10)),
-                backgroundColor: color.invalid,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                'Cancel',
-                textAlign: TextAlign.center,
-                style: style.displaySmall(context,
-                    color: color.dark,
-                    fontsize: 15,
-                    fontweight: FontWeight.w600),
+        Center(
+          child: TextButton(
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.symmetric(
+                  horizontal: setResponsiveSize(context, baseSize: 35),
+                  vertical: setResponsiveSize(context, baseSize: 10)),
+              backgroundColor: widget.isValid ? color.primary : color.invalid,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
             ),
-            TextButton(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.symmetric(
-                    horizontal: setResponsiveSize(context, baseSize: 35),
-                    vertical: setResponsiveSize(context, baseSize: 10)),
-                backgroundColor: color.valid,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              onPressed: widget.onConfirm,
-              child: Text(
-                'Confirm',
-                textAlign: TextAlign.center,
-                style: style.displaySmall(context,
-                    color: color.dark,
-                    fontsize: 15,
-                    fontweight: FontWeight.w600),
-              ),
+            onPressed: widget.onpress,
+            child: Text(
+              widget.isValid ? 'Continue' : 'Retry',
+              textAlign: TextAlign.center,
+              style: style.displaySmall(context,
+                  color: widget.isValid ? color.white : color.dark,
+                  fontsize: 15,
+                  fontweight: FontWeight.w600),
             ),
-          ],
+          ),
         ),
       ],
     );
@@ -141,13 +123,18 @@ class _ConfirmValidationAlertState extends State<ConfirmValidationAlert>
 }
 
 // Usage example somewhere in your app:
-void showConfirmValidation(
-    BuildContext context, String title, String text, VoidCallback onConfirm) {
+void showValidationAlert(BuildContext context, String title, String text,
+    String authType, bool isValid, VoidCallback onConfirm) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return ConfirmValidationAlert(
-          title: title, text: text, onConfirm: onConfirm);
+      return ValidationAlert(
+        title: title,
+        text: text,
+        authType: authType,
+        isValid: isValid,
+        onpress: onConfirm,
+      );
     },
   );
 }

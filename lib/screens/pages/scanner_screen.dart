@@ -16,24 +16,43 @@ class _ScannerScreenState extends State<ScannerScreen> with Application {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: color.white),
-          centerTitle: true,
-          backgroundColor: color.primary,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Get.offAll(() => const ControlScreen(), arguments: 0);
-            },
-          ),
-          title: Text(
-            'SCANNER',
-            style: style.displaySmall(context,
+        backgroundColor: color.light,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: AppBar(
+            iconTheme: IconThemeData(color: color.primary),
+            centerTitle: true,
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    color.primary,
+                    color.primarylow,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+            ),
+            leading: InkWell(
+              onTap: () =>  Get.offAll(() => const ControlScreen(), arguments: 0),
+              child: Icon(
+                Icons.arrow_back_ios_new_outlined,
+                color: color.white,
+                size: setResponsiveSize(context, baseSize: 18),
+              ),
+            ),
+            title: Text(
+              'SCANNER',
+              style: style.displaySmall(
+                context,
                 color: color.white,
                 fontsize: setResponsiveSize(context, baseSize: 15),
                 fontweight: FontWeight.w500,
                 fontspace: 2,
-                fontstyle: FontStyle.normal),
+                fontstyle: FontStyle.normal,
+              ),
+            ),
           ),
         ),
         body: Center(

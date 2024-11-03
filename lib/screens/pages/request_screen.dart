@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:naturemedix/controllers/Home_Control/clientrqst_controller.dart';
 import 'package:naturemedix/utils/NeoBox.dart';
@@ -22,93 +23,145 @@ class _RequestScreenState extends State<RequestScreen> with Application {
   final ClientRequestController controller = Get.put(ClientRequestController());
 
   @override
+  void initState() {
+    super.initState();
+    controller.openUserBox();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: color.white),
-        centerTitle: true,
-        backgroundColor: color.primary,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Get.offAll(() => const ControlScreen(), arguments: 0);
-          },
-        ),
-        title: Text(
-          'REQUESTS ',
-          style: style.displaySmall(context,
+      backgroundColor: color.light,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: AppBar(
+          iconTheme: IconThemeData(color: color.primary),
+          centerTitle: true,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  color.primary,
+                  color.primarylow,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
+          leading: InkWell(
+            onTap: () => Get.offAll(() => const ControlScreen(), arguments: 0),
+            child: Icon(
+              Icons.arrow_back_ios_new_outlined,
+              color: color.white,
+              size: setResponsiveSize(context, baseSize: 18),
+            ),
+          ),
+          title: Text(
+            'REQUEST',
+            style: style.displaySmall(
+              context,
               color: color.white,
               fontsize: setResponsiveSize(context, baseSize: 15),
               fontweight: FontWeight.w500,
-              fontspace: setResponsiveSize(context, baseSize: 2),
-              fontstyle: FontStyle.normal),
+              fontspace: 2,
+              fontstyle: FontStyle.normal,
+            ),
+          ),
         ),
       ),
       body: Padding(
         padding: EdgeInsets.all(setResponsiveSize(context, baseSize: 20)),
         child: Column(
           children: [
-            Container(
-              color: color.grey,
-              height: 70,
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Obx(() => ToggleButtons(
-                      fillColor: color.primary,
-                      borderColor: color.grey,
-                      isSelected: [
-                        controller.isListVisible.value,
-                        !controller.isListVisible.value
-                      ],
-                      onPressed: (index) {
-                        controller.toggleView(index == 0);
-                      },
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal:
-                                  setResponsiveSize(context, baseSize: 20)),
-                          child: Text(
-                            'REQUEST LIST',
-                            style: style.displaySmall(
-                              context,
-                              // Set color based on isSelected value
-                              color: controller.isListVisible.value
-                                  ? color.white
-                                  : color.primarylow,
-                              fontsize:
-                                  setResponsiveSize(context, baseSize: 12),
-                              fontweight: FontWeight.w500,
-                              fontspace:
-                                  setResponsiveSize(context, baseSize: 2),
-                              fontstyle: FontStyle.normal,
+            Material(
+              elevation: setResponsiveSize(context, baseSize: 3),
+              child: Container(
+                color: color.white,
+                height: 70,
+                child: Padding(
+                  padding: const EdgeInsets.all(7),
+                  child: Obx(() => ToggleButtons(
+                        fillColor: color.primary,
+                        borderColor: color.white,
+                        isSelected: [
+                          controller.isListVisible.value,
+                          !controller.isListVisible.value
+                        ],
+                        onPressed: (index) {
+                          controller.toggleView(index == 0);
+                        },
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    setResponsiveSize(context, baseSize: 20)),
+                            child: Text(
+                              'REQUEST LIST',
+                              style: style.displaySmall(
+                                context,
+                                // Set color based on isSelected value
+                                color: controller.isListVisible.value
+                                    ? color.white
+                                    : color.primarylow,
+                                fontsize:
+                                    setResponsiveSize(context, baseSize: 12),
+                                fontweight: FontWeight.w500,
+                                fontspace:
+                                    setResponsiveSize(context, baseSize: 2),
+                                fontstyle: FontStyle.normal,
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal:
-                                  setResponsiveSize(context, baseSize: 20)),
-                          child: Text(
-                            'CREATE REQUEST',
-                            style: style.displaySmall(
-                              context,
-                              // Set color based on isSelected value
-                              color: !controller.isListVisible.value
-                                  ? color.white
-                                  : color.primarylow,
-                              fontsize:
-                                  setResponsiveSize(context, baseSize: 12),
-                              fontweight: FontWeight.w500,
-                              fontspace: 2,
-                              fontstyle: FontStyle.normal,
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    setResponsiveSize(context, baseSize: 20)),
+                            child: Text(
+                              'CREATE REQUEST',
+                              style: style.displaySmall(
+                                context,
+                                // Set color based on isSelected value
+                                color: !controller.isListVisible.value
+                                    ? color.white
+                                    : color.primarylow,
+                                fontsize:
+                                    setResponsiveSize(context, baseSize: 12),
+                                fontweight: FontWeight.w500,
+                                fontspace: 2,
+                                fontstyle: FontStyle.normal,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    )),
+                        ],
+                      )),
+                ),
               ),
             ),
+            Obx(() {
+              return controller.isListVisible.value
+                  ? Column(
+                      children: [
+                        Gap(setResponsiveSize(context, baseSize: 20)),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '▣ Client request list:',
+                            style: style.displaySmall(
+                              context,
+                              color: color.primarylow,
+                              fontsize:
+                                  setResponsiveSize(context, baseSize: 15),
+                              fontweight: FontWeight.w500,
+                              fontstyle: FontStyle.normal,
+                            ),
+                          ),
+                        ),
+                        const Divider(),
+                      ],
+                    )
+                  : Gap(setResponsiveSize(context, baseSize: 10));
+            }),
             Expanded(
               child: Obx(() {
                 return controller.isListVisible.value
@@ -147,24 +200,25 @@ class _RequestScreenState extends State<RequestScreen> with Application {
             itemBuilder: (context, index) {
               final request = controller.requests[index];
               return Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: setResponsiveSize(context, baseSize: 5)),
-                  child: CardList(
-                    requestImage: Image.file(File(request['image']),
-                        width: 60, height: 60, fit: BoxFit.cover),
-                    requestTitle: Text(
-                      request['title'],
-                      style: style.displaySmall(context,
-                          fontsize: setResponsiveSize(context, baseSize: 14),
-                          color: color.primarylow,
-                          fontweight: FontWeight.w500),
-                    ),
-                    subRequestTitle:
-                        Text(DateFormat.yMMMd().format(request['createdAt'])),
-                    settingsTapped: null,
-                    deleteTapped: (context) =>
-                        controller.deleteRequest(context, index),
-                  ));
+                padding: EdgeInsets.symmetric(
+                    vertical: setResponsiveSize(context, baseSize: 2)),
+                child: CardList(
+                  requestImage: Image.file(File(request.imagePath),
+                      width: 60, height: 60, fit: BoxFit.cover),
+                  requestTitle: Text(
+                    request.title,
+                    style: style.displaySmall(context,
+                        fontsize: setResponsiveSize(context, baseSize: 14),
+                        color: color.primarylow,
+                        fontweight: FontWeight.w500),
+                  ),
+                  subRequestTitle:
+                      Text(DateFormat.yMMMd().format(request.createdAt)),
+                  settingsTapped: null,
+                  deleteTapped: (context) =>
+                      controller.deleteRequest(context, index),
+                ),
+              );
             },
           );
   }
@@ -190,37 +244,24 @@ class _RequestScreenState extends State<RequestScreen> with Application {
                         setResponsiveSize(context, baseSize: 10)),
                     child: Obx(() {
                       final fileToDisplay = controller.fileToDisplay.value;
-                      return Stack(
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            height: setResponsiveSize(context, baseSize: 170),
-                            color: color.lightGrey,
-                            child: fileToDisplay != null
-                                ? Image.file(fileToDisplay, fit: BoxFit.cover)
-                                : Icon(Icons.camera_alt,
-                                    size: setResponsiveSize(context,
-                                        baseSize: 50),
-                                    color: Colors.grey),
-                          ),
-                          Positioned(
-                            bottom: setResponsiveSize(context, baseSize: 2),
-                            right: setResponsiveSize(context, baseSize: 2),
-                            child: InkWell(
-                              onTap: () => controller.pickFile(),
-                              child: Material(
-                                elevation:
-                                    setResponsiveSize(context, baseSize: 3),
-                                child: Padding(
-                                    padding: EdgeInsets.all(setResponsiveSize(
-                                        context,
-                                        baseSize: 8)),
-                                    child: Icon(Icons.file_upload_outlined,
-                                        color: color.primarylow)),
-                              ),
-                            ),
-                          ),
-                        ],
+                      return InkWell(
+                        onTap: () =>
+                            controller.showImagePicker(context, (XFile? image) {
+                          if (image != null) {
+                            controller.fileToDisplay.value = File(image.path);
+                          }
+                        }),
+                        child: Container(
+                          width: double.infinity,
+                          height: setResponsiveSize(context, baseSize: 200),
+                          color: color.lightGrey,
+                          child: fileToDisplay != null
+                              ? Image.file(fileToDisplay, fit: BoxFit.cover)
+                              : Icon(Icons.camera_alt,
+                                  size:
+                                      setResponsiveSize(context, baseSize: 50),
+                                  color: color.white),
+                        ),
                       );
                     }),
                   ),
@@ -234,7 +275,7 @@ class _RequestScreenState extends State<RequestScreen> with Application {
 
           // Title input field
           Text(
-            '📌 Topic header* ',
+            '▣ Topic header* ',
             style: style.displaySmall(
               context,
               fontsize: setResponsiveSize(context, baseSize: 14),
@@ -255,7 +296,7 @@ class _RequestScreenState extends State<RequestScreen> with Application {
                     fontsize: setResponsiveSize(context, baseSize: 13),
                     fontweight: FontWeight.w500,
                     fontstyle: FontStyle.normal),
-                border: OutlineInputBorder(),
+                border: controller.borderCust,
               ),
             ),
           ),
@@ -263,7 +304,7 @@ class _RequestScreenState extends State<RequestScreen> with Application {
 
           // Description input field with hint text
           Text(
-            '📜 Description* ',
+            '▣ Description* ',
             style: style.displaySmall(
               context,
               fontsize: setResponsiveSize(context, baseSize: 14),
@@ -276,17 +317,15 @@ class _RequestScreenState extends State<RequestScreen> with Application {
             elevation: setResponsiveSize(context, baseSize: 3),
             child: TextField(
               controller: controller.descriptionController,
-              maxLines: 4,
+              maxLines: 6,
               decoration: InputDecoration(
-                fillColor: color.grey,
-                filled: true,
-                hintText: "What's on your mind...",
+                hintText: "Describe your herbal plant request...",
                 hintStyle: style.displaySmall(context,
                     color: color.darkGrey,
                     fontsize: setResponsiveSize(context, baseSize: 13),
                     fontweight: FontWeight.w500,
                     fontstyle: FontStyle.normal),
-                border: OutlineInputBorder(),
+                border: controller.borderCust,
               ),
             ),
           ),
@@ -298,16 +337,16 @@ class _RequestScreenState extends State<RequestScreen> with Application {
             style: ButtonStyle(
                 elevation: WidgetStatePropertyAll(
                     setResponsiveSize(context, baseSize: 3)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
                         setResponsiveSize(context, baseSize: 5)),
                   ),
                 ),
-                backgroundColor: MaterialStateProperty.all<Color>(
+                backgroundColor: WidgetStateProperty.all<Color>(
                   color.primary,
                 ),
-                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                   EdgeInsets.symmetric(
                     vertical: setResponsiveSize(context, baseSize: 13),
                   ),
@@ -321,6 +360,7 @@ class _RequestScreenState extends State<RequestScreen> with Application {
                   fontstyle: FontStyle.normal),
             ),
           ),
+          Gap(setResponsiveSize(context, baseSize: 100)),
         ],
       ),
     );

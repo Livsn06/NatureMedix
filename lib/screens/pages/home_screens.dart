@@ -4,12 +4,13 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/controllers/Auth_Control/login_controller.dart';
 import 'package:naturemedix/controllers/Home_Control/dashboard_controller.dart';
-import 'package:naturemedix/utils/NeoBox.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
 import '../../components/cust_category.dart';
+import '../../controllers/Home_Control/bookmark_controller.dart';
 import '../../data/PlantData/plant_data.dart';
-import '../../models/plant_model.dart';
+import '../../models/plant_info.dart';
+import '../../models/remedy_info.dart';
 
 class DashboardScreen extends StatefulWidget with Application {
   DashboardScreen({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
         builder: (sp) {
           sp.getDataFromSharedPreferences();
           return Scaffold(
-              backgroundColor: color.grey,
+              backgroundColor: color.light,
               body: Column(
                 children: [
                   _buildHeader(context, sp.name.toString()),
@@ -80,11 +81,10 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.only(
-            bottomLeft:
-                Radius.circular(setResponsiveSize(context, baseSize: 20)),
-            bottomRight:
-                Radius.circular(setResponsiveSize(context, baseSize: 20)),
-          )),
+              bottomLeft:
+                  Radius.circular(setResponsiveSize(context, baseSize: 20)),
+              bottomRight:
+                  Radius.circular(setResponsiveSize(context, baseSize: 20)))),
       child: Padding(
         padding: EdgeInsets.symmetric(
             vertical: setResponsiveSize(context, baseSize: 10),
@@ -137,24 +137,28 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
     return Row(
       children: [
         Expanded(
-            child: Material(
-          borderRadius:
-              BorderRadius.circular(setResponsiveSize(context, baseSize: 7)),
-          elevation: 4,
-          child: TextFormField(
-            controller: _selectControl,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(
-                vertical: setResponsiveSize(context, baseSize: 12),
-                horizontal: setResponsiveSize(context, baseSize: 12),
+            child: InkWell(
+          onTap: () => controller.goToSearch(),
+          child: Material(
+            borderRadius:
+                BorderRadius.circular(setResponsiveSize(context, baseSize: 7)),
+            elevation: 4,
+            child: TextFormField(
+              enabled: false,
+              controller: _selectControl,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: setResponsiveSize(context, baseSize: 12),
+                  horizontal: setResponsiveSize(context, baseSize: 12),
+                ),
+                border: controller.borderCust,
+                enabledBorder: controller.borderCust,
+                focusedBorder: controller.borderCust,
+                hintText: 'Search...',
+                prefixIcon: Icon(Icons.search,
+                    color: color.primarylow,
+                    size: setResponsiveSize(context, baseSize: 25)),
               ),
-              border: controller.borderCust,
-              enabledBorder: controller.borderCust,
-              focusedBorder: controller.borderCust,
-              hintText: 'Search...',
-              prefixIcon: Icon(Icons.search,
-                  color: color.primarylow,
-                  size: setResponsiveSize(context, baseSize: 25)),
             ),
           ),
         )),
@@ -196,17 +200,21 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
 
   Widget _buildFutureRemedies(BuildContext context) {
     return _buildSection(
-        context,
-        'Future Remedies',
-        remedies
-            .map((remedy) => _buildCard(context, remedy.remedyImage,
-                remedy.remedyName, remedy.description))
-            .toList());
+      context,
+      'Future Remedies',
+      plantList
+          .expand((plant) => plant.remedyList.map((remedy) => _buildRemedyCard(
+                context,
+                remedy,
+                controller,
+              )))
+          .toList(),
+    );
   }
 
   Widget _buildPopularHerbalPlant(
       BuildContext context, DashboardController controller) {
-    List<PlantData> popularPlant = List.from(plantDatabase);
+    List<PlantData> popularPlant = List.from(plantList);
     return _buildSection(
         context,
         'Popular Herbal Plant',
@@ -217,7 +225,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
 
   Widget _buildRecommendedHerbalPlant(
       BuildContext context, DashboardController controller) {
-    List<PlantData> randomizedPlants = List.from(plantDatabase);
+    List<PlantData> randomizedPlants = List.from(plantList);
     return _buildSection(
         context,
         'Recommended Herbal Plant',
@@ -268,7 +276,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
   }
 
   Widget _buildCard(BuildContext context, String imagePath, String title,
-      String description) {
+      String description, IconData bookmarkIcon, VoidCallback onBookmarkTap) {
     return Container(
       width: setResponsiveSize(context, baseSize: 190),
       margin: EdgeInsets.only(right: setResponsiveSize(context, baseSize: 10)),
@@ -292,23 +300,32 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
                     ),
                   ),
                   Positioned(
-                    bottom: setResponsiveSize(context, baseSize: 7),
-                    right: setResponsiveSize(context, baseSize: 7),
-                    child: Material(
-                      elevation: setResponsiveSize(context, baseSize: 3),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            setResponsiveSize(context, baseSize: 5)),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(
-                            setResponsiveSize(context, baseSize: 5)),
-                        child: Icon(
-                          Icons.favorite_outline,
-                          color: color.invalid,
-                          size: setResponsiveSize(context, baseSize: 20),
+                    top: setResponsiveSize(context, baseSize: 5),
+                    right: setResponsiveSize(context, baseSize: 5),
+                    child: Column(
+                      children: [
+                        Material(
+                          elevation: setResponsiveSize(context, baseSize: 3),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                setResponsiveSize(context, baseSize: 5)),
+                          ),
+                          child: InkWell(
+                            onTap:
+                                onBookmarkTap, // Add bookmark toggle logic here
+                            child: Padding(
+                              padding: EdgeInsets.all(
+                                  setResponsiveSize(context, baseSize: 5)),
+                              child: Icon(
+                                bookmarkIcon, // Display correct bookmark icon
+                                color: color.valid,
+                                size: setResponsiveSize(context, baseSize: 20),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        Gap(setResponsiveSize(context, baseSize: 5)),
+                      ],
                     ),
                   ),
                 ],
@@ -316,6 +333,9 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
               Gap(setResponsiveSize(context, baseSize: 10)),
               Text(
                 title,
+                maxLines: 1,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
                 style: style.displaySmall(context,
                     color: color.primaryhigh,
                     fontsize: setResponsiveSize(context, baseSize: 15),
@@ -341,10 +361,60 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
 
   Widget _buildPlantCard(
       BuildContext context, PlantData plant, DashboardController controller) {
-    return GestureDetector(
-      onTap: () => controller.selectPlant(plant, context),
-      child: _buildCard(context, plant.plantBasicInfo.plantImage,
-          plant.plantBasicInfo.plantName, plant.plantBasicInfo.scientificName),
-    );
+    final bookmarkController = Get.put(BookmarkController());
+    return Obx(() {
+      bool isBookmarked = bookmarkController.isPlantBookmarked(plant);
+      return GestureDetector(
+        onTap: () => controller.selectPlant(plant, context),
+        child: Stack(
+          children: [
+            _buildCard(
+              context,
+              plant.plantImages[0],
+              plant.plantName,
+              plant.scientificName,
+              isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
+              () {
+                if (isBookmarked) {
+                  bookmarkController.removeBookmark(plant, context);
+                } else {
+                  bookmarkController.addBookmark(plant);
+                }
+              },
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  Widget _buildRemedyCard(
+      BuildContext context, RemedyInfo remedy, DashboardController controller) {
+    final bookmarkController = Get.put(BookmarkController());
+    return Obx(() {
+      bool isBookmarked = bookmarkController.isRemedyBookmarked(remedy);
+
+      return GestureDetector(
+        onTap: () => controller.selectRemedy(remedy, context),
+        child: Stack(
+          children: [
+            _buildCard(
+              context,
+              remedy.remedyImages[0],
+              remedy.remedyName,
+              remedy.description,
+              isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
+              () {
+                if (isBookmarked) {
+                  bookmarkController.removeRemedyBookmark(remedy, context);
+                } else {
+                  bookmarkController.addRemedyBookmark(remedy);
+                }
+              },
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

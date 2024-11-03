@@ -1,12 +1,18 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../components/cust_validation.dart';
+import '../../components/cust_loadingAlert.dart';
+import '../../components/cust_validationAlert.dart';
 import 'package:http/http.dart' as http;
+
+import '../../routes/screen_routes.dart';
+import '../../utils/_initApp.dart';
+import '../Home_Control/bookmark_controller.dart';
 
 class LoginController extends GetxController {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -52,21 +58,20 @@ class LoginController extends GetxController {
   // sign in with google
   Future signInWithGoogle(BuildContext context, String msgType) async {
     try {
+      showLoadingAlert(context, "Logging In",
+          "Please wait while we verify your credentials...");
+
       final GoogleSignInAccount? googleSignInAccount =
           await googleSignIn.signIn();
-
       if (googleSignInAccount != null) {
         final GoogleSignInAuthentication googleSignInAuthentication =
             await googleSignInAccount.authentication;
-
         final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleSignInAuthentication.accessToken,
           idToken: googleSignInAuthentication.idToken,
         );
-
         final User userDetails =
             (await firebaseAuth.signInWithCredential(credential)).user!;
-
         _uid = userDetails.uid;
 
         // Check if the user is new or existing
@@ -84,8 +89,17 @@ class LoginController extends GetxController {
         }
 
         saveDataToSharedPreferences();
+        handleUserLogin(); // Call this after user login
         showValidationAlert(
-            context, 'Successful', 'Successfully $msgType', msgType, true);
+            context, 'Successful', 'Successfully $msgType', msgType, true, () {
+          Get.toNamed(ScreenRouter.getControlscreenRoute);
+          Get.snackbar('Successfully Login', 'Welcome back, $_name!',
+              icon: Icon(Icons.check_circle_outline,
+                  color: Application().color.dimdark),
+              colorText: Application().color.dimdark,
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: Application().color.whiteOpacity20);
+        });
         update();
       } else {
         _hasError = true;
@@ -108,14 +122,15 @@ class LoginController extends GetxController {
     String msgType,
   ) async {
     try {
+      showLoadingAlert(context, "Logging In",
+          "Please wait while we verify your credentials...");
+
       final userCredential = await firebaseAuth.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
-
       if (userCredential.user != null) {
         _uid = userCredential.user!.uid;
-
         bool userExists = await checkUserExists();
         if (userExists) {
           await getUserDataFromFirestore(_uid);
@@ -126,10 +141,18 @@ class LoginController extends GetxController {
           _provider = "EMAIL";
           saveDataToFirestore();
         }
-
         saveDataToSharedPreferences();
+        handleUserLogin();
         showValidationAlert(
-            context, 'Successful', 'Successfully $msgType', msgType, true);
+            context, 'Successful', 'Successfully $msgType', msgType, true, () {
+          Get.toNamed(ScreenRouter.getControlscreenRoute);
+          Get.snackbar('Successfully Login', 'Welcome back, $_name!',
+              icon: Icon(Icons.check_circle_outline,
+                  color: Application().color.dimdark),
+              colorText: Application().color.dimdark,
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: Application().color.whiteOpacity20);
+        });
       }
     } on FirebaseAuthException catch (e) {
       _handleAuthError(context, e, msgType);
@@ -188,7 +211,7 @@ class LoginController extends GetxController {
     update();
   }
 
-  Future getDataFromSharedPreferences() async {
+  Future<void> getDataFromSharedPreferences() async {
     final SharedPreferences s = await SharedPreferences.getInstance();
     _name = s.getString('name');
     _email = s.getString('email');
@@ -209,6 +232,11 @@ class LoginController extends GetxController {
       print("NEW USER");
       return false;
     }
+  }
+
+  void handleUserLogin() async {
+    final BookmarkController bookmarkController = Get.put(BookmarkController());
+    await bookmarkController.loadBookmarksFromHive();
   }
 
   // signout
@@ -233,7 +261,9 @@ class LoginController extends GetxController {
   void _handleAuthError(
       BuildContext context, FirebaseAuthException e, String msgType) {
     final errorMsg = _getErrorMessage(e.code);
-    showValidationAlert(context, 'Opps...', errorMsg, msgType, false);
+    showValidationAlert(context, 'Opps...', errorMsg, msgType, false, () {
+      Navigator.of(context).pop();
+    });
   }
 
   // Return error message based on FirebaseAuthException code

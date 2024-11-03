@@ -4,27 +4,26 @@ import 'package:get/get.dart';
 import 'package:naturemedix/utils/responsive.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 
-import '../routes/screen_routes.dart';
-
-class ValidationAlert extends StatefulWidget {
+class ConfirmValidationAlert extends StatefulWidget {
   final String title;
   final String text;
-  final String authType;
-  final bool isValid;
+  final VoidCallback onConfirm;
+  final String iconImage;
 
-  const ValidationAlert({
+  const ConfirmValidationAlert({
     super.key,
     required this.title,
     required this.text,
-    required this.authType,
-    required this.isValid,
+    required this.onConfirm,
+    required this.iconImage,
   });
 
   @override
-  _ValidationAlertState createState() => _ValidationAlertState();
+  _ConfirmValidationAlertState createState() => _ConfirmValidationAlertState();
 }
 
-class _ValidationAlertState extends State<ValidationAlert> with Application {
+class _ConfirmValidationAlertState extends State<ConfirmValidationAlert>
+    with Application {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -44,7 +43,7 @@ class _ValidationAlertState extends State<ValidationAlert> with Application {
               width: double.infinity,
               height: setResponsiveSize(context, baseSize: 120),
               decoration: BoxDecoration(
-                color: widget.isValid ? color.primary : color.invalid,
+                color: color.primary,
                 borderRadius: BorderRadius.only(
                   topLeft:
                       Radius.circular(setResponsiveSize(context, baseSize: 10)),
@@ -56,9 +55,9 @@ class _ValidationAlertState extends State<ValidationAlert> with Application {
                 padding:
                     EdgeInsets.all(setResponsiveSize(context, baseSize: 20)),
                 child: Image.asset(
-                  widget.isValid ? gif.valid : gif.invalid,
+                  widget.iconImage,
                   fit: BoxFit.contain,
-                  scale: setResponsiveSize(context, baseSize: 5),
+                  scale: setResponsiveSize(context, baseSize: 6),
                 ),
               ),
             ),
@@ -94,37 +93,50 @@ class _ValidationAlertState extends State<ValidationAlert> with Application {
         ),
       ),
       actions: [
-        Center(
-          child: TextButton(
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.symmetric(
-                  horizontal: setResponsiveSize(context, baseSize: 35),
-                  vertical: setResponsiveSize(context, baseSize: 10)),
-              backgroundColor: widget.isValid ? color.primary : color.invalid,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.symmetric(
+                    horizontal: setResponsiveSize(context, baseSize: 35),
+                    vertical: setResponsiveSize(context, baseSize: 10)),
+                backgroundColor: color.invalid,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                'Cancel',
+                textAlign: TextAlign.center,
+                style: style.displaySmall(context,
+                    color: color.white,
+                    fontsize: 15,
+                    fontweight: FontWeight.w600),
               ),
             ),
-            onPressed: () {
-              widget.authType.contains('signup')
-                  ? widget.isValid
-                      ? Get.toNamed(ScreenRouter.getLoginRoute)
-                      : Navigator.of(context).pop()
-                  : widget.authType.contains('login')
-                      ? widget.isValid
-                          ? Get.toNamed(ScreenRouter.getControlscreenRoute)
-                          : Navigator.of(context).pop()
-                      : null;
-            },
-            child: Text(
-              widget.isValid ? 'Continue' : 'Retry',
-              textAlign: TextAlign.center,
-              style: style.displaySmall(context,
-                  color: widget.isValid ? color.white : color.dark,
-                  fontsize: 15,
-                  fontweight: FontWeight.w600),
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.symmetric(
+                    horizontal: setResponsiveSize(context, baseSize: 35),
+                    vertical: setResponsiveSize(context, baseSize: 10)),
+                backgroundColor: color.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: widget.onConfirm,
+              child: Text(
+                'Confirm',
+                textAlign: TextAlign.center,
+                style: style.displaySmall(context,
+                    color: color.white,
+                    fontsize: 15,
+                    fontweight: FontWeight.w600),
+              ),
             ),
-          ),
+          ],
         ),
       ],
     );
@@ -132,13 +144,13 @@ class _ValidationAlertState extends State<ValidationAlert> with Application {
 }
 
 // Usage example somewhere in your app:
-void showValidationAlert(BuildContext context, String title, String text,
-    String authType, bool isValid) {
+void showConfirmValidation(BuildContext context, String title, String text,
+    VoidCallback onConfirm, String iconImage) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return ValidationAlert(
-          title: title, text: text, authType: authType, isValid: isValid);
+      return ConfirmValidationAlert(
+          title: title, text: text, onConfirm: onConfirm, iconImage: iconImage);
     },
   );
 }

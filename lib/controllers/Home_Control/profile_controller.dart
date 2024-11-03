@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../components/cust_confirmation.dart';
+import '../../components/cust_ConfirmAlert.dart';
 import '../../routes/screen_routes.dart';
+import '../../utils/_initApp.dart';
 import '../Auth_Control/login_controller.dart';
 
 class ProfileController extends GetxController {
@@ -17,6 +18,7 @@ class ProfileController extends GetxController {
         sp.userSignOut();
         Get.offAllNamed(ScreenRouter.getLoginRoute);
       },
+      Application().gif.question,
     );
     update();
   }

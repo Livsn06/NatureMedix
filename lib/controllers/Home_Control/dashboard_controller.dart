@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/utils/_initApp.dart';
-import '../../models/plant_model.dart';
+import '../../data/PlantData/plant_data.dart';
+import '../../models/plant_info.dart';
+import '../../models/remedy_info.dart';
 import '../../routes/screen_routes.dart';
-import '../../utils/responsive.dart';
 
 class DashboardController extends GetxController {
   var selectedCategory = 'All'.obs;
   var greeting = ''.obs;
-  var selectedPlant = Rxn<PlantBasicInfo>();
+  var selectedPlant = Rxn<PlantData>();
+
+  // New properties for search functionality
+  var searchText = ''.obs;
+  var filteredPlants = <PlantData>[].obs;
+  var filteredRemedies = <RemedyInfo>[].obs;
 
   @override
   void onInit() {
     super.onInit();
     updateGreeting();
+    // Initialize filtered lists
+    filteredPlants.value = plantList;
+    filteredRemedies.value =
+        plantList.expand((plant) => plant.remedyList).toList();
   }
 
   void updateGreeting() {
@@ -37,6 +47,17 @@ class DashboardController extends GetxController {
       ScreenRouter.getPlantInfoRoute,
       arguments: plant,
     );
+  }
+
+  void selectRemedy(RemedyInfo remedy, BuildContext context) {
+    Get.toNamed(
+      ScreenRouter.getRemedyInfoRoute,
+      arguments: remedy,
+    );
+  }
+
+  void goToSearch() {
+    Get.toNamed(ScreenRouter.getSearchRoute);
   }
 
   final borderCust = OutlineInputBorder(

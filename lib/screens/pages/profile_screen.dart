@@ -24,27 +24,29 @@ class _ProfileScreenState extends State<ProfileScreen> with Application {
       builder: (sp) {
         sp.getDataFromSharedPreferences();
         return Scaffold(
-          backgroundColor: color.primaryhigh,
-          appBar: AppBar(
-            iconTheme: IconThemeData(color: color.white),
-            backgroundColor: color.primaryhigh,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Get.offAll(() => const ControlScreen(), arguments: 0);
-              },
-            ),
-          ),
+          backgroundColor: color.light,
           body: Stack(
             children: [
               Column(
                 children: [
                   Container(
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.10,
+                    height: MediaQuery.of(context).size.height * 0.30,
                     decoration: BoxDecoration(
-                      color: color.primaryhigh,
-                    ),
+                        gradient: LinearGradient(
+                          colors: [
+                            color.primary,
+                            color.primarylow,
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(
+                              setResponsiveSize(context, baseSize: 20)),
+                          bottomRight: Radius.circular(
+                              setResponsiveSize(context, baseSize: 20)),
+                        )),
                   ),
                   Container(
                     width: double.infinity,
@@ -58,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> with Application {
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Gap(setResponsiveSize(context, baseSize: 130)),
+                  Gap(setResponsiveSize(context, baseSize: 180)),
                   Stack(
                     clipBehavior: Clip.none,
                     children: [

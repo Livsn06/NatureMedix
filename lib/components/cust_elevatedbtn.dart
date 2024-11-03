@@ -23,7 +23,7 @@ class CustElevatedbtn extends StatelessWidget with Application {
           backgroundColor: colors,
           shape: RoundedRectangleBorder(
             borderRadius:
-                BorderRadius.circular(setResponsiveSize(context, baseSize: 50)),
+                BorderRadius.circular(setResponsiveSize(context, baseSize: 13)),
           ),
         ),
         child: Padding(

@@ -7,10 +7,13 @@ import 'package:naturemedix/screens/pages/request_screen.dart';
 import 'package:naturemedix/screens/pages/profile_screen.dart';
 import 'package:naturemedix/screens/onboarding/getstatrted_screen.dart';
 import 'package:naturemedix/screens/splash/splash_screen.dart';
-import 'package:naturemedix/screens/authentication/login_screen.dart';
-import 'package:naturemedix/screens/authentication/register_screen.dart';
+import 'package:naturemedix/screens/authentication/loginAuth_screen.dart';
+import 'package:naturemedix/screens/authentication/registerAuth_screen.dart';
 import 'package:naturemedix/screens/onboarding/onboarding_screen.dart';
+import '../screens/authentication/forgetpass_screen.dart';
 import '../screens/pages/plantInfo_screen.dart';
+import '../screens/pages/remedy_screen.dart';
+import '../screens/pages/search_screen.dart';
 
 class ScreenRouter {
   static const _dashboard = '/dashboard';
@@ -25,6 +28,9 @@ class ScreenRouter {
   static const _login = '/login';
   static const _register = '/register';
   static const _plantInfo = '/plantInfo';
+  static const _remedyInfo = '/remedyInfo';
+  static const _search = '/search';
+  static const _forgetpassword = '/forgetpassword';
 
   static String get getSplashscreenRoute => _splash;
   static String get getControlscreenRoute => _control;
@@ -37,7 +43,10 @@ class ScreenRouter {
   static String get getLoginRoute => _login;
   static String get getRegisterRoute => _register;
   static String get getPlantInfoRoute => _plantInfo;
+  static String get getRemedyInfoRoute => _remedyInfo;
   static String get getDashboardRoute => _dashboard;
+  static String get getSearchRoute => _search;
+  static String get getForgetPasswordRoute => _forgetpassword;
 
   static List<GetPage> routes = [
     GetPage(
@@ -110,6 +119,26 @@ class ScreenRouter {
     GetPage(
       name: _dashboard,
       page: () => DashboardScreen(),
+      preventDuplicates: true,
+      transitionDuration: 500.milliseconds,
+    ),
+    GetPage(
+      name: _remedyInfo,
+      page: () => RemedyInfoScreen(
+        remedy: Get.arguments,
+      ),
+      preventDuplicates: true,
+      transitionDuration: 500.milliseconds,
+    ),
+    GetPage(
+      name: _search,
+      page: () => const SearchScreen(),
+      preventDuplicates: true,
+      transitionDuration: 500.milliseconds,
+    ),
+    GetPage(
+      name: _forgetpassword,
+      page: () => ForgetPasswordScreen(),
       preventDuplicates: true,
       transitionDuration: 500.milliseconds,
     ),

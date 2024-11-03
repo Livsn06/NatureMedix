@@ -138,7 +138,10 @@ class _LoginScreenState extends State<LoginScreen> with Application {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.toNamed(
+                                    ScreenRouter.getForgetPasswordRoute);
+                              },
                               child: Text(
                                 'Forgot Password?',
                                 textAlign: TextAlign.center,

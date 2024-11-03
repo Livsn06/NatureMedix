@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/controllers/Home_Control/bookmark_controller.dart';
-import 'package:naturemedix/controllers/Home_Control/dashboard_controller.dart';
+import 'package:naturemedix/controllers/PlantInfo_Control/plantInfo_controller.dart';
 import 'package:naturemedix/utils/NeoBox.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
-import '../../models/plant_model.dart';
+import '../../components/cust_rating.dart';
+import '../../models/plant_info.dart';
+import '../../models/remedy_info.dart';
+import 'remedy_screen.dart';
 
 class PlantInfoScreen extends StatefulWidget {
   final PlantData plant;
@@ -17,272 +21,303 @@ class PlantInfoScreen extends StatefulWidget {
 }
 
 class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
+  final PageController _pageController = PageController(initialPage: 0);
+  final PlantInfoController plantInfoController =
+      Get.put(PlantInfoController());
+  double _overallRating = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadOverallRating();
+  }
+
+  Future<void> _loadOverallRating() async {
+    double rating =
+        await plantInfoController.getOverallRating(widget.plant.plantName);
+    setState(() {
+      _overallRating = rating;
+    });
+  }
+
+  void _submitRating(double rating) async {
+    await plantInfoController.saveRating(widget.plant.plantName, rating);
+    await _loadOverallRating(); // Reload to update the displayed rating
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<BookmarkController>(
-      init: Get.find<BookmarkController>(),
+      init: Get.put(BookmarkController()),
       builder: (controller) {
-        final isBookmarked = controller.isBookmarked(widget.plant);
-
         return Scaffold(
-          appBar: AppBar(
-            iconTheme: IconThemeData(color: color.primary),
-            centerTitle: true,
-            backgroundColor: color.primary,
-            leading: InkWell(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                margin:
-                    EdgeInsets.all(setResponsiveSize(context, baseSize: 12)),
-                child: Material(
-                  elevation: setResponsiveSize(context, baseSize: 3),
-                  child: Icon(
-                    Icons.arrow_back_rounded,
-                    color: color.dark,
-                    size: setResponsiveSize(context, baseSize: 15),
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(kToolbarHeight),
+            child: AppBar(
+              iconTheme: IconThemeData(color: color.primary),
+              centerTitle: true,
+              flexibleSpace: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      color.primary,
+                      color.primarylow,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
                 ),
               ),
-            ),
-            title: Text(
-              'PLANT INFO',
-              style: style.displaySmall(context,
+              leading: InkWell(
+                onTap: () => Navigator.pop(context),
+                child: Icon(
+                  Icons.arrow_back_ios_new_outlined,
                   color: color.white,
-                  fontsize: setResponsiveSize(context, baseSize: 15),
+                  size: setResponsiveSize(context, baseSize: 18),
+                ),
+              ),
+              title: Text(
+                'HERBAL PLANT INFO',
+                style: style.displaySmall(
+                  context,
+                  color: color.white,
+                  fontsize: setResponsiveSize(context, baseSize: 14),
                   fontweight: FontWeight.w500,
                   fontspace: 2,
-                  fontstyle: FontStyle.normal),
+                  fontstyle: FontStyle.normal,
+                ),
+              ),
             ),
           ),
-          backgroundColor: color.lightGrey,
+          backgroundColor: color.darklight,
           body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Gap(setResponsiveSize(context, baseSize: 40)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Stack(
+                  alignment: Alignment.bottomRight,
                   children: [
-                    NeoBox(
-                      borderRadius: BorderRadius.circular(
-                          setResponsiveSize(context, baseSize: 0)),
-                      child: Padding(
-                        padding: EdgeInsets.all(
-                            setResponsiveSize(context, baseSize: 12)),
-                        child: Image.asset(
-                          widget.plant.plantBasicInfo.plantImage,
-                          fit: BoxFit.cover,
-                          height: setResponsiveSize(context, baseSize: 200),
-                          width: setResponsiveSize(context, baseSize: 200),
+                    Padding(
+                      padding: EdgeInsets.all(
+                          setResponsiveSize(context, baseSize: 20)),
+                      child: SizedBox(
+                        height: setResponsiveSize(context, baseSize: 250),
+                        child: PageView.builder(
+                          controller: _pageController,
+                          itemCount: widget.plant.plantImages.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.all(
+                                  setResponsiveSize(context, baseSize: 8)),
+                              child: NeoBox(
+                                borderRadius: BorderRadius.circular(
+                                    setResponsiveSize(context, baseSize: 5)),
+                                child: Padding(
+                                  padding: EdgeInsets.all(
+                                      setResponsiveSize(context, baseSize: 12)),
+                                  child: Image.asset(
+                                    widget.plant.plantImages[index],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
-                    Gap(setResponsiveSize(context, baseSize: 20)),
-                    Column(
-                      children: [
-                        NeoBox(
-                          borderRadius: BorderRadius.circular(
-                              setResponsiveSize(context, baseSize: 0)),
-                          child: Padding(
-                            padding: EdgeInsets.all(
-                                setResponsiveSize(context, baseSize: 12)),
-                            child: const Icon(Icons.favorite_border),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical:
-                                  setResponsiveSize(context, baseSize: 40)),
-                          child: NeoBox(
-                            borderRadius: BorderRadius.circular(
-                                setResponsiveSize(context, baseSize: 0)),
-                            child: Padding(
-                              padding: EdgeInsets.all(
-                                  setResponsiveSize(context, baseSize: 12)),
-                              child: const Icon(Icons.nature_outlined),
-                            ),
-                          ),
-                        ),
-                        NeoBox(
-                          borderRadius: BorderRadius.circular(
-                              setResponsiveSize(context, baseSize: 0)),
-                          child: Padding(
-                            padding: EdgeInsets.all(
-                                setResponsiveSize(context, baseSize: 12)),
-                            child: const Icon(Icons.text_rotation_angledown),
-                          ),
-                        ),
-                      ],
-                    )
                   ],
                 ),
-                Gap(setResponsiveSize(context, baseSize: 25)),
                 Container(
                   color: color.white,
-                  height: MediaQuery.of(context).size.height * 0.80,
-                  padding:
-                      EdgeInsets.all(setResponsiveSize(context, baseSize: 20)),
+                  padding: EdgeInsets.only(
+                      right: setResponsiveSize(context, baseSize: 20),
+                      left: setResponsiveSize(context, baseSize: 20),
+                      top: setResponsiveSize(context, baseSize: 35),
+                      bottom: setResponsiveSize(context, baseSize: 40)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Gap(setResponsiveSize(context, baseSize: 10)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            widget.plant.plantBasicInfo.plantName,
-                            style: style.displaySmall(context,
-                                color: color.primarylow,
-                                fontsize:
-                                    setResponsiveSize(context, baseSize: 20),
-                                fontweight: FontWeight.w500),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              if (isBookmarked) {
-                                controller.removeBookmark(
-                                    widget.plant, context);
-                              } else {
-                                controller.addBookmark(widget.plant);
-                              }
-                            },
-                            icon: Icon(
-                              isBookmarked
-                                  ? Icons.bookmark
-                                  : Icons.bookmark_outline_rounded,
-                              color: color.primarylow,
-                              size: setResponsiveSize(context, baseSize: 25),
-                            ),
-                          ),
-                        ],
-                      ),
                       Text(
-                        'Scientific Name: ${widget.plant.plantBasicInfo.scientificName}',
+                        widget.plant.plantName,
                         style: style.displaySmall(context,
                             color: color.primarylow,
-                            fontsize: setResponsiveSize(context, baseSize: 13),
-                            fontweight: FontWeight.w400,
-                            fontstyle: FontStyle.italic),
-                      ),
-                      Gap(setResponsiveSize(context, baseSize: 25)),
-                      Text(
-                        'DESCRIPTION:',
-                        style: style.displaySmall(context,
-                            color: color.primarylow,
-                            fontsize: setResponsiveSize(context, baseSize: 12),
+                            fontsize: setResponsiveSize(context, baseSize: 20),
                             fontweight: FontWeight.w500),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 10)),
+                      InkWell(
+                        onTap: () async {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return CustRating(
+                                plant: widget.plant,
+                                initialRating: _overallRating,
+                                onRatingSubmit: _submitRating,
+                              );
+                            },
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            for (int i = 1; i <= 5; i++)
+                              Icon(
+                                Icons.star,
+                                color: i <= _overallRating
+                                    ? color.warning
+                                    : color.darkGrey,
+                                size: setResponsiveSize(context, baseSize: 18),
+                              ),
+                            Gap(setResponsiveSize(context, baseSize: 10)),
+                            Text(
+                              _overallRating.toStringAsFixed(1),
+                              style: style.displaySmall(
+                                context,
+                                color: color.primary,
+                                fontsize:
+                                    setResponsiveSize(context, baseSize: 14),
+                                fontweight: FontWeight.w400,
+                                fontstyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Gap(setResponsiveSize(context, baseSize: 5)),
                       Text(
-                        widget.plant.plantBasicInfo.description,
+                        'Scientific Name: ${widget.plant.scientificName}',
+                        style: style.displaySmall(context,
+                            color: color.primarylow,
+                            fontsize: setResponsiveSize(context, baseSize: 14),
+                            fontweight: FontWeight.w400,
+                            fontstyle: FontStyle.italic),
+                      ),
+                      const Divider(),
+                      Gap(setResponsiveSize(context, baseSize: 25)),
+                      Text(
+                        '▣ DESCRIPTION:',
+                        style: style.displaySmall(context,
+                            color: color.primarylow,
+                            fontsize: setResponsiveSize(context, baseSize: 14),
+                            fontweight: FontWeight.w700),
+                      ),
+                      Gap(setResponsiveSize(context, baseSize: 10)),
+                      Text(
+                        widget.plant.description,
                         textAlign: TextAlign.justify,
                         style: style.displaySmall(context,
                             color: color.primarylow,
+                            height: setResponsiveSize(context, baseSize: 1.4),
                             fontsize: setResponsiveSize(context, baseSize: 13),
                             fontweight: FontWeight.w400),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 25)),
                       Text(
-                        'TREATMENT:',
+                        '▣ TREATMENT:',
                         style: style.displaySmall(context,
                             color: color.primarylow,
-                            fontsize: setResponsiveSize(context, baseSize: 12),
-                            fontweight: FontWeight.w500),
+                            fontsize: setResponsiveSize(context, baseSize: 14),
+                            fontweight: FontWeight.w700),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 10)),
-                      Wrap(
-                        spacing: setResponsiveSize(context, baseSize: 7),
-                        runSpacing: setResponsiveSize(context,
-                            baseSize: 5), // Vertical space between rows
-                        children: widget.plant.remedyInfo.treatments
-                            .asMap()
-                            .entries
-                            .map((entry) {
-                          String treatment = entry.value;
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Wrap(
+                          spacing: setResponsiveSize(context, baseSize: 7),
+                          runSpacing: setResponsiveSize(context, baseSize: 5),
+                          children: widget.plant.treatments
+                              .asMap()
+                              .entries
+                              .map((entry) {
+                            String treatment = entry.value;
 
-                          return IntrinsicWidth(
-                            child: TextButton(
-                              onPressed: () {
-                                // Perform action for this treatment
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    WidgetStatePropertyAll(color.primarylow),
-                                shape: WidgetStatePropertyAll<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                      setResponsiveSize(context, baseSize: 5),
+                            return IntrinsicWidth(
+                              child: TextButton(
+                                onPressed: () {},
+                                style: ButtonStyle(
+                                  shape: WidgetStatePropertyAll<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      side: BorderSide(
+                                        color: color.primarylow,
+                                      ),
+                                      borderRadius: BorderRadius.circular(
+                                          setResponsiveSize(context,
+                                              baseSize: 5)),
                                     ),
                                   ),
                                 ),
-                              ),
-                              child: Text(
-                                treatment,
-                                textAlign: TextAlign.justify,
-                                style: style.displaySmall(
-                                  context,
-                                  color: color.white,
-                                  fontsize:
-                                      setResponsiveSize(context, baseSize: 13),
-                                  fontweight: FontWeight.w400,
+                                child: Text(
+                                  treatment,
+                                  textAlign: TextAlign.justify,
+                                  style: style.displaySmall(
+                                    context,
+                                    color: color.primarylow,
+                                    fontsize: setResponsiveSize(context,
+                                        baseSize: 13.5),
+                                    fontweight: FontWeight.w400,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }).toList(),
+                            );
+                          }).toList(),
+                        ),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 20)),
                       Text(
-                        'REMEDY:',
+                        '▣ REMEDY:',
                         style: style.displaySmall(context,
                             color: color.primarylow,
-                            fontsize: setResponsiveSize(context, baseSize: 12),
-                            fontweight: FontWeight.w500),
+                            fontsize: setResponsiveSize(context, baseSize: 14),
+                            fontweight: FontWeight.w700),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 10)),
-                      Wrap(
-                        spacing: setResponsiveSize(context, baseSize: 7),
-                        runSpacing: setResponsiveSize(context,
-                            baseSize: 5), // Vertical space between rows
-                        children: widget.plant.plantBasicInfo.remedy
-                            .asMap()
-                            .entries
-                            .map((entry) {
-                          String treatment = entry.value;
-
-                          return IntrinsicWidth(
-                            child: TextButton(
-                              onPressed: () {
-                                // Perform action for this treatment
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    WidgetStatePropertyAll(color.primarylow),
-                                shape: WidgetStatePropertyAll<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                      setResponsiveSize(context, baseSize: 5),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Wrap(
+                          spacing: setResponsiveSize(context, baseSize: 7),
+                          runSpacing: setResponsiveSize(context,
+                              baseSize: 5), // Vertical space between rows
+                          children: widget.plant.remedyList
+                              .asMap()
+                              .entries
+                              .map((entry) {
+                            RemedyInfo treatment = entry.value;
+                            return IntrinsicWidth(
+                              child: TextButton(
+                                onPressed: () {
+                                  Get.to(() =>
+                                      RemedyInfoScreen(remedy: treatment));
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      WidgetStatePropertyAll(color.primarylow),
+                                  shape: WidgetStatePropertyAll<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        setResponsiveSize(context, baseSize: 5),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              child: Text(
-                                treatment,
-                                textAlign: TextAlign.justify,
-                                style: style.displaySmall(
-                                  context,
-                                  color: color.white,
-                                  fontsize:
-                                      setResponsiveSize(context, baseSize: 13),
-                                  fontweight: FontWeight.w400,
+                                child: Text(
+                                  treatment.remedyName,
+                                  textAlign: TextAlign.justify,
+                                  style: style.displaySmall(
+                                    context,
+                                    color: color.white,
+                                    fontsize: setResponsiveSize(context,
+                                        baseSize: 13.5),
+                                    fontweight: FontWeight.w400,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
+                            );
+                          }).toList(),
+                        ),
+                      )
                     ],
                   ),
                 ),
