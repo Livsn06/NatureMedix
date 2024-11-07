@@ -11,6 +11,7 @@ import 'package:naturemedix/screens/authentication/loginAuth_screen.dart';
 import 'package:naturemedix/screens/authentication/registerAuth_screen.dart';
 import 'package:naturemedix/screens/onboarding/onboarding_screen.dart';
 import '../screens/authentication/forgetpass_screen.dart';
+import '../screens/pages/gridlist_screen.dart';
 import '../screens/pages/plantInfo_screen.dart';
 import '../screens/pages/remedy_screen.dart';
 import '../screens/pages/search_screen.dart';
@@ -31,6 +32,7 @@ class ScreenRouter {
   static const _remedyInfo = '/remedyInfo';
   static const _search = '/search';
   static const _forgetpassword = '/forgetpassword';
+  static const _gridlist = '/gridlist';
 
   static String get getSplashscreenRoute => _splash;
   static String get getControlscreenRoute => _control;
@@ -46,6 +48,7 @@ class ScreenRouter {
   static String get getRemedyInfoRoute => _remedyInfo;
   static String get getDashboardRoute => _dashboard;
   static String get getSearchRoute => _search;
+  static String get getGridListRoute => _gridlist;
   static String get getForgetPasswordRoute => _forgetpassword;
 
   static List<GetPage> routes = [
@@ -139,6 +142,15 @@ class ScreenRouter {
     GetPage(
       name: _forgetpassword,
       page: () => ForgetPasswordScreen(),
+      preventDuplicates: true,
+      transitionDuration: 500.milliseconds,
+    ),
+    GetPage(
+      name: _gridlist,
+      page: () => GridlistScreen(
+        title: Get.arguments['title'],
+        plantList: Get.arguments['plantList'],
+      ),
       preventDuplicates: true,
       transitionDuration: 500.milliseconds,
     ),

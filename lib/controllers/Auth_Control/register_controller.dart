@@ -105,7 +105,7 @@ class RegisterController extends GetxController {
           icon: Icon(Icons.warning_rounded,
               color: Colors.white,
               size: setResponsiveSize(context, baseSize: 40)),
-          backgroundColor: Application().color.primary,
+          backgroundColor: Application().color.valid,
           'Terms and Conditions',
           colorText: Colors.white,
           'Please check the terms and conditions',

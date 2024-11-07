@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:naturemedix/components/cust_clientDialog.dart';
 import 'package:naturemedix/controllers/Home_Control/clientrqst_controller.dart';
 import 'package:naturemedix/utils/NeoBox.dart';
 import 'package:naturemedix/utils/_initApp.dart';
@@ -202,21 +203,29 @@ class _RequestScreenState extends State<RequestScreen> with Application {
               return Padding(
                 padding: EdgeInsets.symmetric(
                     vertical: setResponsiveSize(context, baseSize: 2)),
-                child: CardList(
-                  requestImage: Image.file(File(request.imagePath),
-                      width: 60, height: 60, fit: BoxFit.cover),
-                  requestTitle: Text(
-                    request.title,
-                    style: style.displaySmall(context,
-                        fontsize: setResponsiveSize(context, baseSize: 14),
-                        color: color.primarylow,
-                        fontweight: FontWeight.w500),
+                child: InkWell(
+                  onTap: () => {
+                    showDialog(
+                        context: context,
+                        builder: (context) =>
+                            CustClientdialog(request: request)),
+                  },
+                  child: CardList(
+                    requestImage: Image.file(File(request.imagePath),
+                        width: 60, height: 60, fit: BoxFit.cover),
+                    requestTitle: Text(
+                      request.title,
+                      style: style.displaySmall(context,
+                          fontsize: setResponsiveSize(context, baseSize: 14),
+                          color: color.primarylow,
+                          fontweight: FontWeight.w500),
+                    ),
+                    subRequestTitle:
+                        Text(DateFormat.yMMMd().format(request.createdAt)),
+                    settingsTapped: null,
+                    deleteTapped: (context) =>
+                        controller.deleteRequest(context, index),
                   ),
-                  subRequestTitle:
-                      Text(DateFormat.yMMMd().format(request.createdAt)),
-                  settingsTapped: null,
-                  deleteTapped: (context) =>
-                      controller.deleteRequest(context, index),
                 ),
               );
             },

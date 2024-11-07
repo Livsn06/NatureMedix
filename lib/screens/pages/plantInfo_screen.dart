@@ -42,7 +42,7 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
 
   void _submitRating(double rating) async {
     await plantInfoController.saveRating(widget.plant.plantName, rating);
-    await _loadOverallRating(); // Reload to update the displayed rating
+    await _loadOverallRating();
   }
 
   @override

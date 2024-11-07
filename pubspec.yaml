@@ -44,6 +44,7 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/images/Logo.png"
+  min_sdk_android: 21
 
 flutter:
   uses-material-design: true

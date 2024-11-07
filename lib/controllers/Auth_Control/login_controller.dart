@@ -95,10 +95,10 @@ class LoginController extends GetxController {
           Get.toNamed(ScreenRouter.getControlscreenRoute);
           Get.snackbar('Successfully Login', 'Welcome back, $_name!',
               icon: Icon(Icons.check_circle_outline,
-                  color: Application().color.dimdark),
-              colorText: Application().color.dimdark,
+                  color: Application().color.white),
+              colorText: Application().color.white,
               snackPosition: SnackPosition.TOP,
-              backgroundColor: Application().color.whiteOpacity20);
+              backgroundColor: Application().color.valid);
         });
         update();
       } else {
@@ -148,10 +148,10 @@ class LoginController extends GetxController {
           Get.toNamed(ScreenRouter.getControlscreenRoute);
           Get.snackbar('Successfully Login', 'Welcome back, $_name!',
               icon: Icon(Icons.check_circle_outline,
-                  color: Application().color.dimdark),
-              colorText: Application().color.dimdark,
+                  color: Application().color.white),
+              colorText: Application().color.white,
               snackPosition: SnackPosition.TOP,
-              backgroundColor: Application().color.whiteOpacity20);
+              backgroundColor: Application().color.valid);
         });
       }
     } on FirebaseAuthException catch (e) {
@@ -236,7 +236,7 @@ class LoginController extends GetxController {
 
   void handleUserLogin() async {
     final BookmarkController bookmarkController = Get.put(BookmarkController());
-    await bookmarkController.loadBookmarksFromHive();
+    await bookmarkController.loadBookmarks();
   }
 
   // signout

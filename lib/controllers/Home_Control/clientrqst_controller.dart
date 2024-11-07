@@ -1,32 +1,40 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:naturemedix/components/cust_ConfirmAlert.dart';
 import 'package:naturemedix/utils/_initApp.dart';
-import 'package:naturemedix/utils/responsive.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../../components/cust_imagepick.dart';
 import '../../models/client_data.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ClientRequestController extends GetxController {
   RxList<ClientData> requests = <ClientData>[].obs;
   var isListVisible = true.obs;
-  Box<ClientData>? userRequestBox;
+  Box<List<ClientData>>? userRequestBox;
 
   Rx<File?> fileToDisplay = Rx<File?>(null);
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    loadRequests();
+  }
+
   // Open a Hive box specific to the user's UID.
   Future<void> openUserBox() async {
     final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      userRequestBox = await Hive.openBox<ClientData>('requests_${user.uid}');
-      await loadRequestsFromHive(); // Load requests upon opening the box
-    }
+    if (user == null) return;
+    userRequestBox =
+        await Hive.openBox<List<ClientData>>('requests_${user.uid}');
   }
 
   void toggleView(bool showList) {
@@ -47,30 +55,66 @@ class ClientRequestController extends GetxController {
       createdAt: createdAt,
     );
 
-    // Save request to Hive
-    saveRequestToHive(clientData);
+    // Save request to Hive and Firestore
+    saveRequest(clientData);
 
     // Add the request to the list
     requests.add(clientData);
   }
 
-  Future<void> saveRequestToHive(ClientData clientData) async {
+  Future<void> saveRequest(ClientData clientData) async {
     if (userRequestBox == null) await openUserBox();
-    if (userRequestBox != null) {
-      String key =
-          '${clientData.title}-${DateTime.now().millisecondsSinceEpoch}';
-      await userRequestBox!.put(key, clientData);
+    if (userRequestBox == null) return;
+
+    // Saved data to Hive (Offline)
+    List<ClientData>? currentRequests =
+        userRequestBox!.get('requests', defaultValue: <ClientData>[]);
+    currentRequests?.add(clientData);
+    await userRequestBox!.put('requests', currentRequests!);
+
+    // Saved data to Firestore (Online)
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await _firestore.collection('users').doc(user.uid).set({
+        'RequestList': currentRequests.map((value) => value.toMap()).toList(),
+      }, SetOptions(merge: true));
     }
   }
 
-  // Load requests from Hive
-  Future<void> loadRequestsFromHive() async {
-    requests.clear();
-    if (userRequestBox == null) await openUserBox();
-    if (userRequestBox != null) {
-      userRequestBox!.values.forEach((value) {
-        requests.add(value);
-      });
+  Future<void> loadRequests() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (userRequestBox == null) {
+      await openUserBox();
+    }
+
+    if (userRequestBox == null) {
+      return;
+    }
+
+    List<ClientData>? currentRequests =
+        userRequestBox!.get('requests', defaultValue: <ClientData>[]);
+
+    requests.value = currentRequests!.map((e) => e as ClientData).toList();
+
+    // Load from Firestore (online)
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        final docSnapshot =
+            await _firestore.collection('users').doc(user!.uid).get();
+        if (docSnapshot.exists) {
+          final data = docSnapshot.data();
+          if (data != null) {
+            final firestoreRequests = List.from(data['RequestList'] ?? []);
+            // Update requests with Firestore data (if available)
+            requests.value =
+                firestoreRequests.map((e) => ClientData.fromMap(e)).toList();
+          }
+        }
+      }
+    } on SocketException catch (_) {
+      // Offline, only load from Hive
     }
   }
 
@@ -109,15 +153,14 @@ class ClientRequestController extends GetxController {
       image: fileToDisplay.value,
     )) {
       Get.snackbar(
-        'Success',
-        'Successfully created request.',
-        icon:
-            Icon(Icons.check_circle_outline, color: Application().color.white),
-        colorText: Colors.white,
+        'Successfuly submitted',
+        'Request submitted successfully!',
+        icon: Icon(Icons.error_outline, color: Application().color.white),
+        colorText: Application().color.white,
         snackPosition: SnackPosition.TOP,
-        backgroundColor: Application().color.primaryhigh,
+        backgroundColor: Application().color.primary,
       );
-
+      // Create and save the request
       createRequest(
         title: title,
         description: description,
@@ -129,12 +172,12 @@ class ClientRequestController extends GetxController {
       toggleView(true);
     } else {
       Get.snackbar(
-        'Field Required',
-        'Please fill out all fields and select an image.',
+        'Form Incomplete',
+        'Please fill all fields and select an image.',
         icon: Icon(Icons.error_outline, color: Application().color.white),
-        colorText: Colors.white,
+        colorText: Application().color.white,
         snackPosition: SnackPosition.TOP,
-        backgroundColor: Application().color.primary,
+        backgroundColor: Application().color.invalid,
       );
     }
   }
@@ -153,21 +196,58 @@ class ClientRequestController extends GetxController {
     showConfirmValidation(
       context,
       'Delete Request',
-      'Do you want to delete request?',
+      'Do you want to delete this request?',
       () async {
         final request = requests[index];
 
-        // Remove the request from the local list
+        // First, remove the request from the list (frontend)
         requests.removeAt(index);
 
-        // Remove the request from Hive storage if the box is open
+        // Update Hive if it's not null
         if (userRequestBox != null) {
-          await userRequestBox!.deleteAt(index);
+          // Fetch the current list of requests from the Hive box
+          List<ClientData>? currentRequests =
+              userRequestBox!.get('requests', defaultValue: <ClientData>[]);
+
+          // Ensure index is within bounds before deleting from the Hive box
+          if (currentRequests != null && index < currentRequests.length) {
+            // Remove the request at the correct index from the list
+            currentRequests.removeAt(index);
+
+            // Now, update the Hive box with the modified list
+            await userRequestBox!.put('requests', currentRequests);
+          } else {
+            print('Invalid index for deletion in Hive box');
+          }
         }
 
-        Get.back(); // Close the dialog
+        // Delete from Firestore if needed
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          try {
+            final docSnapshot =
+                await _firestore.collection('users').doc(user.uid).get();
+            if (docSnapshot.exists) {
+              final data = docSnapshot.data();
+              if (data != null && data.containsKey('RequestList')) {
+                List<dynamic> firestoreRequests =
+                    List.from(data['RequestList']);
+                if (index < firestoreRequests.length) {
+                  firestoreRequests.removeAt(index);
 
-        // Show the success message
+                  await _firestore.collection('users').doc(user.uid).update({
+                    'RequestList': firestoreRequests,
+                  });
+                }
+              }
+            }
+          } catch (e) {
+            print('Error deleting request from Firestore: $e');
+          }
+        }
+
+        // Provide feedback to the user and close the dialog
+        Get.back();
         Get.snackbar(
           'Success',
           'Successfully deleted request.',
@@ -175,10 +255,9 @@ class ClientRequestController extends GetxController {
               color: Application().color.white),
           colorText: Application().color.white,
           snackPosition: SnackPosition.TOP,
-          backgroundColor: Application().color.primary,
+          backgroundColor: Application().color.valid,
         );
-
-        update(); // Update the UI after deletion
+        update();
       },
       Application().gif.removed,
     );

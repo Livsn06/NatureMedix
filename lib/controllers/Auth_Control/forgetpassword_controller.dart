@@ -1,9 +1,7 @@
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../../components/cust_loadingAlert.dart';
-import '../../components/cust_validationAlert.dart';
 import '../../utils/_initApp.dart';
 import '../../utils/responsive.dart';
 
@@ -31,7 +29,7 @@ class ForgetPasswordController extends GetxController {
         icon: Icon(Icons.check_circle_outline,
             color: Colors.white,
             size: setResponsiveSize(context, baseSize: 40)),
-        backgroundColor: Application().color.primaryhigh,
+        backgroundColor: Application().color.valid,
         'Success sent to your email.',
         colorText: Colors.white,
         'Password reset link has been sent to your email.',

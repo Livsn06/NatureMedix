@@ -11,6 +11,7 @@ import '../../controllers/Home_Control/bookmark_controller.dart';
 import '../../data/PlantData/plant_data.dart';
 import '../../models/plant_info.dart';
 import '../../models/remedy_info.dart';
+import 'plantInfo_screen.dart';
 
 class DashboardScreen extends StatefulWidget with Application {
   DashboardScreen({Key? key}) : super(key: key);
@@ -264,12 +265,19 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
               fontsize: setResponsiveSize(context, baseSize: 15),
               fontweight: FontWeight.w500),
         ),
-        Text(
-          'See all',
-          style: style.displaySmall(context,
-              color: color.primary,
-              fontsize: setResponsiveSize(context, baseSize: 14),
-              fontweight: FontWeight.w500),
+        GestureDetector(
+          onTap: () => title == 'Future Remedies'
+              ? controller.gotoSeeAll(plantList, title)
+              : title == 'Popular Herbal Plant'
+                  ? controller.gotoSeeAll(plantList, title)
+                  : controller.gotoSeeAll(plantList, title),
+          child: Text(
+            'See all',
+            style: style.displaySmall(context,
+                color: color.primary,
+                fontsize: setResponsiveSize(context, baseSize: 14),
+                fontweight: FontWeight.w500),
+          ),
         ),
       ],
     );

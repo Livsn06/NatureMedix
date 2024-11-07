@@ -64,4 +64,14 @@ class DashboardController extends GetxController {
     borderSide: BorderSide(color: Application().color.white),
     borderRadius: BorderRadius.circular(15),
   );
+
+  void gotoSeeAll(List<PlantData> plantList, String title) {
+    Get.toNamed(
+      ScreenRouter.getGridListRoute,
+      arguments: {
+        'title': title,
+        'plantList': plantList,
+      },
+    );
+  }
 }

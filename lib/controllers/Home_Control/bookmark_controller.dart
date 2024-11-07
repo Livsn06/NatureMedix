@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -14,6 +15,7 @@ class BookmarkController extends GetxController {
   var searchQuery = ''.obs;
   final searchController = TextEditingController();
   Box? userBox;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void onInit() {
@@ -21,7 +23,7 @@ class BookmarkController extends GetxController {
     searchController.addListener(() {
       searchQuery.value = searchController.text.toLowerCase();
     });
-    loadBookmarksFromHive();
+    loadBookmarks();
   }
 
   void toggleSort() {
@@ -40,7 +42,7 @@ class BookmarkController extends GetxController {
   void addBookmark(PlantData plant) async {
     if (!bookmarkedPlants.contains(plant)) {
       bookmarkedPlants.add(plant);
-      await saveBookmarksToHive();
+      await saveBookmarks();
     }
     update();
   }
@@ -52,7 +54,7 @@ class BookmarkController extends GetxController {
       'Do you want to delete?',
       () async {
         bookmarkedPlants.remove(plant);
-        await saveBookmarksToHive();
+        await saveBookmarks();
         Get.back();
         Get.snackbar(
           'Success',
@@ -61,7 +63,7 @@ class BookmarkController extends GetxController {
               color: Application().color.white),
           colorText: Application().color.white,
           snackPosition: SnackPosition.TOP,
-          backgroundColor: Application().color.primary,
+          backgroundColor: Application().color.valid,
         );
       },
       Application().gif.removed,
@@ -72,7 +74,7 @@ class BookmarkController extends GetxController {
   void addRemedyBookmark(RemedyInfo remedy) async {
     if (!bookmarkedRemedies.contains(remedy)) {
       bookmarkedRemedies.add(remedy);
-      await saveBookmarksToHive();
+      await saveBookmarks();
     }
     update();
   }
@@ -84,7 +86,7 @@ class BookmarkController extends GetxController {
       'Do you want to delete?',
       () async {
         bookmarkedRemedies.remove(remedy);
-        await saveBookmarksToHive();
+        await saveBookmarks();
         Get.back();
         Get.snackbar(
           'Success',
@@ -93,7 +95,7 @@ class BookmarkController extends GetxController {
               color: Application().color.white),
           colorText: Application().color.white,
           snackPosition: SnackPosition.TOP,
-          backgroundColor: Application().color.primary,
+          backgroundColor: Application().color.valid,
         );
       },
       Application().gif.removed,
@@ -110,7 +112,7 @@ class BookmarkController extends GetxController {
       () async {
         bookmarkedPlants.clear();
         bookmarkedRemedies.clear();
-        await saveBookmarksToHive();
+        await saveBookmarks();
         Get.back();
         Get.snackbar(
           'Success',
@@ -119,7 +121,7 @@ class BookmarkController extends GetxController {
               color: Application().color.white),
           colorText: Application().color.white,
           snackPosition: SnackPosition.TOP,
-          backgroundColor: Application().color.primary,
+          backgroundColor: Application().color.valid,
         );
       },
       Application().gif.removed,
@@ -158,34 +160,60 @@ class BookmarkController extends GetxController {
     return combinedList;
   }
 
-  Future<void> saveBookmarksToHive() async {
+  Future<void> saveBookmarks() async {
     if (userBox == null) await openUserBox();
     if (userBox == null) return;
 
-    // Save the bookmarks in the user's Hive box with a unique key
+    // Save to Hive
     await userBox!.put(
         '${FirebaseAuth.instance.currentUser!.uid}-bookmarkedPlants',
         bookmarkedPlants.toList());
     await userBox!.put(
         '${FirebaseAuth.instance.currentUser!.uid}-bookmarkedRemedies',
         bookmarkedRemedies.toList());
+
+    // Save to Firestore (when online)
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await _firestore.collection('users').doc(user.uid).set({
+        'bookmarkedPlants':
+            bookmarkedPlants.map((plant) => plant.toMap()).toList(),
+        'bookmarkedRemedies':
+            bookmarkedRemedies.map((remedy) => remedy.toMap()).toList(),
+      }, SetOptions(merge: true));
+    }
   }
 
-  Future<void> loadBookmarksFromHive() async {
+  Future<void> loadBookmarks() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    // Load from Hive (offline)
     if (userBox == null) await openUserBox();
     if (userBox == null) return;
 
-    // Load the bookmarks from the user's Hive box using the unique key
-    final plantList = userBox!.get(
-        '${FirebaseAuth.instance.currentUser!.uid}-bookmarkedPlants',
-        defaultValue: <PlantData>[]);
-    final remedyList = userBox!.get(
-        '${FirebaseAuth.instance.currentUser!.uid}-bookmarkedRemedies',
-        defaultValue: <RemedyInfo>[]);
+    final plantList = userBox!
+        .get('${user!.uid}-bookmarkedPlants', defaultValue: <PlantData>[]);
+    final remedyList = userBox!
+        .get('${user.uid}-bookmarkedRemedies', defaultValue: <RemedyInfo>[]);
 
-    // Convert the dynamic lists to specific types
     bookmarkedPlants.value = plantList.cast<PlantData>();
     bookmarkedRemedies.value = remedyList.cast<RemedyInfo>();
+
+    // Load from Firestore (online)
+    final docSnapshot =
+        await _firestore.collection('users').doc(user.uid).get();
+    if (docSnapshot.exists) {
+      final data = docSnapshot.data();
+      if (data != null) {
+        final firestorePlants = List.from(data['bookmarkedPlants'] ?? []);
+        final firestoreRemedies = List.from(data['bookmarkedRemedies'] ?? []);
+        // Update bookmarks with Firestore data (if available)
+        bookmarkedPlants.value =
+            firestorePlants.map((e) => PlantData.fromMap(e)).toList();
+        bookmarkedRemedies.value =
+            firestoreRemedies.map((e) => RemedyInfo.fromMap(e)).toList();
+      }
+    }
   }
 
   final borderCust = OutlineInputBorder(
