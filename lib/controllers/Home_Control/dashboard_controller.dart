@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:naturemedix/controllers/PlantInfo_Control/plantInfos_controller.dart';
 import 'package:naturemedix/utils/_initApp.dart';
-import '../../data/PlantData/plant_data.dart';
+import '../../Data/PlantData/plant_data.dart';
 import '../../models/plant_info.dart';
 import '../../models/remedy_info.dart';
 import '../../routes/screen_routes.dart';
@@ -73,5 +74,12 @@ class DashboardController extends GetxController {
         'plantList': plantList,
       },
     );
+  }
+
+  final plantController = Get.put(PlantInfoController());
+  var remedyRating = Rx<double>(0.0);
+
+  Future<void> fetchRating(String remedyName) async {
+    remedyRating.value = await plantController.getOverallRating(remedyName);
   }
 }

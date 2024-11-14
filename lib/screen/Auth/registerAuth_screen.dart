@@ -5,7 +5,6 @@ import 'package:naturemedix/components/cust_elevatedbtn.dart';
 import 'package:naturemedix/controllers/Auth_Control/login_controller.dart';
 import 'package:naturemedix/controllers/Auth_Control/register_controller.dart';
 import 'package:naturemedix/routes/screen_routes.dart';
-import 'package:naturemedix/utils/NeoBox.dart';
 import 'package:naturemedix/utils/responsive.dart';
 import '../../components/cust_checkbox.dart';
 import '../../components/cust_textformfield.dart';
@@ -115,7 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Application {
                           Gap(setResponsiveSize(context, baseSize: 30)),
                           TextFormFields(
                             control: _fnameControl,
-                            labeltext: 'Username',
+                            labeltext: 'Name',
                             iconData: Icons.person,
                             isPassword: false,
                             validator: (value) {

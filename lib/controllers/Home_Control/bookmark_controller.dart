@@ -16,6 +16,7 @@ class BookmarkController extends GetxController {
   final searchController = TextEditingController();
   Box? userBox;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  var selectedFilter = 'All'.obs;
 
   @override
   void onInit() {
@@ -24,6 +25,11 @@ class BookmarkController extends GetxController {
       searchQuery.value = searchController.text.toLowerCase();
     });
     loadBookmarks();
+  }
+
+  void setFilter(String filter) {
+    selectedFilter.value = filter;
+    update();
   }
 
   void toggleSort() {
@@ -37,14 +43,6 @@ class BookmarkController extends GetxController {
 
     // Open a Hive box specific to the user's UID.
     userBox = await Hive.openBox(user.uid);
-  }
-
-  void addBookmark(PlantData plant) async {
-    if (!bookmarkedPlants.contains(plant)) {
-      bookmarkedPlants.add(plant);
-      await saveBookmarks();
-    }
-    update();
   }
 
   void removeBookmark(PlantData plant, BuildContext context) async {
@@ -71,8 +69,18 @@ class BookmarkController extends GetxController {
     update();
   }
 
+  void addBookmark(PlantData plant) async {
+    if (!bookmarkedPlants.contains(plant)) {
+      plant.bookmarkedAt = DateTime.now();
+      bookmarkedPlants.add(plant);
+      await saveBookmarks();
+    }
+    update();
+  }
+
   void addRemedyBookmark(RemedyInfo remedy) async {
     if (!bookmarkedRemedies.contains(remedy)) {
+      remedy.bookmarkedAt = DateTime.now();
       bookmarkedRemedies.add(remedy);
       await saveBookmarks();
     }
@@ -85,22 +93,26 @@ class BookmarkController extends GetxController {
       'Delete Bookmark',
       'Do you want to delete?',
       () async {
-        bookmarkedRemedies.remove(remedy);
-        await saveBookmarks();
         Get.back();
-        Get.snackbar(
-          'Success',
-          'Successfully delete bookmark.',
-          icon: Icon(Icons.delete_outline_outlined,
-              color: Application().color.white),
-          colorText: Application().color.white,
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Application().color.valid,
-        );
+        try {
+          bookmarkedRemedies.remove(remedy);
+          await saveBookmarks();
+          Get.snackbar(
+            'Success',
+            'Successfully delete bookmark.',
+            icon: Icon(Icons.delete_outline_outlined,
+                color: Application().color.white),
+            colorText: Application().color.white,
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Application().color.valid,
+          );
+        } catch (e) {
+          print('Error deleting request: $e');
+        }
+        update();
       },
       Application().gif.removed,
     );
-    update();
   }
 
   void removeAllBookmark(BuildContext context) async {
@@ -110,23 +122,27 @@ class BookmarkController extends GetxController {
       'Delete Bookmark',
       'Do you want to delete all?',
       () async {
-        bookmarkedPlants.clear();
-        bookmarkedRemedies.clear();
-        await saveBookmarks();
         Get.back();
-        Get.snackbar(
-          'Success',
-          'Successfully delete all bookmark.',
-          icon: Icon(Icons.delete_outline_outlined,
-              color: Application().color.white),
-          colorText: Application().color.white,
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Application().color.valid,
-        );
+        try {
+          bookmarkedPlants.clear();
+          bookmarkedRemedies.clear();
+          await saveBookmarks();
+          Get.snackbar(
+            'Success',
+            'Successfully delete all bookmark.',
+            icon: Icon(Icons.delete_outline_outlined,
+                color: Application().color.white),
+            colorText: Application().color.white,
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Application().color.valid,
+          );
+        } catch (e) {
+          print('Error deleting request: $e');
+        }
+        update();
       },
       Application().gif.removed,
     );
-    update();
   }
 
   bool isPlantBookmarked(PlantData plant) {
@@ -147,7 +163,35 @@ class BookmarkController extends GetxController {
       return remedy.remedyName.toLowerCase().contains(query) ||
           remedy.description.toLowerCase().contains(query);
     }).toList();
-    final combinedList = [...filteredPlants, ...filteredRemedies];
+
+    List<dynamic> combinedList = [...filteredPlants, ...filteredRemedies];
+
+    // Apply date filter
+    DateTime now = DateTime.now();
+    combinedList = combinedList.where((item) {
+      DateTime? bookmarkDate = (item is PlantData)
+          ? item.bookmarkedAt
+          : (item as RemedyInfo).bookmarkedAt;
+      if (bookmarkDate == null) return false;
+
+      switch (selectedFilter.value) {
+        case 'Today':
+          return bookmarkDate.day == now.day &&
+              bookmarkDate.month == now.month &&
+              bookmarkDate.year == now.year;
+        case 'Yesterday':
+          DateTime yesterday = now.subtract(Duration(days: 1));
+          return bookmarkDate.day == yesterday.day &&
+              bookmarkDate.month == yesterday.month &&
+              bookmarkDate.year == yesterday.year;
+        case 'Old':
+          return bookmarkDate.isBefore(now.subtract(Duration(days: 2)));
+        default: // 'All'
+          return true;
+      }
+    }).toList();
+
+    // Sort the combined list based on ascendingSort
     combinedList.sort((a, b) {
       String nameA =
           (a is PlantData) ? a.plantName : (a as RemedyInfo).remedyName;
@@ -161,16 +205,18 @@ class BookmarkController extends GetxController {
   }
 
   Future<void> saveBookmarks() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
     if (userBox == null) await openUserBox();
     if (userBox == null) return;
 
-    // Save to Hive
-    await userBox!.put(
-        '${FirebaseAuth.instance.currentUser!.uid}-bookmarkedPlants',
-        bookmarkedPlants.toList());
-    await userBox!.put(
-        '${FirebaseAuth.instance.currentUser!.uid}-bookmarkedRemedies',
-        bookmarkedRemedies.toList());
+    // Make sure the data is in the correct format before saving
+    List<Map<String, dynamic>> plantMaps =
+        bookmarkedPlants.map((plant) => plant.toMap()).toList();
+    List<Map<String, dynamic>> remedyMaps =
+        bookmarkedRemedies.map((remedy) => remedy.toMap()).toList();
+
+    await userBox!.put('$uid-bookmarkedPlants', plantMaps);
+    await userBox!.put('$uid-bookmarkedRemedies', remedyMaps);
 
     // Save to Firestore (when online)
     final user = FirebaseAuth.instance.currentUser;

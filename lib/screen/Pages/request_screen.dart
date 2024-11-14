@@ -26,7 +26,7 @@ class _RequestScreenState extends State<RequestScreen> with Application {
   @override
   void initState() {
     super.initState();
-    controller.openUserBox();
+    controller.loadRequests();
   }
 
   @override
@@ -284,7 +284,7 @@ class _RequestScreenState extends State<RequestScreen> with Application {
 
           // Title input field
           Text(
-            '▣ Topic header* ',
+            '▣ Herbal Plant* ',
             style: style.displaySmall(
               context,
               fontsize: setResponsiveSize(context, baseSize: 14),
@@ -299,7 +299,7 @@ class _RequestScreenState extends State<RequestScreen> with Application {
             child: TextField(
               controller: controller.titleController,
               decoration: InputDecoration(
-                hintText: 'Title',
+                hintText: 'Plant name',
                 hintStyle: style.displaySmall(context,
                     color: color.darkGrey,
                     fontsize: setResponsiveSize(context, baseSize: 13),
@@ -349,7 +349,7 @@ class _RequestScreenState extends State<RequestScreen> with Application {
                 shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
-                        setResponsiveSize(context, baseSize: 5)),
+                        setResponsiveSize(context, baseSize: 10)),
                   ),
                 ),
                 backgroundColor: WidgetStateProperty.all<Color>(

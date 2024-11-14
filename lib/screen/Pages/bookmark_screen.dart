@@ -20,7 +20,17 @@ class BookmarkScreen extends StatefulWidget with Application {
 class _BookmarkScreenState extends State<BookmarkScreen> with Application {
   @override
   Widget build(BuildContext context) {
+    final BookmarkController bookControl = Get.put(BookmarkController());
     final DashboardController dashControl = Get.put(DashboardController());
+
+    final List<String> filterOptions = ["All", "Today", "Yesterday", "Old"];
+
+    @override
+    void initState() {
+      // TODO: implement initState
+      super.initState();
+      bookControl.loadBookmarks();
+    }
 
     return GetBuilder<BookmarkController>(
       init: Get.put(BookmarkController()),
@@ -149,19 +159,36 @@ class _BookmarkScreenState extends State<BookmarkScreen> with Application {
                   ),
                 ],
               ),
-              Gap(setResponsiveSize(context, baseSize: 20)),
-              Text(
-                '▣ Bookmarked list:',
-                style: style.displaySmall(
-                  context,
-                  color: color.primarylow,
-                  fontsize: setResponsiveSize(context, baseSize: 15),
-                  fontweight: FontWeight.w500,
-                  fontstyle: FontStyle.normal,
-                ),
+              Gap(setResponsiveSize(context, baseSize: 10)),
+
+              DropdownButton<String>(
+                dropdownColor: color.white,
+                value: controller.selectedFilter.value,
+                underline: const SizedBox.shrink(),
+                items: filterOptions.map((String value) {
+                  return DropdownMenuItem<String>(
+                    alignment: AlignmentDirectional.centerStart,
+                    value: value,
+                    child: Text(
+                      '▣  $value',
+                      style: style.displaySmall(
+                        context,
+                        color: color.primarylow,
+                        fontsize: setResponsiveSize(context, baseSize: 15),
+                        fontweight: FontWeight.w500,
+                        fontstyle: FontStyle.normal,
+                      ),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  if (newValue != null) {
+                    controller.setFilter(newValue);
+                  }
+                },
               ),
+
               const Divider(),
-              // Display bookmarks
 
               Expanded(
                 child: Obx(() {
@@ -190,7 +217,6 @@ class _BookmarkScreenState extends State<BookmarkScreen> with Application {
                           itemBuilder: (context, index) {
                             final item = bookmarks[index];
                             if (item is PlantData) {
-                              // Render plant card
                               return InkWell(
                                 onTap: () =>
                                     dashControl.selectPlant(item, context),
@@ -206,7 +232,6 @@ class _BookmarkScreenState extends State<BookmarkScreen> with Application {
                                 ),
                               );
                             } else if (item is RemedyInfo) {
-                              // Render remedy card
                               return InkWell(
                                 onTap: () =>
                                     dashControl.selectRemedy(item, context),
@@ -216,14 +241,15 @@ class _BookmarkScreenState extends State<BookmarkScreen> with Application {
                                       width: 70,
                                       height: 70),
                                   requestTitle: Text(item.remedyName),
-                                  subRequestTitle: Text(item.remedyType),
+                                  subRequestTitle:
+                                      Text('Remedy type: ${item.remedyType}'),
                                   settingsTapped: null,
                                   deleteTapped: (context) => controller
                                       .removeRemedyBookmark(item, context),
                                 ),
                               );
                             }
-                            return const SizedBox.shrink();
+                            return Container();
                           },
                         );
                 }),

@@ -1,12 +1,12 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:naturemedix/utils/NeoBox.dart';
 import 'package:naturemedix/utils/responsive.dart';
 import '../../components/cust_elevatedbtn.dart';
 import '../../components/cust_textformfield.dart';
 import '../../controllers/Auth_Control/forgetpassword_controller.dart';
-import '../../controllers/Auth_Control/login_controller.dart';
 import '../../routes/screen_routes.dart';
 import '../../utils/_initApp.dart';
 

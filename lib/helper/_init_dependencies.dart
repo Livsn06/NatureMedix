@@ -10,7 +10,7 @@ import '../controllers/Auth_Control/login_controller.dart';
 import '../controllers/Internet_Control/internet_controller.dart';
 import '../controllers/Home_Control/profile_controller.dart';
 import '../controllers/Auth_Control/register_controller.dart';
-import '../controllers/PlantInfo_Control/plantInfo_controller.dart';
+import '../controllers/PlantInfo_Control/plantInfos_controller.dart';
 import '../controllers/Remedy_Control/remedy_controller.dart';
 import '../controllers/Search_Controller/search_controller.dart';
 

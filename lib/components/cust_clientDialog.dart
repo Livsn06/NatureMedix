@@ -8,7 +8,6 @@ import 'package:naturemedix/utils/responsive.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 
 import '../models/client_data.dart';
-import '../models/plant_info.dart';
 
 class CustClientdialog extends StatefulWidget {
   final ClientData request;
@@ -23,7 +22,6 @@ class CustClientdialog extends StatefulWidget {
 }
 
 class _CustClientdialogState extends State<CustClientdialog> with Application {
-  double _selectedRating = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +61,7 @@ class _CustClientdialogState extends State<CustClientdialog> with Application {
               ),
             ),
             Container(
-              he
+              
               decoration: BoxDecoration(
                   color: Colors.transparent,
                   borderRadius: BorderRadius.only(

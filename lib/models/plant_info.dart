@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
-import 'remedy_info.dart'; 
+import 'remedy_info.dart';
 
-part 'plant_info.g.dart';
+part 'plant_info.g.dart'; // Make sure this part directive matches your generated file
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 0) // Ensure the typeId is unique for PlantData
 class PlantData {
   @HiveField(0)
   final String plantName;
@@ -24,7 +24,7 @@ class PlantData {
   final List<RemedyInfo> remedyList;
 
   @HiveField(6)
-  double rating;
+  DateTime? bookmarkedAt;
 
   PlantData({
     required this.plantName,
@@ -33,10 +33,10 @@ class PlantData {
     required this.description,
     required this.treatments,
     required this.remedyList,
-    this.rating = 0.0,
+    this.bookmarkedAt, // Initialize to null; set when bookmarked
   });
 
-  // Convert PlantData to a map (Firestore)
+  // Convert to map for Firestore
   Map<String, dynamic> toMap() {
     return {
       'plantName': plantName,
@@ -45,11 +45,12 @@ class PlantData {
       'description': description,
       'treatments': treatments,
       'remedyList': remedyList.map((e) => e.toMap()).toList(),
-      'rating': rating,
+      'bookmarkedAt':
+          bookmarkedAt?.toIso8601String(), // Convert to string for storage
     };
   }
 
-  // Create PlantData from a map (Firestore)
+  // Convert from Firestore map
   static PlantData fromMap(Map<String, dynamic> map) {
     return PlantData(
       plantName: map['plantName'],
@@ -59,11 +60,9 @@ class PlantData {
       treatments: List<String>.from(map['treatments']),
       remedyList: List<RemedyInfo>.from(
           map['remedyList'].map((e) => RemedyInfo.fromMap(e))),
-      rating: map['rating'] ?? 0.0,
+      bookmarkedAt: map['bookmarkedAt'] != null
+          ? DateTime.parse(map['bookmarkedAt'])
+          : null,
     );
-  }
-
-  void updateRating(double newRating) {
-    rating = newRating;
   }
 }

@@ -15,6 +15,7 @@ List<PlantData> plantList = [
     treatments: ["Cough", "Asthma", "Fever", "Bronchitis"],
     remedyList: [
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Lagundi Tea",
         treatment: "Cough Relief",
@@ -38,6 +39,7 @@ List<PlantData> plantList = [
         usage: ["Adults: 1 cup, 3 times a day."],
       ),
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Lagundi Decoction",
         treatment: "Fever Relief",
@@ -60,6 +62,7 @@ List<PlantData> plantList = [
         usage: ["Adults: 1 cup, 3 times a day."],
       ),
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Lagundi Syrup",
         treatment: "Bronchitis Relief",
@@ -80,6 +83,7 @@ List<PlantData> plantList = [
         usage: ["Take 2-3 times daily."],
       ),
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Lagundi Bath",
         treatment: "Body Pain and Fever Relief",
@@ -100,7 +104,6 @@ List<PlantData> plantList = [
         usage: ["Once a day until symptoms improve."],
       ),
     ],
-    rating: 0,
   ),
   PlantData(
     plantName: "Ulasimang Bato",
@@ -113,6 +116,7 @@ List<PlantData> plantList = [
     treatments: ["Urinary tract infections", "Gout"],
     remedyList: [
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Ulasimang Bato Juice",
         treatment: "Diuretic",
@@ -137,7 +141,6 @@ List<PlantData> plantList = [
         ],
       ),
     ],
-    rating: 0,
   ),
   PlantData(
     plantName: "Sambong",
@@ -154,6 +157,7 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Sambong Tea",
         treatment: "Kidney Stones",
@@ -181,7 +185,6 @@ List<PlantData> plantList = [
         ],
       ),
     ],
-    rating: 0,
   ),
   PlantData(
     plantName: "Akapulko",
@@ -197,6 +200,7 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Akapulko Ointment",
         treatment: "Skin Treatment",
@@ -220,7 +224,6 @@ List<PlantData> plantList = [
         ],
       ),
     ],
-    rating: 0,
   ),
   PlantData(
     plantName: "Niyog-niyogan",
@@ -236,6 +239,7 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Niyog-niyogan paste",
         treatment: "Skin Rashes and Insect Bites",
@@ -257,6 +261,7 @@ List<PlantData> plantList = [
         usage: ["Apply as needed, up to 2 times a day."],
       ),
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Niyog-niyogan Seed Oil",
         treatment: "Joint Pain Relief",
@@ -279,7 +284,6 @@ List<PlantData> plantList = [
         usage: ["Use 1-2 times a day on sore joints as needed."],
       ),
     ],
-    rating: 0,
   ),
   PlantData(
     plantName: "Yerba Buena",
@@ -296,6 +300,7 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Yerba Buena Mint Juice",
         treatment: "Cooling Refreshment and Digestive Aid",
@@ -320,6 +325,7 @@ List<PlantData> plantList = [
         ],
       ),
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Yerba Buena Tea",
         treatment: "Pain Relief",
@@ -345,7 +351,6 @@ List<PlantData> plantList = [
         ],
       ),
     ],
-    rating: 0,
   ),
   PlantData(
     plantName: "Paragis",
@@ -363,6 +368,7 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
+        rating: 0,
         remedyType: "Topical Herbal Remedy",
         remedyName: "Paragis Poultice",
         treatment: "Wound Healing and Inflammation",
@@ -385,6 +391,7 @@ List<PlantData> plantList = [
         ],
       ),
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Paragis Herbal Tea",
         treatment: "Respiratory Relief",
@@ -409,7 +416,6 @@ List<PlantData> plantList = [
         ],
       ),
     ],
-    rating: 0,
   ),
   PlantData(
     plantName: "Tsaang Gubat",
@@ -425,6 +431,7 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Tsaang Gubat Tea",
         treatment: "Diarrhea Relief",
@@ -450,7 +457,6 @@ List<PlantData> plantList = [
         ],
       ),
     ],
-    rating: 0,
   ),
   PlantData(
     plantName: "Tanlad",
@@ -467,6 +473,7 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Lemongrass Tea",
         treatment: "Digestive Health",
@@ -492,7 +499,6 @@ List<PlantData> plantList = [
         ],
       ),
     ],
-    rating: 0,
   ),
   PlantData(
     plantName: "Sabila",
@@ -509,6 +515,7 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Aloe Vera Gel",
         treatment: "Skin Hydration",
@@ -528,7 +535,6 @@ List<PlantData> plantList = [
         usage: ["Apply as needed for skin hydration and healing."],
       ),
     ],
-    rating: 0,
   ),
   PlantData(
     plantName: "Ginger",
@@ -545,6 +551,7 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Ginger Tea",
         treatment: "Nausea Relief",
@@ -571,7 +578,6 @@ List<PlantData> plantList = [
         ],
       ),
     ],
-    rating: 0,
   ),
   PlantData(
     plantName: "luyang-dilaw",
@@ -588,6 +594,7 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Turmeric Milk",
         treatment: "Anti-inflammatory",
@@ -613,7 +620,6 @@ List<PlantData> plantList = [
         ],
       ),
     ],
-    rating: 0,
   ),
   PlantData(
     plantName: "Malungay",
@@ -629,6 +635,7 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
+        rating: 0,
         remedyType: "Herbal Remedy",
         remedyName: "Malungay Smoothie",
         treatment: "Nutritional Boost",
@@ -655,6 +662,5 @@ List<PlantData> plantList = [
         ],
       ),
     ],
-    rating: 0,
   ),
 ];

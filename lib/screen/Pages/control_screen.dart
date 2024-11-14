@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/controllers/Home_Control/home_controller.dart';
-import 'package:naturemedix/screens/pages/bookmark_screen.dart';
-import 'package:naturemedix/screens/pages/home_screens.dart';
-import 'package:naturemedix/screens/pages/profile_screen.dart';
-import 'package:naturemedix/screens/pages/request_screen.dart';
-import 'package:naturemedix/screens/pages/scanner_screen.dart';
 import 'package:naturemedix/utils/responsive.dart';
 import '../../components/cust_bottomnav.dart';
 import '../../controllers/Home_Control/bookmark_controller.dart';
+import 'bookmark_screen.dart';
+import 'dashboard_screen.dart';
+import 'profile_screen.dart';
+import 'request_screen.dart';
+import 'scanner_screen.dart';
 
 class ControlScreen extends StatefulWidget {
   const ControlScreen({super.key});

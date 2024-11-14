@@ -2,9 +2,10 @@ import 'dart:ui'; // Import this to use ImageFilter
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import '../../routes/screen_routes.dart';
-import '../../utils/_initApp.dart';
-import '../../utils/responsive.dart';
+import 'package:naturemedix/routes/screen_routes.dart';
+import 'package:naturemedix/Utils/_initApp.dart';
+import 'package:naturemedix/Utils/responsive.dart';
+
 
 class GetstartedScreen extends StatelessWidget with Application {
   GetstartedScreen({super.key});

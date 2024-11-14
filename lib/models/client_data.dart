@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
 
-part 'client_data.g.dart'; 
+part 'client_data.g.dart';
 
-@HiveType(typeId: 3) 
+@HiveType(typeId: 3)
 class ClientData extends HiveObject {
   @HiveField(0)
   final String title;

@@ -25,13 +25,15 @@ class RemedyInfoAdapter extends TypeAdapter<RemedyInfo> {
       ingredients: (fields[5] as List).cast<String>(),
       steps: (fields[6] as List).cast<String>(),
       usage: (fields[7] as List).cast<String>(),
+      bookmarkedAt: fields[8] as DateTime?,
+      rating: fields[9] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, RemedyInfo obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.remedyName)
       ..writeByte(1)
@@ -47,7 +49,11 @@ class RemedyInfoAdapter extends TypeAdapter<RemedyInfo> {
       ..writeByte(6)
       ..write(obj.steps)
       ..writeByte(7)
-      ..write(obj.usage);
+      ..write(obj.usage)
+      ..writeByte(8)
+      ..write(obj.bookmarkedAt)
+      ..writeByte(9)
+      ..write(obj.rating);
   }
 
   @override

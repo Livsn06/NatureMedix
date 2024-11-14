@@ -3,11 +3,11 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/controllers/Home_Control/bookmark_controller.dart';
 import 'package:naturemedix/controllers/Home_Control/dashboard_controller.dart';
+import 'package:naturemedix/controllers/PlantInfo_Control/plantInfos_controller.dart';
+import 'package:naturemedix/models/plant_info.dart';
+import 'package:naturemedix/screen/Pages/control_screen.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
-import '../../controllers/PlantInfo_Control/plantInfo_controller.dart';
-import '../../models/plant_info.dart';
-import 'control_screen.dart';
 
 class GridlistScreen extends StatefulWidget {
   GridlistScreen({super.key, required this.plantList, required this.title});
@@ -182,7 +182,6 @@ class _GridlistScreenState extends State<GridlistScreen> with Application {
                               future: plantInfoController
                                   .getOverallRating(plant.plantName),
                               builder: (context, snapshot) {
-                                double rating = snapshot.data ?? 0.0;
                                 return InkWell(
                                   onTap: () =>
                                       dashControl.selectPlant(plant, context),
@@ -242,38 +241,6 @@ class _GridlistScreenState extends State<GridlistScreen> with Application {
                                                     fontweight: FontWeight.w400,
                                                     fontstyle: FontStyle.italic,
                                                   ),
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    for (int i = 1; i <= 5; i++)
-                                                      Icon(
-                                                        Icons.star,
-                                                        color: i <= rating
-                                                            ? color.warning
-                                                            : color.darkGrey,
-                                                        size: setResponsiveSize(
-                                                            context,
-                                                            baseSize: 15),
-                                                      ),
-                                                    Gap(setResponsiveSize(
-                                                        context,
-                                                        baseSize: 10)),
-                                                    Text(
-                                                      rating.toStringAsFixed(1),
-                                                      style: style.displaySmall(
-                                                        context,
-                                                        color: color.primary,
-                                                        fontsize:
-                                                            setResponsiveSize(
-                                                                context,
-                                                                baseSize: 12),
-                                                        fontweight:
-                                                            FontWeight.w400,
-                                                        fontstyle:
-                                                            FontStyle.italic,
-                                                      ),
-                                                    ),
-                                                  ],
                                                 ),
                                                 Gap(setResponsiveSize(context,
                                                     baseSize: 5)),

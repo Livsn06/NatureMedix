@@ -1,5 +1,5 @@
 import 'package:naturemedix/utils/_initApp.dart';
-import '../models/onboarding_model.dart';
+import '../../models/onboarding_model.dart';
 
 Application _app = Application();
 List<OnboardingModel> ONBOARD_INFO = [

@@ -2,16 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:naturemedix/controllers/Auth_Control/login_controller.dart';
+import 'package:naturemedix/controllers/PlantInfo_Control/plantInfos_controller.dart';
 import 'package:naturemedix/controllers/Home_Control/dashboard_controller.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
+import '../../components/cust_cardlist.dart';
 import '../../components/cust_category.dart';
 import '../../controllers/Home_Control/bookmark_controller.dart';
 import '../../data/PlantData/plant_data.dart';
 import '../../models/plant_info.dart';
 import '../../models/remedy_info.dart';
-import 'plantInfo_screen.dart';
 
 class DashboardScreen extends StatefulWidget with Application {
   DashboardScreen({Key? key}) : super(key: key);
@@ -23,30 +23,26 @@ class DashboardScreen extends StatefulWidget with Application {
 class _DashboardScreenState extends State<DashboardScreen> with Application {
   final _selectControl = TextEditingController();
   final currentUser = FirebaseAuth.instance.currentUser!;
-  final DashboardController controller = Get.put(DashboardController());
+  final controller = Get.put(DashboardController());
+  final plantController = Get.put(PlantInfoController());
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<LoginController>(
-        init: Get.put(LoginController()),
-        builder: (sp) {
-          sp.getDataFromSharedPreferences();
-          return Scaffold(
-              backgroundColor: color.light,
-              body: Column(
-                children: [
-                  _buildHeader(context, sp.name.toString()),
-                  _buildCategoryChips(context),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: _buildContent(context, controller),
-                      ),
-                    ),
-                  ),
-                ],
-              ));
-        });
+    return Scaffold(
+        backgroundColor: color.light,
+        body: Column(
+          children: [
+            _buildHeader(context),
+            _buildCategoryChips(context),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: _buildContent(context, controller),
+                ),
+              ),
+            ),
+          ],
+        ));
   }
 
   List<Widget> _buildContent(
@@ -68,7 +64,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
         controller.selectedCategory.value == specificCategory;
   }
 
-  Widget _buildHeader(BuildContext context, String displayName) {
+  Widget _buildHeader(BuildContext context) {
     return Container(
       width: double.infinity,
       height: setResponsiveSize(context, baseSize: 205),
@@ -94,14 +90,14 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Gap(setResponsiveSize(context, baseSize: 30)),
-            _buildTitleRow(context, displayName),
+            _buildTitleRow(context),
             Gap(setResponsiveSize(context, baseSize: 10)),
             Text(
               controller.greeting.value,
               style: style.displaySmall(context,
                   color: color.white,
                   fontsize: 22,
-                  fontweight: FontWeight.w800), // Larger text
+                  fontweight: FontWeight.w800),
             ),
             Gap(setResponsiveSize(context, baseSize: 15)),
             _buildSearchBar(context),
@@ -111,7 +107,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
     );
   }
 
-  Widget _buildTitleRow(BuildContext context, String displayName) {
+  Widget _buildTitleRow(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -200,17 +196,60 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
   }
 
   Widget _buildFutureRemedies(BuildContext context) {
-    return _buildSection(
-      context,
-      'Future Remedies',
-      plantList
-          .expand((plant) => plant.remedyList.map((remedy) => _buildRemedyCard(
-                context,
-                remedy,
-                controller,
-              )))
-          .toList(),
+    return FutureBuilder(
+      future: Future.wait(
+        plantList
+            .expand((plant) => plant.remedyList.map((remedy) =>
+                plantController.getOverallRating(remedy.remedyName)))
+            .toList(),
+      ),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<double>? ratings = snapshot.data;
+
+          // Create a list of remedies with their ratings
+          List<Map<String, dynamic>> remediesWithRatings = [];
+          int ratingIndex = 0;
+          for (var plant in plantList) {
+            for (var remedy in plant.remedyList) {
+              remediesWithRatings.add({
+                'remedy': remedy,
+                'rating': ratings![ratingIndex++],
+              });
+            }
+          }
+
+          // Sort the list in descending order based on rating
+          remediesWithRatings
+              .sort((a, b) => b['rating'].compareTo(a['rating']));
+
+          return _buildSection(
+            context,
+            'Future Remedies',
+            remediesWithRatings.map((item) {
+              var remedy = item['remedy'];
+              var rating = item['rating'];
+              return _buildRemedyCard(context, remedy, controller, rating);
+            }).toList(),
+          );
+        } else {
+          // Default section with a rating of 0.0 if data hasn't loaded
+          return _buildSection(
+            context,
+            'Future Remedies',
+            plantList
+                .expand((plant) => plant.remedyList.map((remedy) =>
+                    _buildRemedyCard(context, remedy, controller, 0.0)))
+                .toList(),
+          );
+        }
+      },
     );
+  }
+
+  // To refresh the ratings, call setState and rebuild the widget
+  void refreshRatings() {
+    setState(() {});
   }
 
   Widget _buildPopularHerbalPlant(
@@ -220,7 +259,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
         context,
         'Popular Herbal Plant',
         popularPlant
-            .map((plant) => _buildPlantCard(context, plant, controller))
+            .map((plant) => _PopularHerbalPlantCard(context, plant, controller))
             .toList());
   }
 
@@ -231,7 +270,8 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
         context,
         'Recommended Herbal Plant',
         randomizedPlants
-            .map((plant) => _buildPlantCard(context, plant, controller))
+            .map((plant) =>
+                _RecommendedHerbalPlantCard(context, plant, controller))
             .toList());
   }
 
@@ -266,11 +306,18 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
               fontweight: FontWeight.w500),
         ),
         GestureDetector(
-          onTap: () => title == 'Future Remedies'
-              ? controller.gotoSeeAll(plantList, title)
-              : title == 'Popular Herbal Plant'
-                  ? controller.gotoSeeAll(plantList, title)
-                  : controller.gotoSeeAll(plantList, title),
+          onTap: () {
+            if (title == 'Future Remedies') {
+              // Pass remedyList for Future Remedies
+              controller.gotoSeeAll(plantList, title);
+            } else if (title == 'Popular Herbal Plant') {
+              // Pass plantList for Popular Herbal Plant
+              controller.gotoSeeAll(plantList, title);
+            } else {
+              // Default, pass plantList or appropriate list for Recommendation
+              controller.gotoSeeAll(plantList, title);
+            }
+          },
           child: Text(
             'See all',
             style: style.displaySmall(context,
@@ -283,106 +330,56 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
     );
   }
 
-  Widget _buildCard(BuildContext context, String imagePath, String title,
-      String description, IconData bookmarkIcon, VoidCallback onBookmarkTap) {
-    return Container(
-      width: setResponsiveSize(context, baseSize: 190),
-      margin: EdgeInsets.only(right: setResponsiveSize(context, baseSize: 10)),
-      child: Card(
-        elevation: setResponsiveSize(context, baseSize: 3),
-        child: Padding(
-          padding: EdgeInsets.all(setResponsiveSize(context, baseSize: 10)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: setResponsiveSize(context, baseSize: 170),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          setResponsiveSize(context, baseSize: 10)),
-                      image: DecorationImage(
-                          image: AssetImage(imagePath), fit: BoxFit.cover),
-                    ),
-                  ),
-                  Positioned(
-                    top: setResponsiveSize(context, baseSize: 5),
-                    right: setResponsiveSize(context, baseSize: 5),
-                    child: Column(
-                      children: [
-                        Material(
-                          elevation: setResponsiveSize(context, baseSize: 3),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                setResponsiveSize(context, baseSize: 5)),
-                          ),
-                          child: InkWell(
-                            onTap:
-                                onBookmarkTap, // Add bookmark toggle logic here
-                            child: Padding(
-                              padding: EdgeInsets.all(
-                                  setResponsiveSize(context, baseSize: 5)),
-                              child: Icon(
-                                bookmarkIcon, // Display correct bookmark icon
-                                color: color.valid,
-                                size: setResponsiveSize(context, baseSize: 20),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Gap(setResponsiveSize(context, baseSize: 5)),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Gap(setResponsiveSize(context, baseSize: 10)),
-              Text(
-                title,
-                maxLines: 1,
-                softWrap: false,
-                overflow: TextOverflow.ellipsis,
-                style: style.displaySmall(context,
-                    color: color.primaryhigh,
-                    fontsize: setResponsiveSize(context, baseSize: 15),
-                    fontweight: FontWeight.w600),
-              ),
-              Gap(setResponsiveSize(context, baseSize: 3)),
-              Text(
-                description,
-                maxLines: 1,
-                softWrap: false,
-                overflow: TextOverflow.ellipsis,
-                style: style.displaySmall(context,
-                    color: color.darkGrey,
-                    fontsize: setResponsiveSize(context, baseSize: 13),
-                    fontweight: FontWeight.w400),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPlantCard(
+  Widget _PopularHerbalPlantCard(
       BuildContext context, PlantData plant, DashboardController controller) {
     final bookmarkController = Get.put(BookmarkController());
+
     return Obx(() {
       bool isBookmarked = bookmarkController.isPlantBookmarked(plant);
       return GestureDetector(
         onTap: () => controller.selectPlant(plant, context),
         child: Stack(
           children: [
-            _buildCard(
-              context,
-              plant.plantImages[0],
-              plant.plantName,
-              plant.scientificName,
-              isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
-              () {
+            PopularHerbalPlantCard(
+              imagePath: plant.plantImages[0],
+              title: plant.plantName,
+              description: plant.scientificName,
+              bookmarkIcon:
+                  isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
+              onBookmarkTap: () {
+                if (isBookmarked) {
+                  bookmarkController.removeBookmark(plant, context);
+                } else {
+                  bookmarkController.addBookmark(plant);
+                }
+              },
+            )
+          ],
+        ),
+      );
+    });
+  }
+
+  Widget _RecommendedHerbalPlantCard(
+    BuildContext context,
+    PlantData plant,
+    DashboardController controller,
+  ) {
+    final bookmarkController = Get.put(BookmarkController());
+
+    return Obx(() {
+      bool isBookmarked = bookmarkController.isPlantBookmarked(plant);
+      return GestureDetector(
+        onTap: () => controller.selectPlant(plant, context),
+        child: Stack(
+          children: [
+            RecommendedPlantCard(
+              imagePath: plant.plantImages[0],
+              title: plant.plantName,
+              description: plant.scientificName,
+              bookmarkIcon:
+                  isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
+              onBookmarkTap: () {
                 if (isBookmarked) {
                   bookmarkController.removeBookmark(plant, context);
                 } else {
@@ -396,9 +393,12 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
     });
   }
 
-  Widget _buildRemedyCard(
-      BuildContext context, RemedyInfo remedy, DashboardController controller) {
+  Widget _buildRemedyCard(BuildContext context, RemedyInfo remedy,
+      DashboardController controller, double rating) {
     final bookmarkController = Get.put(BookmarkController());
+
+    // Call fetchRating when the widget is built
+
     return Obx(() {
       bool isBookmarked = bookmarkController.isRemedyBookmarked(remedy);
 
@@ -406,19 +406,20 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
         onTap: () => controller.selectRemedy(remedy, context),
         child: Stack(
           children: [
-            _buildCard(
-              context,
-              remedy.remedyImages[0],
-              remedy.remedyName,
-              remedy.description,
-              isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
-              () {
+            RemedyPlantCard(
+              imagePath: remedy.remedyImages[0],
+              title: remedy.remedyName,
+              description: remedy.remedyType,
+              bookmarkIcon:
+                  isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
+              onBookmarkTap: () {
                 if (isBookmarked) {
                   bookmarkController.removeRemedyBookmark(remedy, context);
                 } else {
                   bookmarkController.addRemedyBookmark(remedy);
                 }
               },
+              rating: rating,
             ),
           ],
         ),

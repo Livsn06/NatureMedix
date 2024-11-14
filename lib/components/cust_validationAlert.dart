@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 import 'package:naturemedix/utils/responsive.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 
-import '../routes/screen_routes.dart';
 
 class ValidationAlert extends StatefulWidget {
   final String title;

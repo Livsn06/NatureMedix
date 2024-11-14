@@ -30,6 +30,9 @@ class AppIcon {
   String get FACEBOOK => AppDirectory.icon('ICN2.png');
   String get TWITTER => AppDirectory.icon('ICN3.png');
   String get reset => AppDirectory.icon('ICN4.png');
+  String get noImage => AppDirectory.icon('ICN5.png');
+  String get privacy => AppDirectory.icon('ICN6.png');
+  String get FAQs => AppDirectory.icon('ICN7.png');
 }
 
 class AppGif {
@@ -112,14 +115,25 @@ class AppColor {
   Color get question => const Color(0xFF78B7D0);
   Color get warning => const Color(0xFFFFBF00);
   Color get white => const Color(0xFFF5F5F5);
+
+  Color get whiteOpacity10 => const Color(0xFFFFFFFF).withOpacity(0.1);
   Color get whiteOpacity20 => const Color(0xFFFFFFFF).withOpacity(0.2);
+  Color get whiteOpacity30 => const Color(0xFFFFFFFF).withOpacity(0.3);
   Color get whiteOpacity40 => const Color(0xFFFFFFFF).withOpacity(0.4);
+  Color get whiteOpacity50 => const Color(0xFFFFFFFF).withOpacity(0.5);
   Color get whiteOpacity60 => const Color(0xFFFFFFFF).withOpacity(0.6);
+  Color get whiteOpacity70 => const Color(0xFFFFFFFF).withOpacity(0.7);
   Color get whiteOpacity80 => const Color(0xFFFFFFFF).withOpacity(0.8);
 
   Color get dark => const Color(0xFF2B2A29);
-  Color get darkOpacity70 => const Color(0xFF000000).withOpacity(0.6);
+  Color get darkOpacity10 => const Color(0xFF000000).withOpacity(0.1);
+  Color get darkOpacity20 => const Color(0xFF000000).withOpacity(0.2);
+  Color get darkOpacity30 => const Color(0xFF000000).withOpacity(0.3);
+  Color get darkOpacity40 => const Color(0xFF000000).withOpacity(0.4);
   Color get darkOpacity50 => const Color(0xFF000000).withOpacity(0.5);
+  Color get darkOpacity60 => const Color(0xFF000000).withOpacity(0.6);
+  Color get darkOpacity70 => const Color(0xFF000000).withOpacity(0.7);
+  Color get darkOpacity80 => const Color(0xFF000000).withOpacity(0.8);
 }
 
 class AppStyle with CustomTextStyle, CustomButtonStyle {}

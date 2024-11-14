@@ -1,15 +1,11 @@
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../components/cust_loadingAlert.dart';
 import '../../components/cust_validationAlert.dart';
-import 'package:http/http.dart' as http;
-
 import '../../routes/screen_routes.dart';
 import '../../utils/_initApp.dart';
 import '../Home_Control/bookmark_controller.dart';
@@ -205,7 +201,7 @@ class LoginController extends GetxController {
     await s.setString('name', _name ?? 'Unknown');
     await s.setString('email', _email ?? 'Unknown email');
     await s.setString('uid', _uid ?? 'Unknown uid');
-    await s.setString('image_url', _imageUrl ?? 'default_image_url');
+    await s.setString('image_url', _imageUrl ?? Application().icon.noImage);
     await s.setString('provider', _provider ?? 'Unknown provider');
 
     update();

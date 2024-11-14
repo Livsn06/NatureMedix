@@ -1,20 +1,23 @@
 import 'package:get/get.dart';
-import 'package:naturemedix/screens/pages/bookmark_screen.dart';
-import 'package:naturemedix/screens/pages/control_screen.dart';
-import 'package:naturemedix/screens/pages/home_screens.dart';
-import 'package:naturemedix/screens/pages/scanner_screen.dart';
-import 'package:naturemedix/screens/pages/request_screen.dart';
-import 'package:naturemedix/screens/pages/profile_screen.dart';
-import 'package:naturemedix/screens/onboarding/getstatrted_screen.dart';
-import 'package:naturemedix/screens/splash/splash_screen.dart';
-import 'package:naturemedix/screens/authentication/loginAuth_screen.dart';
-import 'package:naturemedix/screens/authentication/registerAuth_screen.dart';
-import 'package:naturemedix/screens/onboarding/onboarding_screen.dart';
-import '../screens/authentication/forgetpass_screen.dart';
-import '../screens/pages/gridlist_screen.dart';
-import '../screens/pages/plantInfo_screen.dart';
-import '../screens/pages/remedy_screen.dart';
-import '../screens/pages/search_screen.dart';
+import 'package:naturemedix/screen/Auth/forgetPass_screen.dart';
+import 'package:naturemedix/screen/Auth/loginAuth_screen.dart';
+import 'package:naturemedix/screen/Auth/registerAuth_screen.dart';
+import 'package:naturemedix/screen/Info/gridlist_screen.dart';
+import 'package:naturemedix/screen/Info/plantInfo_screen.dart';
+import 'package:naturemedix/screen/Info/remedy_screen.dart';
+import 'package:naturemedix/screen/Info/search_screen.dart';
+import 'package:naturemedix/screen/Pages/bookmark_screen.dart';
+import 'package:naturemedix/screen/Pages/control_screen.dart';
+import 'package:naturemedix/screen/Pages/dashboard_screen.dart';
+import 'package:naturemedix/screen/Pages/profile_screen.dart';
+import 'package:naturemedix/screen/Pages/request_screen.dart';
+import 'package:naturemedix/screen/Pages/scanner_screen.dart';
+import 'package:naturemedix/screen/Resource/Faqs_screen.dart';
+import 'package:naturemedix/screen/Resource/about_screen.dart';
+import 'package:naturemedix/screen/Resource/privacy_screen.dart';
+import 'package:naturemedix/screen/Splash/splash_screen.dart';
+import 'package:naturemedix/screen/Start/getstatrted_screen.dart';
+import 'package:naturemedix/screen/Start/onboarding_screen.dart';
 
 class ScreenRouter {
   static const _dashboard = '/dashboard';
@@ -33,6 +36,9 @@ class ScreenRouter {
   static const _search = '/search';
   static const _forgetpassword = '/forgetpassword';
   static const _gridlist = '/gridlist';
+  static const _privacy = '/privacy';
+  static const _about = '/about';
+  static const _faq = '/faq';
 
   static String get getSplashscreenRoute => _splash;
   static String get getControlscreenRoute => _control;
@@ -50,6 +56,9 @@ class ScreenRouter {
   static String get getSearchRoute => _search;
   static String get getGridListRoute => _gridlist;
   static String get getForgetPasswordRoute => _forgetpassword;
+  static String get getPrivacyRoute => _privacy;
+  static String get getAboutRoute => _about;
+  static String get getFaqRoute => _faq;
 
   static List<GetPage> routes = [
     GetPage(
@@ -151,6 +160,24 @@ class ScreenRouter {
         title: Get.arguments['title'],
         plantList: Get.arguments['plantList'],
       ),
+      preventDuplicates: true,
+      transitionDuration: 500.milliseconds,
+    ),
+    GetPage(
+      name: _privacy,
+      page: () => const PrivacyPolicyScreen(),
+      preventDuplicates: true,
+      transitionDuration: 500.milliseconds,
+    ),
+    GetPage(
+      name: _about,
+      page: () => const AboutScreen(),
+      preventDuplicates: true,
+      transitionDuration: 500.milliseconds,
+    ),
+    GetPage(
+      name: _faq,
+      page: () => const FaqsScreen(),
       preventDuplicates: true,
       transitionDuration: 500.milliseconds,
     ),

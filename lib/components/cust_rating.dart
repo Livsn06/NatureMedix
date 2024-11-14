@@ -1,19 +1,17 @@
-// cust_rating.dart
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:naturemedix/utils/responsive.dart';
-import 'package:naturemedix/utils/_initApp.dart';
-
-import '../models/plant_info.dart';
+import 'package:naturemedix/models/remedy_info.dart';
+import 'package:naturemedix/Utils/_initApp.dart';
+import 'package:naturemedix/Utils/responsive.dart';
 
 class CustRating extends StatefulWidget {
   final Function(double rating) onRatingSubmit;
-  final PlantData plant;
+  final RemedyInfo remedy;
 
   const CustRating({
     super.key,
     required this.onRatingSubmit,
-    required this.plant,
+    required this.remedy,
     required num initialRating,
   });
 
@@ -75,7 +73,7 @@ class _CustRatingState extends State<CustRating> with Application {
                   children: [
                     Gap(setResponsiveSize(context, baseSize: 20)),
                     Text(
-                      'RATE ${widget.plant.plantName.toUpperCase()}',
+                      'RATE ${widget.remedy.remedyName.toUpperCase()}',
                       textAlign: TextAlign.center,
                       style: style.displaySmall(
                         context,

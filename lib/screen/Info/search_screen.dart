@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:naturemedix/components/cust_tilelist.dart';
 import 'package:naturemedix/controllers/Home_Control/dashboard_controller.dart';
 import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
@@ -218,7 +217,6 @@ class _SearchScreenState extends State<SearchScreen> with Application {
                                     ),
                                   ),
                                 )),
-
                             ...filteredRemedies.map((remedy) => ListTile(
                                   leading: ClipRRect(
                                     borderRadius: BorderRadius.circular(

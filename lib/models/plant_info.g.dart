@@ -23,7 +23,7 @@ class PlantDataAdapter extends TypeAdapter<PlantData> {
       description: fields[3] as String,
       treatments: (fields[4] as List).cast<String>(),
       remedyList: (fields[5] as List).cast<RemedyInfo>(),
-      rating: fields[6] as double,
+      bookmarkedAt: fields[6] as DateTime?,
     );
   }
 
@@ -44,7 +44,7 @@ class PlantDataAdapter extends TypeAdapter<PlantData> {
       ..writeByte(5)
       ..write(obj.remedyList)
       ..writeByte(6)
-      ..write(obj.rating);
+      ..write(obj.bookmarkedAt);
   }
 
   @override

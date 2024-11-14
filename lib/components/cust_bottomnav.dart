@@ -94,7 +94,7 @@ class ButtomNav extends StatelessWidget with Application {
     return [
       Icons.home_outlined,
       FontAwesomeIcons.bookmark,
-      Icons.camera_alt_outlined,
+      Icons.center_focus_weak_rounded,
       FontAwesomeIcons.squarePlus,
       FontAwesomeIcons.user,
     ][index];
@@ -104,13 +104,13 @@ class ButtomNav extends StatelessWidget with Application {
     return [
       Icons.home_rounded,
       FontAwesomeIcons.solidBookmark,
-      FontAwesomeIcons.cameraAlt,
+      Icons.center_focus_weak,
       FontAwesomeIcons.solidSquarePlus,
       FontAwesomeIcons.solidUser,
     ][index];
   }
 
   double _getIconSize(int index) {
-    return [34.0, 22.0, 40.0, 27.0, 23.0][index];
+    return [34.0, 22.0, 45.0, 27.0, 23.0][index];
   }
 }

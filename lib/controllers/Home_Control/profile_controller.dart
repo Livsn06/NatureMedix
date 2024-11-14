@@ -31,11 +31,23 @@ class ProfileController extends GetxController {
     super.onInit();
 
     profileData = [
-      {'icon': Icons.edit, 'label': 'Edit Profile Name', 'action': () {}},
+      {'icon': Icons.edit, 'label': 'Edit Profile', 'action': () {}},
       {'icon': Icons.history, 'label': 'History', 'action': () {}},
-      {'icon': Icons.lock, 'label': 'Change Password', 'action': () {}},
-      {'icon': Icons.email, 'label': 'Change Email Address', 'action': () {}},
-      {'icon': Icons.settings, 'label': 'Settings', 'action': () {}},
+      {
+        'icon': Icons.lock,
+        'label': 'Privacy Policy',
+        'action': () => Get.toNamed(ScreenRouter.getPrivacyRoute)
+      },
+      {
+        'icon': Icons.question_answer,
+        'label': 'FAQ\'s',
+        'action': () => Get.toNamed(ScreenRouter.getFaqRoute)
+      },
+      {
+        'icon': Icons.info_outline,
+        'label': 'About Us',
+        'action': () => Get.toNamed(ScreenRouter.getAboutRoute)
+      },
       {
         'icon': Icons.logout,
         'label': 'Logout',

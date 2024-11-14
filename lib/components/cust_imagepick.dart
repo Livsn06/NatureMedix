@@ -57,13 +57,13 @@ class ImagePickerDialog extends StatelessWidget with Application {
                   Gap(setResponsiveSize(context, baseSize: 10)),
                   Text('Photo Library',
                       textAlign: TextAlign.center,
-                      style: style.displaySmall(context,
+                      style: style.smallText(context,
                           color: Application().color.dark,
                           fontsize: 15,
-                          fontweight: FontWeight.w400)),
+                          fontweight: FontWeight.w500)),
                 ],
               ),
-              Gap(setResponsiveSize(context, baseSize: 35)),
+              Gap(setResponsiveSize(context, baseSize: 60)),
               Column(
                 children: [
                   InkWell(
@@ -89,10 +89,10 @@ class ImagePickerDialog extends StatelessWidget with Application {
                   Gap(setResponsiveSize(context, baseSize: 10)),
                   Text('Take Photo',
                       textAlign: TextAlign.center,
-                      style: style.displaySmall(context,
+                      style: style.smallText(context,
                           color: Application().color.dark,
                           fontsize: 15,
-                          fontweight: FontWeight.w400)),
+                          fontweight: FontWeight.w500)),
                 ],
               )
             ],
