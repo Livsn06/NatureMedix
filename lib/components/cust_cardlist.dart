@@ -10,7 +10,8 @@ class BaseCard extends StatelessWidget with Application {
   final String description;
   final IconData bookmarkIcon;
   final VoidCallback onBookmarkTap;
-  final double? rating; // Make rating optional
+  final double? rating;
+  final int? totalReactions;
 
   const BaseCard({
     super.key,
@@ -19,7 +20,8 @@ class BaseCard extends StatelessWidget with Application {
     required this.description,
     required this.bookmarkIcon,
     required this.onBookmarkTap,
-    this.rating, // Optional rating
+    this.rating,
+    this.totalReactions,
   });
 
   @override
@@ -73,7 +75,7 @@ class BaseCard extends StatelessWidget with Application {
                       ],
                     ),
                   ),
-                  if (rating != null)
+                  if (rating != null || totalReactions != null)
                     Positioned(
                       bottom: setResponsiveSize(context, baseSize: 5),
                       right: setResponsiveSize(context, baseSize: 4),
@@ -82,22 +84,64 @@ class BaseCard extends StatelessWidget with Application {
                         elevation: setResponsiveSize(context, baseSize: 3),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
-                              setResponsiveSize(context, baseSize: 5)),
+                            setResponsiveSize(context, baseSize: 5),
+                          ),
                         ),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
-                              vertical: setResponsiveSize(context, baseSize: 6),
-                              horizontal:
-                                  setResponsiveSize(context, baseSize: 10)),
-                          child: Text(
-                            rating != null
-                                ? '⭐ ${rating!.toStringAsFixed(1)}'
-                                : '',
-                            style: style.displaySmall(context,
-                                color: color.white,
-                                fontsize:
-                                    setResponsiveSize(context, baseSize: 12),
-                                fontweight: FontWeight.w600),
+                            vertical: setResponsiveSize(context, baseSize: 6),
+                            horizontal:
+                                setResponsiveSize(context, baseSize: 10),
+                          ),
+                          child: Row(
+                            children: [
+                              if (rating != null) ...[
+                                Icon(
+                                  Icons.star,
+                                  color: color.warning,
+                                  size:
+                                      setResponsiveSize(context, baseSize: 18),
+                                ),
+                                SizedBox(
+                                    width: setResponsiveSize(context,
+                                        baseSize: 4)),
+                                Text(
+                                  rating!.toStringAsFixed(1),
+                                  style: style.displaySmall(
+                                    context,
+                                    color: color.white,
+                                    fontsize: setResponsiveSize(context,
+                                        baseSize: 12),
+                                    fontweight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                              if (rating != null && totalReactions != null)
+                                SizedBox(
+                                    width: setResponsiveSize(context,
+                                        baseSize: 10)),
+                              if (totalReactions != null) ...[
+                                Icon(
+                                  Icons.favorite,
+                                  color: color.invalid,
+                                  size:
+                                      setResponsiveSize(context, baseSize: 18),
+                                ),
+                                SizedBox(
+                                    width: setResponsiveSize(context,
+                                        baseSize: 4)),
+                                Text(
+                                  '$totalReactions',
+                                  style: style.displaySmall(
+                                    context,
+                                    color: color.white,
+                                    fontsize: setResponsiveSize(context,
+                                        baseSize: 12),
+                                    fontweight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ],
                           ),
                         ),
                       ),
@@ -181,11 +225,13 @@ class PopularHerbalPlantCard extends BaseCard {
     required String description,
     required IconData bookmarkIcon,
     required VoidCallback onBookmarkTap,
+    required int totalReactions,
   }) : super(
           imagePath: imagePath,
           title: title,
           description: description,
           bookmarkIcon: bookmarkIcon,
           onBookmarkTap: onBookmarkTap,
+          totalReactions: totalReactions,
         );
 }

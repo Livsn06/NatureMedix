@@ -179,8 +179,10 @@ class _GridlistScreenState extends State<GridlistScreen> with Application {
                           itemBuilder: (context, index) {
                             final plant = widget.plantList[index];
                             return FutureBuilder<double>(
-                              future: plantInfoController
-                                  .getOverallRating(plant.plantName),
+                              future: Future<double>.value(plantInfoController
+                                      .plantReactions[plant.plantName]?.value
+                                      .toDouble() ??
+                                  0.0),
                               builder: (context, snapshot) {
                                 return InkWell(
                                   onTap: () =>

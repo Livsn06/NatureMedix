@@ -75,11 +75,4 @@ class DashboardController extends GetxController {
       },
     );
   }
-
-  final plantController = Get.put(PlantInfoController());
-  var remedyRating = Rx<double>(0.0);
-
-  Future<void> fetchRating(String remedyName) async {
-    remedyRating.value = await plantController.getOverallRating(remedyName);
-  }
 }

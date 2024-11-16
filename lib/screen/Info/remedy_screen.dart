@@ -21,27 +21,10 @@ class _RemedyInfoScreenState extends State<RemedyInfoScreen> with Application {
   final PageController _pageController = PageController(initialPage: 0);
   final PlantInfoController plantInfoController =
       Get.put(PlantInfoController());
-  double _overallRating = 0.0;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadOverallRating();
-  }
-
-  Future<void> _loadOverallRating() async {
-    double rating =
-        await plantInfoController.getOverallRating(widget.remedy.remedyName);
-    if (mounted) {
-      setState(() {
-        _overallRating = rating;
-      });
-    }
-  }
 
   void _submitRating(double rating) async {
     await plantInfoController.saveRating(widget.remedy.remedyName, rating);
-    await _loadOverallRating();
+    plantInfoController.updateRemedyRating(widget.remedy.remedyName, rating);
   }
 
   @override
@@ -155,36 +138,47 @@ class _RemedyInfoScreenState extends State<RemedyInfoScreen> with Application {
                             builder: (context) {
                               return CustRating(
                                 remedy: widget.remedy,
-                                initialRating: _overallRating,
+                                initialRating: (plantInfoController
+                                        .remedyRatings[widget.remedy.remedyName]
+                                        ?.value ??
+                                    0),
                                 onRatingSubmit: _submitRating,
                               );
                             },
                           );
                         },
-                        child: Row(
-                          children: [
-                            for (int i = 1; i <= 5; i++)
-                              Icon(
-                                Icons.star,
-                                color: i <= _overallRating
-                                    ? color.warning
-                                    : color.darkGrey,
-                                size: setResponsiveSize(context, baseSize: 17),
+                        child: Obx(() {
+                          return Row(
+                            children: [
+                              for (int i = 1; i <= 5; i++)
+                                Icon(
+                                  Icons.star,
+                                  color: i <=
+                                          (plantInfoController
+                                                  .remedyRatings[
+                                                      widget.remedy.remedyName]
+                                                  ?.value ??
+                                              0)
+                                      ? color.warning
+                                      : color.darkGrey,
+                                  size:
+                                      setResponsiveSize(context, baseSize: 17),
+                                ),
+                              Gap(setResponsiveSize(context, baseSize: 10)),
+                              Text(
+                                '${plantInfoController.remedyRatings[widget.remedy.remedyName]?.value ?? 0.0}',
+                                style: style.displaySmall(
+                                  context,
+                                  color: color.primary,
+                                  fontsize:
+                                      setResponsiveSize(context, baseSize: 13),
+                                  fontweight: FontWeight.w400,
+                                  fontstyle: FontStyle.italic,
+                                ),
                               ),
-                            Gap(setResponsiveSize(context, baseSize: 10)),
-                            Text(
-                              _overallRating.toStringAsFixed(1),
-                              style: style.displaySmall(
-                                context,
-                                color: color.primary,
-                                fontsize:
-                                    setResponsiveSize(context, baseSize: 13),
-                                fontweight: FontWeight.w400,
-                                fontstyle: FontStyle.italic,
-                              ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          );
+                        }),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 10)),
                       Text(
@@ -288,7 +282,7 @@ class _RemedyInfoScreenState extends State<RemedyInfoScreen> with Application {
                       ),
                       Gap(setResponsiveSize(context, baseSize: 25)),
                       Text(
-                        '▣ HOW TO USED:',
+                        '▣ HOW TO USE:',
                         style: style.displaySmall(context,
                             color: color.primarylow,
                             fontsize: setResponsiveSize(context, baseSize: 13),
@@ -306,7 +300,6 @@ class _RemedyInfoScreenState extends State<RemedyInfoScreen> with Application {
                                       fontsize: setResponsiveSize(context,
                                           baseSize: 13),
                                       fontweight: FontWeight.w400,
-                                      height: 1.8,
                                     ),
                                   ))
                               .toList(),

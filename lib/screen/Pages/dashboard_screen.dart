@@ -49,7 +49,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
       BuildContext context, DashboardController controller) {
     return [
       if (_isCategorySelected(controller, 'All', 'Future Remedies'))
-        _buildFutureRemedies(context),
+        _buildFutureRemedies(context, controller),
       if (_isCategorySelected(controller, 'All', 'Plants'))
         _buildPopularHerbalPlant(context, controller),
       if (_isCategorySelected(controller, 'All', 'Recommendation'))
@@ -195,72 +195,98 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
     );
   }
 
-  Widget _buildFutureRemedies(BuildContext context) {
-    return FutureBuilder(
-      future: Future.wait(
-        plantList
-            .expand((plant) => plant.remedyList.map((remedy) =>
-                plantController.getOverallRating(remedy.remedyName)))
-            .toList(),
-      ),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          List<double>? ratings = snapshot.data;
+  Widget _buildFutureRemedies(
+      BuildContext context, DashboardController controller) {
+    final PlantInfoController plantInfoController = Get.find();
 
-          // Create a list of remedies with their ratings
-          List<Map<String, dynamic>> remediesWithRatings = [];
-          int ratingIndex = 0;
-          for (var plant in plantList) {
-            for (var remedy in plant.remedyList) {
-              remediesWithRatings.add({
-                'remedy': remedy,
-                'rating': ratings![ratingIndex++],
-              });
-            }
-          }
+    return Obx(() {
+      // Prepare the list of remedies with their respective ratings
+      List<Map<String, dynamic>> remediesWithRatings = [];
 
-          // Sort the list in descending order based on rating
-          remediesWithRatings
-              .sort((a, b) => b['rating'].compareTo(a['rating']));
-
-          return _buildSection(
-            context,
-            'Future Remedies',
-            remediesWithRatings.map((item) {
-              var remedy = item['remedy'];
-              var rating = item['rating'];
-              return _buildRemedyCard(context, remedy, controller, rating);
-            }).toList(),
-          );
-        } else {
-          // Default section with a rating of 0.0 if data hasn't loaded
-          return _buildSection(
-            context,
-            'Future Remedies',
-            plantList
-                .expand((plant) => plant.remedyList.map((remedy) =>
-                    _buildRemedyCard(context, remedy, controller, 0.0)))
-                .toList(),
-          );
+      for (var plant in plantList) {
+        for (var remedy in plant.remedyList) {
+          remediesWithRatings.add({
+            'remedy': remedy,
+            'rating': plantInfoController
+                    .overallRatingForRemedy[remedy.remedyName]?.value ??
+                0.0, // Default rating if none
+          });
         }
-      },
-    );
-  }
+      }
 
-  // To refresh the ratings, call setState and rebuild the widget
-  void refreshRatings() {
-    setState(() {});
+      // Sort the remedies list by the rating in descending order
+      remediesWithRatings.sort((a, b) {
+        double ratingA = a['rating'];
+        double ratingB = b['rating'];
+        return ratingB.compareTo(ratingA); // Descending order
+      });
+
+      // Build the section with the sorted remedies list
+      return _buildSection(
+        context,
+        'Future Remedies',
+        remediesWithRatings.map((item) {
+          var remedy = item['remedy'];
+          var rating = item['rating'];
+
+          return Obx(() {
+            // Dynamically fetch the rating for each remedy
+            double currentRating = plantInfoController
+                    .overallRatingForRemedy[remedy.remedyName]?.value ??
+                rating;
+
+            return _buildRemedyCard(
+              context,
+              remedy,
+              controller,
+              currentRating, // Pass the specific rating for the remedy
+            );
+          });
+        }).toList(),
+      );
+    });
   }
 
   Widget _buildPopularHerbalPlant(
       BuildContext context, DashboardController controller) {
-    List<PlantData> popularPlant = List.from(plantList);
-    return _buildSection(
+    final PlantInfoController plantInfoController = Get.find();
+
+    return Obx(() {
+      // Create a list of popular plants
+      List<PlantData> popularPlant = List.from(plantList);
+
+      // Sort the list based on reaction count in descending order
+      popularPlant.sort((a, b) {
+        int reactionA =
+            plantInfoController.plantReactions[a.plantName]?.value ?? 0;
+        int reactionB =
+            plantInfoController.plantReactions[b.plantName]?.value ?? 0;
+        return reactionB.compareTo(reactionA); // Sort in descending order
+      });
+
+      // Update reaction counts for each plant dynamically
+      for (var plant in popularPlant) {
+        plantInfoController.updateReactionCount(plant.plantName);
+      }
+
+      // Build the section with the sorted plants list
+      return _buildSection(
         context,
         'Popular Herbal Plant',
-        popularPlant
-            .map((plant) => _PopularHerbalPlantCard(context, plant, controller))
-            .toList());
+        popularPlant.map((plant) {
+          // Retrieve reaction count using the plant's name
+          int reactionCount =
+              plantInfoController.plantReactions[plant.plantName]?.value ?? 0;
+
+          return _PopularHerbalPlantCard(
+            context,
+            plant,
+            controller,
+            reactionCount, // Pass the specific reaction count
+          );
+        }).toList(),
+      );
+    });
   }
 
   Widget _buildRecommendedHerbalPlant(
@@ -330,8 +356,8 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
     );
   }
 
-  Widget _PopularHerbalPlantCard(
-      BuildContext context, PlantData plant, DashboardController controller) {
+  Widget _PopularHerbalPlantCard(BuildContext context, PlantData plant,
+      DashboardController controller, int totalReactions) {
     final bookmarkController = Get.put(BookmarkController());
 
     return Obx(() {
@@ -341,19 +367,19 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
         child: Stack(
           children: [
             PopularHerbalPlantCard(
-              imagePath: plant.plantImages[0],
-              title: plant.plantName,
-              description: plant.scientificName,
-              bookmarkIcon:
-                  isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
-              onBookmarkTap: () {
-                if (isBookmarked) {
-                  bookmarkController.removeBookmark(plant, context);
-                } else {
-                  bookmarkController.addBookmark(plant);
-                }
-              },
-            )
+                imagePath: plant.plantImages[0],
+                title: plant.plantName,
+                description: plant.scientificName,
+                bookmarkIcon:
+                    isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
+                onBookmarkTap: () {
+                  if (isBookmarked) {
+                    bookmarkController.removeBookmark(plant, context);
+                  } else {
+                    bookmarkController.addBookmark(plant);
+                  }
+                },
+                totalReactions: totalReactions)
           ],
         ),
       );

@@ -24,6 +24,12 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
       Get.put(PlantInfoController());
 
   @override
+  void initState() {
+    super.initState();
+    plantInfoController.fetchReactionState(widget.plant.plantName);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GetBuilder<BookmarkController>(
       init: Get.put(BookmarkController()),
@@ -111,13 +117,12 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                   padding: EdgeInsets.only(
                       right: setResponsiveSize(context, baseSize: 20),
                       left: setResponsiveSize(context, baseSize: 20),
-                      top: setResponsiveSize(context, baseSize: 35),
+                      top: setResponsiveSize(context, baseSize: 30),
                       bottom: setResponsiveSize(context, baseSize: 40)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             widget.plant.plantName,
@@ -127,18 +132,28 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                                     setResponsiveSize(context, baseSize: 20),
                                 fontweight: FontWeight.w500),
                           ),
-                          IconButton(
-                            icon: Obx(() => Icon(
-                                  // Change the icon based on the toggle status
-                                  plantInfoController.isReacted.value
-                                      ? Icons.local_florist // Active icon
-                                      : Icons
-                                          .local_florist_outlined, // Inactive icon
-                                  color: color.primary,
+                          const Spacer(),
+                          InkWell(
+                            child: Obx(() => Material(
+                                  borderRadius: BorderRadius.circular(5),
+                                  elevation: 3,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(setResponsiveSize(
+                                        context,
+                                        baseSize: 10)),
+                                    child: Icon(
+                                      // Change the icon based on the toggle status
+                                      plantInfoController.isReacted.value
+                                          ? Icons.favorite // Active icon
+                                          : Icons
+                                              .favorite_outline, // Inactive icon
+                                      color: color.primary,
+                                    ),
+                                  ),
                                 )),
-                            onPressed: () {
-                              plantInfoController.toggleReactButton(widget.plant
-                                  .plantName); // Toggle icon state on press
+                            onTap: () {
+                              plantInfoController
+                                  .toggleReactButton(widget.plant.plantName);
                             },
                           ),
                         ],
