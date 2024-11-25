@@ -1,22 +1,22 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:naturemedix/components/cust_ConfirmAlert.dart';
-import 'package:naturemedix/utils/_initApp.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
-import '../../components/cust_imagepick.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../models/client_data.dart';
+import '../../components/cust_imagepick.dart';
+import '../../components/cust_ConfirmAlert.dart';
+import '../../utils/_initApp.dart';
 
 class ClientRequestController extends GetxController {
   RxList<ClientData> requests = <ClientData>[].obs;
   var isListVisible = true.obs;
-  Rx<File?> fileToDisplay = Rx<File?>(null);
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -28,6 +28,64 @@ class ClientRequestController extends GetxController {
     loadRequests();
   }
 
+  final indexImage = 0.obs;
+  final ImagePicker _picker = ImagePicker();
+  var selectedFiles = <File>[].obs;
+  var imagesData =
+      <Map<String, dynamic>>[].obs; // Stores image data (bytes and size)
+
+  Future<void> pickImages() async {
+    try {
+      // Clear the previously selected files to remove the preview
+      selectedFiles.clear();
+
+      final List<XFile>? selectedImages = await _picker.pickMultiImage();
+      if (selectedImages != null) {
+        List<Map<String, dynamic>> imagesDataList = [];
+
+        // Check if exactly one image is selected
+        if (selectedImages.length == 1) {
+          // Save single image as usual
+          File file = File(selectedImages.first.path);
+          Uint8List imageBytes = await file.readAsBytes();
+          int sizeInBytes = imageBytes.length;
+          double sizeInKB = sizeInBytes / 1024;
+
+          imagesDataList.add({
+            "bytes": imageBytes,
+            "size": sizeInKB.toStringAsFixed(2), // Size in KB
+            "file": file,
+          });
+
+          // Update the selected files with a single image
+          selectedFiles.value = [file];
+        } else if (selectedImages.length > 1) {
+          // Handle multiple image selection
+          for (var image in selectedImages) {
+            File file = File(image.path);
+            Uint8List imageBytes = await file.readAsBytes();
+            int sizeInBytes = imageBytes.length;
+            double sizeInKB = sizeInBytes / 1024;
+
+            imagesDataList.add({
+              "bytes": imageBytes,
+              "size": sizeInKB.toStringAsFixed(2), // Size in KB
+              "file": file,
+            });
+          }
+
+          // Update the selected files with all selected images
+          selectedFiles.value =
+              imagesDataList.map((e) => e["file"] as File).toList();
+        }
+
+        imagesData.value = imagesDataList; // Update image data list
+      }
+    } catch (e) {
+      print("Error picking images: $e");
+    }
+  }
+
   void toggleView(bool showList) {
     isListVisible.value = showList;
   }
@@ -36,13 +94,13 @@ class ClientRequestController extends GetxController {
   Future<void> createRequest({
     required String title,
     required String description,
-    required File image,
+    required List<File> images,
     required DateTime createdAt,
   }) async {
     var clientData = ClientData(
       title: title,
       description: description,
-      imagePath: image.path,
+      imagePaths: images.map((image) => image.path).toList(),
       createdAt: createdAt,
     );
 
@@ -55,7 +113,6 @@ class ClientRequestController extends GetxController {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
-    // Open a Hive box specific to the user's UID only once.
     userBox = await Hive.openBox(user.uid);
   }
 
@@ -65,7 +122,6 @@ class ClientRequestController extends GetxController {
 
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      // Save to Hive (local storage)
       final userBox = await Hive.openBox('userRequests');
       List<dynamic> userRequests = userBox.get(user.uid, defaultValue: []);
       userRequests.add(clientData.toMap());
@@ -73,7 +129,6 @@ class ClientRequestController extends GetxController {
 
       print("Request saved locally in Hive for user ${user.uid}");
 
-      // Save to Firestore (cloud storage)
       await _firestore.collection('users').doc(user.uid).set({
         'RequestList': FieldValue.arrayUnion([clientData.toMap()]),
       }, SetOptions(merge: true));
@@ -87,16 +142,13 @@ class ClientRequestController extends GetxController {
       try {
         if (userBox == null) await openUserBox();
         if (userBox != null) {
-          // Load requests from Hive (local storage)
           List<dynamic> userRequestsMap =
               userBox!.get(user.uid, defaultValue: []);
-
           if (userRequestsMap.isNotEmpty) {
             requests.addAll(
                 userRequestsMap.map((e) => ClientData.fromMap(e)).toList());
           }
 
-          // Load requests from Firestore (cloud storage)
           final docSnapshot =
               await _firestore.collection('users').doc(user.uid).get();
           if (docSnapshot.exists) {
@@ -107,7 +159,6 @@ class ClientRequestController extends GetxController {
               final firestoreRequestData =
                   firestoreRequests.map((e) => ClientData.fromMap(e)).toList();
 
-              // Add unique Firestore data to avoid duplication
               for (var request in firestoreRequestData) {
                 if (!requests.any((req) =>
                     req.title == request.title &&
@@ -128,26 +179,9 @@ class ClientRequestController extends GetxController {
   bool validateRequest({
     required String title,
     required String description,
-    required File? image,
+    required List<File> images,
   }) {
-    return title.isNotEmpty && description.isNotEmpty && image != null;
-  }
-
-  Future<void> pickFile() async {
-    try {
-      final result = await FilePicker.platform.pickFiles(
-        type: FileType.image,
-        allowMultiple: false,
-      );
-
-      if (result != null && result.files.isNotEmpty) {
-        fileToDisplay.value = File(result.files.first.path!);
-      } else {
-        print('No file selected');
-      }
-    } catch (e) {
-      print('Error picking file: $e');
-    }
+    return title.isNotEmpty && description.isNotEmpty && images.isNotEmpty;
   }
 
   void submitRequest(BuildContext context) async {
@@ -157,12 +191,12 @@ class ClientRequestController extends GetxController {
     if (validateRequest(
       title: title,
       description: description,
-      image: fileToDisplay.value,
+      images: selectedFiles,
     )) {
       Get.snackbar(
-        'Successfully ',
+        'Success',
         'Request submitted successfully!',
-        icon: Icon(Icons.error_outline, color: Application().color.white),
+        icon: Icon(Icons.check_circle, color: Application().color.white),
         colorText: Application().color.white,
         snackPosition: SnackPosition.TOP,
         backgroundColor: Application().color.primary,
@@ -171,7 +205,7 @@ class ClientRequestController extends GetxController {
       await createRequest(
         title: title,
         description: description,
-        image: fileToDisplay.value!,
+        images: selectedFiles,
         createdAt: DateTime.now(),
       );
 
@@ -180,7 +214,7 @@ class ClientRequestController extends GetxController {
     } else {
       Get.snackbar(
         'Form Incomplete',
-        'Please fill all fields and select an image.',
+        'Please fill all fields and select at least three image.',
         icon: Icon(Icons.error_outline, color: Application().color.white),
         colorText: Application().color.white,
         snackPosition: SnackPosition.TOP,
@@ -192,7 +226,7 @@ class ClientRequestController extends GetxController {
   void clearForm() {
     titleController.clear();
     descriptionController.clear();
-    fileToDisplay.value = null;
+    selectedFiles.clear();
   }
 
   final borderCust = OutlineInputBorder(
@@ -251,11 +285,14 @@ class ClientRequestController extends GetxController {
   }
 
   Future<void> showImagePicker(
-      BuildContext context, Function(XFile?) onImageSelected) async {
+      BuildContext context, Function(XFile?) onCaptureImage) async {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return ImagePickerDialog(onImageSelected: onImageSelected);
+        return ImagePickerDialog(
+          onCaptureImage: onCaptureImage,
+          onSelectMultiple: () => pickImages(),
+        );
       },
     );
   }

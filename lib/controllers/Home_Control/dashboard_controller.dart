@@ -63,7 +63,7 @@ class DashboardController extends GetxController {
 
   final borderCust = OutlineInputBorder(
     borderSide: BorderSide(color: Application().color.white),
-    borderRadius: BorderRadius.circular(15),
+    borderRadius: BorderRadius.circular(10),
   );
 
   void gotoSeeAll(List<PlantData> plantList, String title) {

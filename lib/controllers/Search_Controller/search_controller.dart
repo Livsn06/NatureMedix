@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix/data/PlantData/plant_data.dart';
@@ -17,6 +18,41 @@ class SearchingController extends GetxController {
     super.onInit();
     searchController.addListener(_filterResults);
   }
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+
+  Future<void> incrementSearchCount({
+    required String name,
+    required String type,
+  }) async {
+    try {
+      // Reference the document for the searched item
+      final searchRef = _firestore.collection('most_search').doc(name);
+
+      // Perform a transaction to increment the count safely
+      await _firestore.runTransaction((transaction) async {
+        final snapshot = await transaction.get(searchRef);
+
+        if (snapshot.exists) {
+          // If the document exists, increment the count
+          transaction.update(searchRef, {
+            'count': FieldValue.increment(1),
+          });
+        } else {
+          // If the document does not exist, create it with initial values
+          transaction.set(searchRef, {
+            'type': type,
+            'count': 1,
+          });
+        }
+      });
+    } catch (e) {
+      print("Error incrementing search count: $e");
+    }
+  }
+
+
 
   void _filterResults() {
     final query = searchController.text.toLowerCase();

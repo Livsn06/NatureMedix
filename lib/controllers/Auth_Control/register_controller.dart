@@ -93,8 +93,7 @@ class RegisterController extends GetxController {
 
         // Show success alert
         showValidationAlert(
-            context, 'Successful', 'Successfully $msgType', msgType, true,
-             () {
+            context, 'Successful', 'Successfully $msgType', msgType, true, () {
           Get.toNamed(ScreenRouter.getLoginRoute);
         });
       } else {
@@ -127,7 +126,7 @@ class RegisterController extends GetxController {
       }
 
       // Show error alert
-      showValidationAlert(context, 'Opps...', msgtext, msgType, false, (){
+      showValidationAlert(context, 'Opps...', msgtext, msgType, false, () {
         Navigator.pop(context);
       });
     }

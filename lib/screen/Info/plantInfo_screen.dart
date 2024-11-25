@@ -133,28 +133,29 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                                 fontweight: FontWeight.w500),
                           ),
                           const Spacer(),
-                          InkWell(
-                            child: Obx(() => Material(
-                                  borderRadius: BorderRadius.circular(5),
-                                  elevation: 3,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(setResponsiveSize(
-                                        context,
-                                        baseSize: 10)),
-                                    child: Icon(
-                                      // Change the icon based on the toggle status
-                                      plantInfoController.isReacted.value
-                                          ? Icons.favorite // Active icon
-                                          : Icons
-                                              .favorite_outline, // Inactive icon
-                                      color: color.primary,
-                                    ),
+                          Obx(
+                            () => InkWell(
+                              child: Material(
+                                borderRadius: BorderRadius.circular(5),
+                                elevation: 3,
+                                child: Padding(
+                                  padding: EdgeInsets.all(
+                                      setResponsiveSize(context, baseSize: 10)),
+                                  child: Icon(
+                                    // Change the icon based on the toggle status
+                                    plantInfoController.isReacted.value
+                                        ? Icons.favorite // Active icon
+                                        : Icons
+                                            .favorite_outline, // Inactive icon
+                                    color: color.primary,
                                   ),
-                                )),
-                            onTap: () {
-                              plantInfoController
-                                  .toggleReactButton(widget.plant.plantName);
-                            },
+                                ),
+                              ),
+                              onTap: () {
+                                plantInfoController
+                                    .toggleReactButton(widget.plant.plantName);
+                              },
+                            ),
                           ),
                         ],
                       ),

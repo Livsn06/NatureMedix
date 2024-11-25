@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:naturemedix/components/cust_carousel.dart';
 import 'package:naturemedix/controllers/PlantInfo_Control/plantInfos_controller.dart';
 import 'package:naturemedix/controllers/Home_Control/dashboard_controller.dart';
 import 'package:naturemedix/utils/_initApp.dart';
@@ -33,11 +34,20 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
         body: Column(
           children: [
             _buildHeader(context),
-            _buildCategoryChips(context),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
-                  children: _buildContent(context, controller),
+                  children: [
+                    _buildCategoryChips(context),
+                    RemedyPlantCarousel(
+                      remedies: plantList
+                          .map((plant) => plant.remedyList)
+                          .expand((remedies) => remedies)
+                          .toList(),
+                      plants: plantList,
+                    ),
+                    ..._buildContent(context, controller),
+                  ],
                 ),
               ),
             ),
@@ -138,7 +148,7 @@ class _DashboardScreenState extends State<DashboardScreen> with Application {
           onTap: () => controller.goToSearch(),
           child: Material(
             borderRadius:
-                BorderRadius.circular(setResponsiveSize(context, baseSize: 7)),
+                BorderRadius.circular(setResponsiveSize(context, baseSize: 10)),
             elevation: 4,
             child: TextFormField(
               enabled: false,

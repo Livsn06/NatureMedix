@@ -19,7 +19,7 @@ class ClientDataAdapter extends TypeAdapter<ClientData> {
     return ClientData(
       title: fields[0] as String,
       description: fields[1] as String,
-      imagePath: fields[2] as String,
+      imagePaths: (fields[2] as List).cast<String>(),
       createdAt: fields[3] as DateTime,
     );
   }
@@ -33,7 +33,7 @@ class ClientDataAdapter extends TypeAdapter<ClientData> {
       ..writeByte(1)
       ..write(obj.description)
       ..writeByte(2)
-      ..write(obj.imagePath)
+      ..write(obj.imagePaths)
       ..writeByte(3)
       ..write(obj.createdAt);
   }

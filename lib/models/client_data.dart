@@ -11,7 +11,7 @@ class ClientData extends HiveObject {
   final String description;
 
   @HiveField(2)
-  final String imagePath;
+  final List<String> imagePaths;
 
   @HiveField(3)
   final DateTime createdAt;
@@ -19,7 +19,7 @@ class ClientData extends HiveObject {
   ClientData({
     required this.title,
     required this.description,
-    required this.imagePath,
+    required this.imagePaths,
     required this.createdAt,
   });
 
@@ -27,7 +27,7 @@ class ClientData extends HiveObject {
     return {
       'title': title,
       'description': description,
-      'imagePath': imagePath,
+      'imagePaths': imagePaths,
       'createdAt': createdAt.toIso8601String(),
     };
   }
@@ -36,7 +36,7 @@ class ClientData extends HiveObject {
     return ClientData(
       title: map['title'],
       description: map['description'],
-      imagePath: map['imagePath'],
+      imagePaths: List<String>.from(map['imagePaths']),
       createdAt: DateTime.parse(map['createdAt']),
     );
   }

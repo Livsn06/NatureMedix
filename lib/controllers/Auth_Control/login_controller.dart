@@ -18,6 +18,11 @@ class LoginController extends GetxController {
   String? _errorCode;
   String? _name;
   String? _email;
+  String? _gender;
+  String? _address;
+  String? _birthdate;
+  String? _phoneNumber;
+  String? _imageEmail;
   String? _uid;
   String? _imageUrl;
   String? _provider;
@@ -29,7 +34,12 @@ class LoginController extends GetxController {
   String? get email => _email;
   String? get uid => _uid;
   String? get imageUrl => _imageUrl;
+  String? get imageEmail => _imageEmail;
   String? get provider => _provider;
+  String? get gender => _gender;
+  String? get address => _address;
+  String? get birthdate => _birthdate;
+  String? get phoneNumber => _phoneNumber;
   bool get isSignedIn => _isSignedIn;
   String? get errorCode => _errorCode;
   bool get hasError => _hasError;
@@ -172,6 +182,10 @@ class LoginController extends GetxController {
         _email = data['email'];
         _imageUrl = data['image_url'];
         _provider = data['provider'];
+        _address = data['address'];
+        _birthdate = data['birthdate'];
+        _gender = data['gender'];
+        _phoneNumber = data['phoneNumber'];
       } else {
         print("User data does not exist");
       }
@@ -182,7 +196,7 @@ class LoginController extends GetxController {
     if (_uid != null) {
       final DocumentReference r =
           FirebaseFirestore.instance.collection("users").doc(_uid);
-      await r.set({
+      await r.update({
         "uid": _uid,
         "name": _name,
         "email": _email,
@@ -203,7 +217,11 @@ class LoginController extends GetxController {
     await s.setString('uid', _uid ?? 'Unknown uid');
     await s.setString('image_url', _imageUrl ?? Application().icon.noImage);
     await s.setString('provider', _provider ?? 'Unknown provider');
-
+    await s.setString('address', _address ?? 'Unknown address');
+    await s.setString('birthdate', _birthdate ?? 'Unknown birthdate');
+    await s.setString('gender', _gender ?? 'Unknown gender');
+    await s.setString('phoneNumber', _phoneNumber ?? 'Unknown phoneNumber');
+    await s.setString('imageEmail', _imageEmail ?? 'Unknown imageEmail');
     update();
   }
 
@@ -214,6 +232,11 @@ class LoginController extends GetxController {
     _imageUrl = s.getString('image_url');
     _uid = s.getString('uid');
     _provider = s.getString('provider');
+    _address = s.getString('address');
+    _birthdate = s.getString('birthdate');
+    _gender = s.getString('gender');
+    _phoneNumber = s.getString('phoneNumber');
+    _imageEmail = s.getString('imageEmail');
     update();
   }
 
@@ -299,4 +322,9 @@ class LoginController extends GetxController {
     }
     return null;
   }
+
+  final borderCust = OutlineInputBorder(
+    borderSide: BorderSide(color: Application().color.primarylow, width: 1.2),
+    borderRadius: BorderRadius.circular(6),
+  );
 }

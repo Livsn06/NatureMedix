@@ -155,112 +155,101 @@ class PlantInfoController extends GetxController {
     }
   }
 
-  // Fetch the rating for a specific remedy
-
   //# FOR REACT COUNTS
+
+  Future<void> toggleReactButton(String plantName) async {
+    await fetchReactionState(plantName);
+    isReacted.value = !isReacted.value;
+
+    await saveReaction(plantName);
+    await updateReactionCount(plantName);
+  }
 
   Future<void> fetchReactionState(String plantName) async {
     final user = _auth.currentUser;
     if (user == null) return;
 
     try {
-      // Check local Hive storage for cached data
+      // Set the default reaction state as false (favorite_outline)
+      isReacted.value = false;
+
+      // First check if the reaction state is in local cache
       if (userBox != null) {
         var cachedReaction = await userBox!
             .get('${user.uid}-reacted-$plantName', defaultValue: false);
-        if (cachedReaction != false) {
+        if (cachedReaction != null) {
           isReacted.value = cachedReaction;
-          return; // Skip Firestore if cached data is valid
+          return; // Return early if the state is already cached
         }
       }
-
-      // Fetch reaction data from Firestore
+      // If no cached value, fetch from Firestore
       final reactionRef = _firestore
-          .collection('plants')
+          .collection('plant_reacts')
           .doc(plantName)
           .collection('reactions')
           .doc(user.uid);
 
       DocumentSnapshot snapshot = await reactionRef.get();
-      if (snapshot.exists) {
-        isReacted.value = snapshot.get('reacted');
-        // Cache the state locally
-        if (userBox != null) {
-          await userBox!.put('${user.uid}-reacted-$plantName', isReacted.value);
-        }
-      } else {
-        isReacted.value = false; // Default state if no reaction exists
-      }
+      isReacted.value = snapshot.exists && snapshot.get('reacted') == true;
+
+      // Cache the fetched state
+      await userBox?.put('${user.uid}-reacted-$plantName', isReacted.value);
     } catch (e) {
-      print("Error fetching reaction state for $plantName: $e");
+      print("Error fetching reaction state: $e");
     }
   }
 
-  // Function to toggle the react button
-  Future<void> toggleReactButton(String plantName) async {
-    isReacted.value = !isReacted.value;
+// Toggle reaction state
+  Future<void> toggleReaction(String plantName) async {
+    isReacted.value != isReacted.value;
     await saveReaction(plantName);
-    await updateReactionCount(plantName);
   }
 
-  // Function to save the reaction to Firestore or Hive
+// Save reaction state to Firestore and update cache
   Future<void> saveReaction(String plantName) async {
     final user = _auth.currentUser;
     if (user == null) return;
 
-    if (isReacted.value) {
-      if (userBox != null) {
-        await userBox!.put('${user.uid}-reacted-$plantName', true);
-      }
-      try {
-        final reactionRef = _firestore
-            .collection('plants')
-            .doc(plantName)
-            .collection('reactions')
-            .doc(user.uid);
-        await reactionRef
-            .set({'reacted': true, 'timestamp': FieldValue.serverTimestamp()});
-      } catch (e) {
-        print("Error saving reaction: $e");
-      }
-    } else {
-      if (userBox != null) {
-        await userBox!.put('${user.uid}-reacted-$plantName', false);
-      }
-      try {
-        final reactionRef = _firestore
-            .collection('plants')
-            .doc(plantName)
-            .collection('reactions')
-            .doc(user.uid);
+    try {
+      final reactionRef = _firestore
+          .collection('plant_reacts')
+          .doc(plantName)
+          .collection('reactions')
+          .doc(user.uid);
+
+      if (isReacted.value) {
+        await reactionRef.set({
+          'reacted': true,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+      } else {
         await reactionRef.delete();
-      } catch (e) {
-        print("Error deleting reaction: $e");
       }
+
+      // Update local cache
+      await userBox?.put('${user.uid}-reacted-$plantName', isReacted.value);
+
+      // Update reaction count
+      await updateReactionCount(plantName);
+    } catch (e) {
+      print("Error saving reaction: $e");
     }
   }
 
-  // Method to count total reactions for a specific plant
+// Update total reaction count for a plant
   Future<void> updateReactionCount(String plantName) async {
     try {
       final reactionsQuery = await _firestore
-          .collection('plants')
+          .collection('plant_reacts')
           .doc(plantName)
           .collection('reactions')
           .get();
 
       int count = reactionsQuery.docs.length;
+      plantReactions[plantName] = RxInt(count);
 
-      // Store the reaction count in the map
-      if (!plantReactions.containsKey(plantName)) {
-        plantReactions[plantName] = RxInt(count);
-      } else {
-        plantReactions[plantName]?.value = count;
-      }
-
-      if (userBox != null) {
-        await userBox!.put('${plantName}-reactionCount', count);
-      }
+      // Cache the count locally
+      await userBox?.put('${plantName}-reactionCount', count);
     } catch (e) {
       print("Error updating reaction count: $e");
     }

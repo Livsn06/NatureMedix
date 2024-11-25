@@ -203,8 +203,13 @@ class _SearchScreenState extends State<SearchScreen> with Application {
                                     ),
                                   ),
                                   trailing: TextButton(
-                                    onPressed: () =>
-                                        dashControl.selectPlant(plant, context),
+                                    onPressed: () {
+                                      controller.incrementSearchCount(
+                                        name: plant.plantName,
+                                        type: 'plants',
+                                      );
+                                      dashControl.selectPlant(plant, context);
+                                    },
                                     child: Text(
                                       'View',
                                       style: style.displaySmall(
@@ -247,6 +252,10 @@ class _SearchScreenState extends State<SearchScreen> with Application {
                                   ),
                                   trailing: TextButton(
                                     onPressed: () {
+                                      controller.incrementSearchCount(
+                                        name: remedy.remedyName,
+                                        type: 'remedies',
+                                      );
                                       dashControl.selectRemedy(remedy, context);
                                     },
                                     child: Text(

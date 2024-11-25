@@ -180,6 +180,7 @@ class _RemedyInfoScreenState extends State<RemedyInfoScreen> with Application {
                           );
                         }),
                       ),
+                      const Divider(),
                       Gap(setResponsiveSize(context, baseSize: 10)),
                       Text(
                         'Remedy type: ${widget.remedy.remedyType}',

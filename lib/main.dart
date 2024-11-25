@@ -35,7 +35,7 @@ void main() async {
   await Hive.openBox('userBox');
   await Hive.openBox('bookmarkedPlants');
   await Hive.openBox('bookmarkedRemedies');
-
+  await Hive.openBox('bookmarkHistory');
   runApp(MainApp());
 }
 

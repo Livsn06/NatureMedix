@@ -6,7 +6,7 @@ import '../utils/responsive.dart';
 class TextFormFields extends StatelessWidget with Application {
   TextFormFields({
     super.key,
-    required this.control,
+    this.control,
     required this.labeltext,
     required this.isPassword,
     this.onPressed,
@@ -17,7 +17,7 @@ class TextFormFields extends StatelessWidget with Application {
     this.iconData,
   });
 
-  final TextEditingController control;
+  final TextEditingController? control;
   final String labeltext;
   final IconData? iconData;
   final IconData? IconSufix;
@@ -26,6 +26,7 @@ class TextFormFields extends StatelessWidget with Application {
   final bool isPasswordVisible;
   final VoidCallback? togglePasswordVisibility;
   final String? Function(String?)? validator;
+  bool readOnly = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,7 @@ class TextFormFields extends StatelessWidget with Application {
             BorderRadius.circular(setResponsiveSize(context, baseSize: 10)),
         borderSide: BorderSide(color: Application().color.lightGrey, width: 2));
     return TextFormField(
+      readOnly: readOnly,
       controller: control,
       obscureText: isPassword && !isPasswordVisible,
       decoration: InputDecoration(

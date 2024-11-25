@@ -22,7 +22,6 @@ class CustClientdialog extends StatefulWidget {
 }
 
 class _CustClientdialogState extends State<CustClientdialog> with Application {
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -33,7 +32,6 @@ class _CustClientdialogState extends State<CustClientdialog> with Application {
       ),
       actionsAlignment: MainAxisAlignment.center,
       contentPadding: EdgeInsets.zero,
-      
       content: SizedBox(
         width: setResponsiveSize(context, baseSize: 300),
         child: Column(
@@ -55,13 +53,12 @@ class _CustClientdialogState extends State<CustClientdialog> with Application {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(
                       setResponsiveSize(context, baseSize: 5)),
-                  child: Image.file(File(widget.request.imagePath),
+                  child: Image.file(File(widget.request.imagePaths[0]),
                       width: 350, height: 200, fit: BoxFit.cover),
                 ),
               ),
             ),
             Container(
-              
               decoration: BoxDecoration(
                   color: Colors.transparent,
                   borderRadius: BorderRadius.only(

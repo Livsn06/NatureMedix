@@ -211,7 +211,7 @@ class _RequestScreenState extends State<RequestScreen> with Application {
                             CustClientdialog(request: request)),
                   },
                   child: CardList(
-                    requestImage: Image.file(File(request.imagePath),
+                    requestImage: Image.file(File(request.imagePaths[0]),
                         width: 60, height: 60, fit: BoxFit.cover),
                     requestTitle: Text(
                       request.title,
@@ -240,9 +240,9 @@ class _RequestScreenState extends State<RequestScreen> with Application {
         children: [
           Gap(setResponsiveSize(context, baseSize: 15)),
           // Display the selected image or a placeholder
-          NeoBox(
-            borderRadius:
-                BorderRadius.circular(setResponsiveSize(context, baseSize: 0)),
+          Material(
+            elevation: 3,
+            borderRadius: BorderRadius.circular(5),
             child: Padding(
               padding: EdgeInsets.all(setResponsiveSize(context, baseSize: 5)),
               child: Column(
@@ -252,25 +252,20 @@ class _RequestScreenState extends State<RequestScreen> with Application {
                     padding: EdgeInsets.all(
                         setResponsiveSize(context, baseSize: 10)),
                     child: Obx(() {
-                      final fileToDisplay = controller.fileToDisplay.value;
-                      return InkWell(
-                        onTap: () =>
-                            controller.showImagePicker(context, (XFile? image) {
-                          if (image != null) {
-                            controller.fileToDisplay.value = File(image.path);
-                          }
-                        }),
-                        child: Container(
-                          width: double.infinity,
-                          height: setResponsiveSize(context, baseSize: 200),
-                          color: color.lightGrey,
-                          child: fileToDisplay != null
-                              ? Image.file(fileToDisplay, fit: BoxFit.cover)
-                              : Icon(Icons.camera_alt,
-                                  size:
-                                      setResponsiveSize(context, baseSize: 50),
-                                  color: color.white),
-                        ),
+                      final filesToDisplay = controller.selectedFiles;
+                      return Container(
+                        width: double.infinity,
+                        height: setResponsiveSize(context, baseSize: 180),
+                        color: color.lightGrey,
+                        child: filesToDisplay.isNotEmpty
+                            ? Image.file(
+                                filesToDisplay[controller.indexImage.value],
+                                fit: BoxFit.cover)
+                            : Icon(
+                                Icons.camera_alt,
+                                size: setResponsiveSize(context, baseSize: 50),
+                                color: color.white,
+                              ),
                       );
                     }),
                   ),
@@ -280,7 +275,74 @@ class _RequestScreenState extends State<RequestScreen> with Application {
             ),
           ),
 
-          Gap(setResponsiveSize(context, baseSize: 20)),
+          Gap(setResponsiveSize(context, baseSize: 10)),
+          Row(
+            children: [
+              InkWell(
+                onTap: () =>
+                    controller.showImagePicker(context, (XFile? image) {
+                  if (image != null) {
+                    controller.selectedFiles.add(File(image.path));
+                  }
+                }),
+                child: Material(
+                  borderRadius: BorderRadius.circular(5),
+                  elevation: 3,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.all(setResponsiveSize(context, baseSize: 6)),
+                    child: Icon(
+                      Icons.add,
+                      size: setResponsiveSize(context, baseSize: 30),
+                      color: color.primarylow,
+                    ),
+                  ),
+                ),
+              ),
+              Gap(setResponsiveSize(context, baseSize: 10)),
+              Expanded(
+                child: Obx(() {
+                  final filesToDisplay = controller.selectedFiles;
+                  return Container(
+                      height: setResponsiveSize(context, baseSize: 50),
+                      child: filesToDisplay.isNotEmpty
+                          ? ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: filesToDisplay.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: setResponsiveSize(context,
+                                          baseSize: 3),
+                                      horizontal: setResponsiveSize(context,
+                                          baseSize: 5)),
+                                  child: InkWell(
+                                    onTap: () {
+                                      // Display the image when tapped
+
+                                      controller.indexImage.value = index;
+                                    },
+                                    child: Material(
+                                      borderRadius: BorderRadius.circular(5),
+                                      elevation: 5,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(5),
+                                        child: Image.file(filesToDisplay[index],
+                                            fit: BoxFit.cover,
+                                            width: 45,
+                                            height: 40),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                          : null);
+                }),
+              ),
+            ],
+          ),
+          Gap(setResponsiveSize(context, baseSize: 10)),
 
           // Title input field
           Text(

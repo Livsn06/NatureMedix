@@ -5,9 +5,12 @@ import 'package:naturemedix/utils/_initApp.dart';
 import 'package:naturemedix/utils/responsive.dart';
 
 class ImagePickerDialog extends StatelessWidget with Application {
-  final Function(XFile?) onImageSelected;
-
-  ImagePickerDialog({super.key, required this.onImageSelected});
+  final Function(XFile?) onCaptureImage;
+  final Function() onSelectMultiple;
+  ImagePickerDialog(
+      {super.key,
+      required this.onCaptureImage,
+      required this.onSelectMultiple});
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +38,8 @@ class ImagePickerDialog extends StatelessWidget with Application {
               Column(
                 children: [
                   InkWell(
-                    onTap: () async {
-                      final ImagePicker picker = ImagePicker();
-                      final XFile? image =
-                          await picker.pickImage(source: ImageSource.gallery);
-                      onImageSelected(image);
+                    onTap: () {
+                      onSelectMultiple();
                       Navigator.pop(context);
                     },
                     child: Material(
@@ -71,7 +71,7 @@ class ImagePickerDialog extends StatelessWidget with Application {
                       final ImagePicker picker = ImagePicker();
                       final XFile? image =
                           await picker.pickImage(source: ImageSource.camera);
-                      onImageSelected(image);
+                      onCaptureImage(image);
                       Navigator.pop(context);
                     },
                     child: Material(
