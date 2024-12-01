@@ -33,18 +33,55 @@ mixin class CustomTextStyle {
     );
   }
 
+  TextStyle smallText(
+    BuildContext context, {
+    Color color = const Color(0xFF18988B),
+    double? fontspace,
+    double? fontsize,
+    FontWeight? fontweight,
+  }) {
+    return GoogleFonts.openSans(
+      textStyle: TextStyle(
+        color: color,
+        fontWeight: fontweight,
+        height: 1.3,
+        fontSize: fontsize,
+        letterSpacing: fontspace,
+      ),
+    );
+  }
+
+  TextStyle mediumText(
+    BuildContext context, {
+    Color color = const Color(0xFF18988B),
+    double? fontspace,
+    double? fontsize,
+    FontWeight? fontweight,
+  }) {
+    return GoogleFonts.ubuntu(
+      textStyle: TextStyle(
+        color: color,
+        fontWeight: fontweight,
+        height: 1.3,
+        fontSize: fontsize,
+        letterSpacing: fontspace,
+      ),
+    );
+  }
+
   TextStyle displaySmall(BuildContext context,
       {Color color = const Color(0xFF18988B),
       double? fontspace,
       double? fontsize,
       FontWeight? fontweight,
+      double? height = 1.3,
       FontStyle? fontstyle = FontStyle.normal}) {
     return GoogleFonts.roboto(
       textStyle: TextStyle(
         fontStyle: fontstyle,
         color: color,
         fontWeight: fontweight,
-        height: 1.3,
+        height: height,
         fontSize: fontsize,
         letterSpacing: fontspace,
       ),

@@ -4,6 +4,7 @@ import 'package:naturemedix/utils/responsive.dart';
 
 import '../utils/NeoBox.dart';
 
+// ignore: must_be_immutable
 class CardList extends StatelessWidget {
   Widget? requestImage;
   Widget? requestTitle;

@@ -17,9 +17,9 @@ class ButtomNav extends StatelessWidget with Application {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: setResponsiveSize(context, baseSize: 80),
+      height: setResponsiveSize(context, baseSize: 90),
       decoration: BoxDecoration(
-        color: color.white,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(
           setResponsiveSize(context, baseSize: 10),
         ),
@@ -94,7 +94,7 @@ class ButtomNav extends StatelessWidget with Application {
     return [
       Icons.home_outlined,
       FontAwesomeIcons.bookmark,
-      Icons.qr_code_scanner,
+      Icons.center_focus_weak_rounded,
       FontAwesomeIcons.squarePlus,
       FontAwesomeIcons.user,
     ][index];
@@ -104,13 +104,13 @@ class ButtomNav extends StatelessWidget with Application {
     return [
       Icons.home_rounded,
       FontAwesomeIcons.solidBookmark,
-      Icons.qr_code_scanner,
+      Icons.center_focus_weak,
       FontAwesomeIcons.solidSquarePlus,
       FontAwesomeIcons.solidUser,
     ][index];
   }
 
   double _getIconSize(int index) {
-    return [34.0, 22.0, 40.0, 27.0, 23.0][index];
+    return [34.0, 22.0, 45.0, 27.0, 23.0][index];
   }
 }
