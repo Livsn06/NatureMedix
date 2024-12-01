@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:naturemedix/components/cust_rating.dart';
+import 'package:naturemedix/components/cust_chatbox.dart';
 import 'package:naturemedix/controllers/PlantInfo_Control/plantInfos_controller.dart';
 import 'package:naturemedix/models/remedy_info.dart';
 import 'package:naturemedix/controllers/Home_Control/bookmark_controller.dart';
@@ -60,10 +60,10 @@ class _RemedyInfoScreenState extends State<RemedyInfoScreen> with Application {
               ),
               title: Text(
                 'REMEDY INFO',
-                style: style.displaySmall(
+                style: style.InterSmallText(
                   context,
                   color: color.white,
-                  fontsize: setResponsiveSize(context, baseSize: 15),
+                  fontsize: setResponsiveSize(context, baseSize: 14),
                   fontweight: FontWeight.w500,
                   fontspace: 2,
                   fontstyle: FontStyle.normal,
@@ -122,7 +122,7 @@ class _RemedyInfoScreenState extends State<RemedyInfoScreen> with Application {
                         children: [
                           Text(
                             widget.remedy.remedyName,
-                            style: style.displaySmall(context,
+                            style: style.InterSmallText(context,
                                 color: color.primarylow,
                                 fontsize:
                                     setResponsiveSize(context, baseSize: 20),
@@ -131,89 +131,71 @@ class _RemedyInfoScreenState extends State<RemedyInfoScreen> with Application {
                         ],
                       ),
                       Gap(setResponsiveSize(context, baseSize: 5)),
-                      InkWell(
-                        onTap: () async {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return CustRating(
-                                remedy: widget.remedy,
-                                initialRating: (plantInfoController
-                                        .remedyRatings[widget.remedy.remedyName]
-                                        ?.value ??
-                                    0),
-                                onRatingSubmit: _submitRating,
-                              );
-                            },
-                          );
-                        },
-                        child: Obx(() {
-                          return Row(
-                            children: [
-                              for (int i = 1; i <= 5; i++)
-                                Icon(
-                                  Icons.star,
-                                  color: i <=
-                                          (plantInfoController
-                                                  .remedyRatings[
-                                                      widget.remedy.remedyName]
-                                                  ?.value ??
-                                              0)
-                                      ? color.warning
-                                      : color.darkGrey,
-                                  size:
-                                      setResponsiveSize(context, baseSize: 17),
-                                ),
-                              Gap(setResponsiveSize(context, baseSize: 10)),
-                              Text(
-                                '${plantInfoController.remedyRatings[widget.remedy.remedyName]?.value ?? 0.0}',
-                                style: style.displaySmall(
-                                  context,
-                                  color: color.primary,
-                                  fontsize:
-                                      setResponsiveSize(context, baseSize: 13),
-                                  fontweight: FontWeight.w400,
-                                  fontstyle: FontStyle.italic,
-                                ),
+                      Obx(() {
+                        return Row(
+                          children: [
+                            for (int i = 1; i <= 5; i++)
+                              Icon(
+                                Icons.star,
+                                color: i <=
+                                        (plantInfoController
+                                                .overallRatingForRemedy[
+                                                    widget.remedy.remedyName]
+                                                ?.value ??
+                                            0)
+                                    ? color.warning
+                                    : color.darkGrey,
+                                size: setResponsiveSize(context, baseSize: 17),
                               ),
-                            ],
-                          );
-                        }),
-                      ),
+                            Gap(setResponsiveSize(context, baseSize: 10)),
+                            Text(
+                              '${plantInfoController.overallRatingForRemedy[widget.remedy.remedyName]?.value ?? 0.0}',
+                              style: style.InterSmallText(
+                                context,
+                                color: color.primary,
+                                fontsize:
+                                    setResponsiveSize(context, baseSize: 14),
+                                fontweight: FontWeight.w500,
+                                fontstyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
                       const Divider(),
                       Gap(setResponsiveSize(context, baseSize: 10)),
                       Text(
                         'Remedy type: ${widget.remedy.remedyType}',
-                        style: style.displaySmall(context,
+                        style: style.InterSmallText(context,
                             color: color.primarylow,
-                            fontsize: setResponsiveSize(context, baseSize: 13),
-                            fontweight: FontWeight.w400,
+                            fontsize: setResponsiveSize(context, baseSize: 14),
+                            fontweight: FontWeight.w500,
                             fontstyle: FontStyle.italic),
                       ),
                       Text(
                         'Treatment: ${widget.remedy.treatment}',
-                        style: style.displaySmall(context,
+                        style: style.InterSmallText(context,
                             color: color.primarylow,
-                            fontsize: setResponsiveSize(context, baseSize: 13),
-                            fontweight: FontWeight.w400,
+                            fontsize: setResponsiveSize(context, baseSize: 14),
+                            fontweight: FontWeight.w500,
                             fontstyle: FontStyle.italic),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 25)),
                       Text(
                         '▣ DESCRIPTION:',
-                        style: style.displaySmall(context,
+                        style: style.InterSmallText(context,
                             color: color.primarylow,
-                            fontsize: setResponsiveSize(context, baseSize: 13),
+                            fontsize: setResponsiveSize(context, baseSize: 14),
                             fontweight: FontWeight.w700),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 10)),
                       Text(
                         widget.remedy.description,
                         textAlign: TextAlign.justify,
-                        style: style.displaySmall(context,
+                        style: style.InterSmallText(context,
                             color: color.primarylow,
-                            fontsize: setResponsiveSize(context, baseSize: 13),
-                            fontweight: FontWeight.w400),
+                            fontsize: setResponsiveSize(context, baseSize: 14),
+                            fontweight: FontWeight.w500),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 25)),
                       Column(
@@ -221,11 +203,11 @@ class _RemedyInfoScreenState extends State<RemedyInfoScreen> with Application {
                         children: [
                           Text(
                             '▣ INGREDIENTS:',
-                            style: style.displaySmall(
+                            style: style.InterSmallText(
                               context,
                               color: color.primarylow,
                               fontsize:
-                                  setResponsiveSize(context, baseSize: 13),
+                                  setResponsiveSize(context, baseSize: 14),
                               fontweight: FontWeight.w700,
                             ),
                           ),
@@ -235,17 +217,17 @@ class _RemedyInfoScreenState extends State<RemedyInfoScreen> with Application {
                               padding: const EdgeInsets.only(left: 20.0),
                               child: Text(
                                 '□ $ingredient',
-                                style: style.displaySmall(
+                                style: style.InterSmallText(
                                   context,
                                   color: color.primarylow,
                                   fontsize:
-                                      setResponsiveSize(context, baseSize: 13),
-                                  fontweight: FontWeight.w400,
+                                      setResponsiveSize(context, baseSize: 14),
+                                  fontweight: FontWeight.w500,
                                   height: 1.8,
                                 ),
                               ),
                             );
-                          }).toList(),
+                          }),
                         ],
                       ),
                       Gap(setResponsiveSize(context, baseSize: 25)),
@@ -254,11 +236,11 @@ class _RemedyInfoScreenState extends State<RemedyInfoScreen> with Application {
                         children: [
                           Text(
                             '▣ STEPS:',
-                            style: style.displaySmall(
+                            style: style.InterSmallText(
                               context,
                               color: color.primarylow,
                               fontsize:
-                                  setResponsiveSize(context, baseSize: 13),
+                                  setResponsiveSize(context, baseSize: 14),
                               fontweight: FontWeight.w700,
                             ),
                           ),
@@ -268,25 +250,25 @@ class _RemedyInfoScreenState extends State<RemedyInfoScreen> with Application {
                               padding: const EdgeInsets.only(left: 20.0),
                               child: Text(
                                 '□ Step $steps',
-                                style: style.displaySmall(
+                                style: style.InterSmallText(
                                   context,
                                   color: color.primarylow,
                                   fontsize:
-                                      setResponsiveSize(context, baseSize: 13),
-                                  fontweight: FontWeight.w400,
+                                      setResponsiveSize(context, baseSize: 14),
+                                  fontweight: FontWeight.w500,
                                   height: 1.8,
                                 ),
                               ),
                             );
-                          }).toList(),
+                          }),
                         ],
                       ),
                       Gap(setResponsiveSize(context, baseSize: 25)),
                       Text(
                         '▣ HOW TO USE:',
-                        style: style.displaySmall(context,
+                        style: style.InterSmallText(context,
                             color: color.primarylow,
-                            fontsize: setResponsiveSize(context, baseSize: 13),
+                            fontsize: setResponsiveSize(context, baseSize: 14),
                             fontweight: FontWeight.w700),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 10)),
@@ -295,17 +277,48 @@ class _RemedyInfoScreenState extends State<RemedyInfoScreen> with Application {
                           children: widget.remedy.usage
                               .map((usage) => TextSpan(
                                     text: '     □ $usage\n',
-                                    style: style.displaySmall(
+                                    style: style.InterSmallText(
                                       context,
                                       color: color.primarylow,
                                       fontsize: setResponsiveSize(context,
-                                          baseSize: 13),
-                                      fontweight: FontWeight.w400,
+                                          baseSize: 14),
+                                      fontweight: FontWeight.w500,
                                     ),
                                   ))
                               .toList(),
                         ),
                       ),
+                      Gap(setResponsiveSize(context, baseSize: 25)),
+                      Text(
+                        '▣ SIDE EFFECT:',
+                        style: style.InterSmallText(context,
+                            color: color.primarylow,
+                            fontsize: setResponsiveSize(context, baseSize: 14),
+                            fontweight: FontWeight.w700),
+                      ),
+                      Gap(setResponsiveSize(context, baseSize: 10)),
+                      ...widget.remedy.sideEffects.map(
+                        (effect) {
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: Text(
+                              '□ Effect $effect',
+                              style: style.InterSmallText(
+                                context,
+                                color: color.primarylow,
+                                fontsize:
+                                    setResponsiveSize(context, baseSize: 14),
+                                fontweight: FontWeight.w500,
+                                height: 1.8,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      Gap(setResponsiveSize(context, baseSize: 30)),
+                      RemedyFeedbackScreen(
+                        rateRemedy: widget.remedy,
+                      )
                     ],
                   ),
                 ),

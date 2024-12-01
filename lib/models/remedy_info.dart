@@ -29,9 +29,12 @@ class RemedyInfo {
   final List<String> usage;
 
   @HiveField(8)
+  final List<String> sideEffects;
+
+  @HiveField(9)
   DateTime? bookmarkedAt;
 
-  @HiveField(9) // Added field for rating
+  @HiveField(10) // Added field for rating
   double rating;
 
   RemedyInfo({
@@ -43,6 +46,7 @@ class RemedyInfo {
     required this.ingredients,
     required this.steps,
     required this.usage,
+    required this.sideEffects,
     this.bookmarkedAt, // Initialize to null; set when bookmarked
     this.rating = 0.0, // Default value for rating
   });
@@ -58,6 +62,7 @@ class RemedyInfo {
       'ingredients': ingredients,
       'steps': steps,
       'usage': usage,
+      'sideEffects': sideEffects,
       'bookmarkedAt':
           bookmarkedAt?.toIso8601String(), // Convert to string for storage
       'rating': rating, // Added field for rating
@@ -75,6 +80,7 @@ class RemedyInfo {
       ingredients: List<String>.from(map['ingredients']),
       steps: List<String>.from(map['steps']),
       usage: List<String>.from(map['usage']),
+      sideEffects: List<String>.from(map['sideEffects']),
       bookmarkedAt: map['bookmarkedAt'] != null
           ? DateTime.parse(map['bookmarkedAt'])
           : null,

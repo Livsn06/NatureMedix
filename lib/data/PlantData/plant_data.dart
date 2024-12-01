@@ -15,94 +15,118 @@ List<PlantData> plantList = [
     treatments: ["Cough", "Asthma", "Fever", "Bronchitis"],
     remedyList: [
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Lagundi Tea",
-        treatment: "Cough Relief",
-        description:
-            "Lagundi is commonly used to alleviate symptoms of cough and respiratory conditions. The leaves are boiled to make a tea that helps soothe the throat and clear airways.",
-        remedyImages: [
-          Application().remedy.PLNTRMDY1,
-        ],
-        ingredients: [
-          "Fresh Lagundi leaves (about 5-6 pieces)",
-          "2 cups of water",
-        ],
-        steps: [
-          "1. Wash the Lagundi leaves thoroughly.",
-          "2. Boil 2 cups of water in a pot.",
-          "3. Add the Lagundi leaves to the boiling water.",
-          "4. Let it simmer for 10-15 minutes.",
-          "5. Strain the liquid and let it cool.",
-          "6. Drink the Lagundi tea while warm.",
-        ],
-        usage: ["Adults: 1 cup, 3 times a day."],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Lagundi Tea",
+          treatment: "Cough Relief",
+          description:
+              "Lagundi is commonly used to alleviate symptoms of cough and respiratory conditions. The leaves are boiled to make a tea that helps soothe the throat and clear airways.",
+          remedyImages: [
+            Application().remedy.PLNTRMDY1,
+          ],
+          ingredients: [
+            "Fresh Lagundi leaves (about 5-6 pieces)",
+            "2 cups of water",
+          ],
+          steps: [
+            "1. Wash the Lagundi leaves thoroughly.",
+            "2. Boil 2 cups of water in a pot.",
+            "3. Add the Lagundi leaves to the boiling water.",
+            "4. Let it simmer for 10-15 minutes.",
+            "5. Strain the liquid and let it cool.",
+            "6. Drink the Lagundi tea while warm.",
+          ],
+          usage: [
+            "Adults: 1 cup, 3 times a day."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some people may experience allergic reactions such as itchy skin or swollen lips.",
+            "2. Gastrointestinal Issues: Overuse or high doses may lead to mild gastrointestinal issues like nausea or diarrhea.",
+            "3. Other: As with any herbal remedy, it's always best to consult with a healthcare professional before use, especially for pregnant or lactating mothers."
+          ]),
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Lagundi Decoction",
-        treatment: "Fever Relief",
-        description:
-            "Lagundi is often used to lower fever. A decoction made from the leaves helps reduce body temperature and relieve associated symptoms such as body aches and chills.",
-        remedyImages: [
-          Application().remedy.PLNTRMDY2,
-        ],
-        ingredients: [
-          "Fresh Lagundi leaves (about 7-10 pieces)",
-          "4 cups of water",
-        ],
-        steps: [
-          "1. Clean the Lagundi leaves thoroughly.",
-          "2. Boil 4 cups of water in a pot.",
-          "3. Add the Lagundi leaves and let it simmer for 15-20 minutes.",
-          "4. Strain the liquid and allow it to cool slightly.",
-          "5. Drink the decoction while warm.",
-        ],
-        usage: ["Adults: 1 cup, 3 times a day."],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Lagundi Decoction",
+          treatment: "Fever Relief",
+          description:
+              "Lagundi is often used to lower fever. A decoction made from the leaves helps reduce body temperature and relieve associated symptoms such as body aches and chills.",
+          remedyImages: [
+            Application().remedy.PLNTRMDY2,
+          ],
+          ingredients: [
+            "Fresh Lagundi leaves (about 7-10 pieces)",
+            "4 cups of water",
+          ],
+          steps: [
+            "1. Clean the Lagundi leaves thoroughly.",
+            "2. Boil 4 cups of water in a pot.",
+            "3. Add the Lagundi leaves and let it simmer for 15-20 minutes.",
+            "4. Strain the liquid and allow it to cool slightly.",
+            "5. Drink the decoction while warm.",
+          ],
+          usage: [
+            "Adults: 1 cup, 3 times a day."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some people may experience allergic reactions such as itchy skin or swollen lips.",
+            "2. Gastrointestinal Issues: Overuse or high doses may lead to mild gastrointestinal issues like nausea or diarrhea.",
+            "3. Other: As with any herbal remedy, it's always best to consult with a healthcare professional before use, especially for pregnant or lactating mothers."
+          ]),
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Lagundi Syrup",
-        treatment: "Bronchitis Relief",
-        description:
-            "Lagundi syrup, made from Lagundi leaf extract, is effective for treating severe coughs and bronchitis.",
-        remedyImages: [
-          Application().remedy.PLNTRMDY5,
-        ],
-        ingredients: [
-          "Fresh Lagundi leaves extract",
-          "Honey (optional)",
-        ],
-        steps: [
-          "1. Extract juice from fresh Lagundi leaves.",
-          "2. Mix the extract with honey (optional).",
-          "3. Take 1-2 tablespoons.",
-        ],
-        usage: ["Take 2-3 times daily."],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Lagundi Syrup",
+          treatment: "Bronchitis Relief",
+          description:
+              "Lagundi syrup, made from Lagundi leaf extract, is effective for treating severe coughs and bronchitis.",
+          remedyImages: [
+            Application().remedy.PLNTRMDY5,
+          ],
+          ingredients: [
+            "Fresh Lagundi leaves extract",
+            "Honey (optional)",
+          ],
+          steps: [
+            "1. Extract juice from fresh Lagundi leaves.",
+            "2. Mix the extract with honey (optional).",
+            "3. Take 1-2 tablespoons.",
+          ],
+          usage: [
+            "Take 2-3 times daily."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some people may experience allergic reactions such as itchy skin or swollen lips.",
+            "2. Gastrointestinal Issues: Overuse or high doses may lead to mild gastrointestinal issues like nausea or diarrhea.",
+            "3. Other: As with any herbal remedy, it's always best to consult with a healthcare professional before use, especially for pregnant or lactating mothers."
+          ]),
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Lagundi Bath",
-        treatment: "Body Pain and Fever Relief",
-        description:
-            "Lagundi-infused bath water helps relieve body pains and reduce fever, providing soothing relief.",
-        remedyImages: [
-          Application().remedy.lagundi_bath,
-        ],
-        ingredients: [
-          "Fresh Lagundi leaves (20-30 pieces)",
-          "Bath water",
-        ],
-        steps: [
-          "1. Boil fresh Lagundi leaves in a large pot.",
-          "2. Pour the boiled leaves and water into your bath.",
-          "3. Soak in the Lagundi-infused bath for 15-20 minutes.",
-        ],
-        usage: ["Once a day until symptoms improve."],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Lagundi Bath",
+          treatment: "Body Pain and Fever Relief",
+          description:
+              "Lagundi-infused bath water helps relieve body pains and reduce fever, providing soothing relief.",
+          remedyImages: [
+            Application().remedy.lagundi_bath,
+          ],
+          ingredients: [
+            "Fresh Lagundi leaves (20-30 pieces)",
+            "Bath water",
+          ],
+          steps: [
+            "1. Boil fresh Lagundi leaves in a large pot.",
+            "2. Pour the boiled leaves and water into your bath.",
+            "3. Soak in the Lagundi-infused bath for 15-20 minutes.",
+          ],
+          usage: [
+            "Once a day until symptoms improve."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some people may experience allergic reactions such as itchy skin or swollen lips.",
+            "2. Gastrointestinal Issues: Overuse or high doses may lead to mild gastrointestinal issues like nausea or diarrhea.",
+            "3. Other: As with any herbal remedy, it's always best to consult with a healthcare professional before use, especially for pregnant or lactating mothers."
+          ]),
     ],
   ),
   PlantData(
@@ -116,30 +140,35 @@ List<PlantData> plantList = [
     treatments: ["Urinary tract infections", "Gout"],
     remedyList: [
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Ulasimang Bato Juice",
-        treatment: "Diuretic",
-        description:
-            "Ulasimang Bato is used to create a refreshing juice that helps in detoxifying the body and relieving inflammation.",
-        remedyImages: [
-          Application().remedy.ulasimang_juice,
-        ],
-        ingredients: [
-          "Fresh Ulasimang Bato leaves (about 10-15 pieces)",
-          "2 cups of water",
-        ],
-        steps: [
-          "1. Wash the Ulasimang Bato leaves thoroughly.",
-          "2. Blend the leaves with 2 cups of water.",
-          "3. Strain the mixture to obtain the juice.",
-          "4. Drink the juice fresh.",
-        ],
-        usage: [
-          "Adults: 1 cup, 2 times a day.",
-          "Children: Consult a pediatrician before use."
-        ],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Ulasimang Bato Juice",
+          treatment: "Diuretic",
+          description:
+              "Ulasimang Bato is used to create a refreshing juice that helps in detoxifying the body and relieving inflammation.",
+          remedyImages: [
+            Application().remedy.ulasimang_juice,
+          ],
+          ingredients: [
+            "Fresh Ulasimang Bato leaves (about 10-15 pieces)",
+            "2 cups of water",
+          ],
+          steps: [
+            "1. Wash the Ulasimang Bato leaves thoroughly.",
+            "2. Blend the leaves with 2 cups of water.",
+            "3. Strain the mixture to obtain the juice.",
+            "4. Drink the juice fresh.",
+          ],
+          usage: [
+            "Adults: 1 cup, 2 times a day.",
+            "Children: Consult a pediatrician before use."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: May cause itchy skin, rashes, or swelling in those allergic to the plant.",
+            "2. Gastrointestinal Issues: Overconsumption might lead to stomach cramps, nausea, or diarrhea.",
+            "3. Potential Interaction with Medications: Could interact with medications like blood thinners, so consultation with a healthcare professional is advisable before use.",
+            "4. Other Considerations: Consult with a healthcare professional before use, especially for children and pregnant or lactating women."
+          ]),
     ],
   ),
   PlantData(
@@ -157,33 +186,38 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Sambong Tea",
-        treatment: "Kidney Stones",
-        description:
-            "Sambong leaves are prepared as a tea to help dissolve kidney stones and promote the flow of urine, providing relief from urinary tract infections.",
-        remedyImages: [
-          Application().remedy.sambong_tea,
-        ],
-        ingredients: [
-          "Dried Sambong leaves (5-6 pieces)",
-          "2 cups of water",
-        ],
-        steps: [
-          "1. Rinse the dried Sambong leaves.",
-          "2. Bring 2 cups of water to a boil.",
-          "3. Add the Sambong leaves to the water.",
-          "4. Let it boil for 10 minutes, then cool and strain.",
-          "5. Drink the tea while warm.",
-        ],
-        usage: [
-          "Adults: 1 cup, 2 times a day until symptoms improve.",
-          "Children (7-12 yrs): 1/2 cup, 2 times a day until symptoms improve.",
-          "Children (2-6 yrs): 1/4 cup, 1-2 times a day until symptoms improve.",
-          "Children (Babies): Consult a pediatrician before use."
-        ],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Sambong Tea",
+          treatment: "Kidney Stones",
+          description:
+              "Sambong leaves are prepared as a tea to help dissolve kidney stones and promote the flow of urine, providing relief from urinary tract infections.",
+          remedyImages: [
+            Application().remedy.sambong_tea,
+          ],
+          ingredients: [
+            "Dried Sambong leaves (5-6 pieces)",
+            "2 cups of water",
+          ],
+          steps: [
+            "1. Rinse the dried Sambong leaves.",
+            "2. Bring 2 cups of water to a boil.",
+            "3. Add the Sambong leaves to the water.",
+            "4. Let it boil for 10 minutes, then cool and strain.",
+            "5. Drink the tea while warm.",
+          ],
+          usage: [
+            "Adults: 1 cup, 2 times a day until symptoms improve.",
+            "Children (7-12 yrs): 1/2 cup, 2 times a day until symptoms improve.",
+            "Children (2-6 yrs): 1/4 cup, 1-2 times a day until symptoms improve.",
+            "Children (Babies): Consult a pediatrician before use."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some individuals may experience skin rashes, itching, or swelling.",
+            "2. Gastrointestinal Issues: High doses might lead to nausea, vomiting, or diarrhea.",
+            "3. Dizziness: In some cases, dizziness or lightheadedness may occur.",
+            "4. Other Considerations: It's important to consult with a healthcare professional before use, especially for pregnant or lactating women, and individuals with pre-existing health conditions."
+          ]),
     ],
   ),
   PlantData(
@@ -200,29 +234,34 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Akapulko Ointment",
-        treatment: "Skin Treatment",
-        description:
-            "The leaves are crushed to create a poultice or ointment that can be applied to infected skin areas.",
-        remedyImages: [
-          Application().remedy.PLNTRMDY4,
-        ],
-        ingredients: [
-          "Fresh Akapulko leaves (about 5-6 pieces)",
-          "Oil or Vaseline for mixing.",
-        ],
-        steps: [
-          "1. Crush the fresh Akapulko leaves to extract the juice.",
-          "2. Mix the juice with oil or Vaseline.",
-          "3. Apply the ointment to the affected area.",
-        ],
-        usage: [
-          "Apply as needed to the affected area.",
-          "For best results, use 2-3 times daily."
-        ],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Akapulko Ointment",
+          treatment: "Skin Treatment",
+          description:
+              "The leaves are crushed to create a poultice or ointment that can be applied to infected skin areas.",
+          remedyImages: [
+            Application().remedy.PLNTRMDY4,
+          ],
+          ingredients: [
+            "Fresh Akapulko leaves (about 5-6 pieces)",
+            "Oil or Vaseline for mixing.",
+          ],
+          steps: [
+            "1. Crush the fresh Akapulko leaves to extract the juice.",
+            "2. Mix the juice with oil or Vaseline.",
+            "3. Apply the ointment to the affected area.",
+          ],
+          usage: [
+            "Apply as needed to the affected area.",
+            "For best results, use 2-3 times daily."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some individuals may experience skin rashes, itching, or swelling.",
+            "2. Skin Irritation: Prolonged use may cause irritation or redness on the skin.",
+            "3. Gastrointestinal Issues: If ingested accidentally, it can cause nausea or vomiting.",
+            "4. Other Considerations: Always consult a healthcare professional before use, especially for pregnant or lactating women, and individuals with pre-existing skin conditions."
+          ]),
     ],
   ),
   PlantData(
@@ -239,50 +278,62 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Niyog-niyogan paste",
-        treatment: "Skin Rashes and Insect Bites",
-        description:
-            "A paste made from Niyog-niyogan seeds can be applied to affected areas to relieve itching and irritation from insect bites and mild skin rashes.",
-        remedyImages: [
-          Application().remedy.niyog_paste,
-        ],
-        ingredients: [
-          "5-10 Niyog-niyogan seeds",
-          "A few drops of water",
-        ],
-        steps: [
-          "1. Grind the Niyog-niyogan seeds into a fine powder.",
-          "2. Add a few drops of water to make a thick paste.",
-          "3. Apply the paste directly to the affected skin area.",
-          "4. Leave it on for 10-15 minutes, then rinse off with water.",
-        ],
-        usage: ["Apply as needed, up to 2 times a day."],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Niyog-niyogan Paste",
+          treatment: "Skin Rashes and Insect Bites",
+          description:
+              "A paste made from Niyog-niyogan seeds can be applied to affected areas to relieve itching and irritation from insect bites and mild skin rashes.",
+          remedyImages: [
+            Application().remedy.niyog_paste,
+          ],
+          ingredients: [
+            "5-10 Niyog-niyogan seeds",
+            "A few drops of water",
+          ],
+          steps: [
+            "1. Grind the Niyog-niyogan seeds into a fine powder.",
+            "2. Add a few drops of water to make a thick paste.",
+            "3. Apply the paste directly to the affected skin area.",
+            "4. Leave it on for 10-15 minutes, then rinse off with water.",
+          ],
+          usage: [
+            "Apply as needed, up to 2 times a day."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some individuals may experience skin rashes, itching, or swelling.",
+            "2. Skin Irritation: Prolonged use may cause irritation or redness on the skin.",
+            "3. Other Considerations: Always consult a healthcare professional before use, especially for pregnant or lactating women, and individuals with pre-existing skin conditions."
+          ]),
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Niyog-niyogan Seed Oil",
-        treatment: "Joint Pain Relief",
-        description:
-            "An oil infusion made with Niyog-niyogan seeds may help alleviate mild joint pain when massaged onto the area.",
-        remedyImages: [
-          Application().remedy.niyog_oil,
-        ],
-        ingredients: [
-          "10 Niyog-niyogan seeds",
-          "1/2 cup coconut oil or olive oil",
-        ],
-        steps: [
-          "1. Crush the Niyog-niyogan seeds lightly.",
-          "2. Add the crushed seeds to the coconut or olive oil in a small pan.",
-          "3. Heat the mixture on low for 15-20 minutes, without letting it boil.",
-          "4. Strain the seeds out and let the oil cool.",
-          "5. Massage the oil onto the affected joint areas as needed.",
-        ],
-        usage: ["Use 1-2 times a day on sore joints as needed."],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Niyog-niyogan Seed Oil",
+          treatment: "Joint Pain Relief",
+          description:
+              "An oil infusion made with Niyog-niyogan seeds may help alleviate mild joint pain when massaged onto the area.",
+          remedyImages: [
+            Application().remedy.niyog_oil,
+          ],
+          ingredients: [
+            "10 Niyog-niyogan seeds",
+            "1/2 cup coconut oil or olive oil",
+          ],
+          steps: [
+            "1. Crush the Niyog-niyogan seeds lightly.",
+            "2. Add the crushed seeds to the coconut or olive oil in a small pan.",
+            "3. Heat the mixture on low for 15-20 minutes, without letting it boil.",
+            "4. Strain the seeds out and let the oil cool.",
+            "5. Massage the oil onto the affected joint areas as needed.",
+          ],
+          usage: [
+            "Use 1-2 times a day on sore joints as needed."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some individuals may experience skin rashes, itching, or swelling.",
+            "2. Skin Irritation: Prolonged use may cause irritation or redness on the skin.",
+            "3. Other Considerations: Always consult a healthcare professional before use, especially for pregnant or lactating women, and individuals with pre-existing skin conditions."
+          ]),
     ],
   ),
   PlantData(
@@ -300,56 +351,66 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Yerba Buena Mint Juice",
-        treatment: "Cooling Refreshment and Digestive Aid",
-        description:
-            "Yerba Buena mint juice provides a refreshing drink that aids digestion and helps soothe an upset stomach.",
-        remedyImages: [Application().remedy.yerbaBuena_juice],
-        ingredients: [
-          "A handful of fresh Yerba Buena leaves",
-          "1-2 cups of cold water",
-          "Lemon juice (optional, to taste)",
-          "Honey or sugar (optional, to taste)",
-        ],
-        steps: [
-          "1. Rinse the Yerba Buena leaves thoroughly.",
-          "2. Blend the leaves with 1-2 cups of cold water until smooth.",
-          "3. Strain the mixture through a fine sieve or cheesecloth to extract the juice.",
-          "4. Add lemon juice and sweetener if desired.",
-          "5. Serve chilled over ice for a refreshing drink.",
-        ],
-        usage: [
-          "Drink 1 cup as needed for digestion or to cool down on hot days."
-        ],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Yerba Buena Mint Juice",
+          treatment: "Cooling Refreshment and Digestive Aid",
+          description:
+              "Yerba Buena mint juice provides a refreshing drink that aids digestion and helps soothe an upset stomach.",
+          remedyImages: [
+            Application().remedy.yerbaBuena_juice
+          ],
+          ingredients: [
+            "A handful of fresh Yerba Buena leaves",
+            "1-2 cups of cold water",
+            "Lemon juice (optional, to taste)",
+            "Honey or sugar (optional, to taste)",
+          ],
+          steps: [
+            "1. Rinse the Yerba Buena leaves thoroughly.",
+            "2. Blend the leaves with 1-2 cups of cold water until smooth.",
+            "3. Strain the mixture through a fine sieve or cheesecloth to extract the juice.",
+            "4. Add lemon juice and sweetener if desired.",
+            "5. Serve chilled over ice for a refreshing drink.",
+          ],
+          usage: [
+            "Drink 1 cup as needed for digestion or to cool down on hot days."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some individuals may experience skin rashes, itching, or swelling.",
+            "2. Gastrointestinal Issues: Overconsumption may lead to stomach cramps, nausea, or diarrhea.",
+            "3. Other Considerations: Consult a healthcare professional before use, especially for pregnant or lactating women, and individuals with pre-existing health conditions."
+          ]),
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Yerba Buena Tea",
-        treatment: "Pain Relief",
-        description:
-            "Yerba Buena is used as a tea or applied topically to relieve pain. The leaves can be boiled to make a soothing tea for headaches and body aches.",
-        remedyImages: [
-          Application().remedy.yerbaBuena_tea,
-        ],
-        ingredients: [
-          "Fresh Yerba Buena leaves (6-8 pieces)",
-          "1 cup of water",
-        ],
-        steps: [
-          "1. Rinse the Yerba Buena leaves thoroughly.",
-          "2. Boil 1 cup of water in a pot.",
-          "3. Add the leaves to the boiling water.",
-          "4. Let it simmer for about 10 minutes.",
-          "5. Strain and drink warm.",
-        ],
-        usage: [
-          "Adults: 1 cup, as needed for pain relief.",
-          "Children: Consult a pediatrician before use."
-        ],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Yerba Buena Tea",
+          treatment: "Pain Relief",
+          description:
+              "Yerba Buena is used as a tea or applied topically to relieve pain. The leaves can be boiled to make a soothing tea for headaches and body aches.",
+          remedyImages: [
+            Application().remedy.yerbaBuena_tea,
+          ],
+          ingredients: [
+            "Fresh Yerba Buena leaves (6-8 pieces)",
+            "1 cup of water",
+          ],
+          steps: [
+            "1. Rinse the Yerba Buena leaves thoroughly.",
+            "2. Boil 1 cup of water in a pot.",
+            "3. Add the leaves to the boiling water.",
+            "4. Let it simmer for about 10 minutes.",
+            "5. Strain and drink warm.",
+          ],
+          usage: [
+            "Adults: 1 cup, as needed for pain relief.",
+            "Children: Consult a pediatrician before use."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some individuals may experience skin rashes, itching, or swelling.",
+            "2. Gastrointestinal Issues: Overconsumption may lead to stomach cramps, nausea, or diarrhea.",
+            "3. Other Considerations: Consult a healthcare professional before use, especially for pregnant or lactating women, and individuals with pre-existing health conditions."
+          ]),
     ],
   ),
   PlantData(
@@ -368,53 +429,63 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
-        rating: 0,
-        remedyType: "Topical Herbal Remedy",
-        remedyName: "Paragis Poultice",
-        treatment: "Wound Healing and Inflammation",
-        description:
-            "A poultice made from fresh Paragis leaves can be applied to wounds or inflamed areas. It is believed to help reduce swelling and promote healing.",
-        remedyImages: [
-          Application().remedy.paragis_poultice
-        ], // Replace with the actual image path
-        ingredients: [
-          "A handful of fresh Paragis leaves",
-        ],
-        steps: [
-          "1. Rinse the Paragis leaves thoroughly.",
-          "2. Crush the leaves to release their juices (using a mortar and pestle or by hand).",
-          "3. Apply the crushed leaves directly to the affected area.",
-          "4. Cover with a clean cloth or bandage.",
-        ],
-        usage: [
-          "Apply as needed to inflamed areas or minor wounds. Change the poultice daily."
-        ],
-      ),
+          rating: 0,
+          remedyType: "Topical Herbal Remedy",
+          remedyName: "Paragis Poultice",
+          treatment: "Wound Healing and Inflammation",
+          description:
+              "A poultice made from fresh Paragis leaves can be applied to wounds or inflamed areas. It is believed to help reduce swelling and promote healing.",
+          remedyImages: [
+            Application().remedy.paragis_poultice
+          ], // Replace with the actual image path
+          ingredients: [
+            "A handful of fresh Paragis leaves",
+          ],
+          steps: [
+            "1. Rinse the Paragis leaves thoroughly.",
+            "2. Crush the leaves to release their juices (using a mortar and pestle or by hand).",
+            "3. Apply the crushed leaves directly to the affected area.",
+            "4. Cover with a clean cloth or bandage.",
+          ],
+          usage: [
+            "Apply as needed to inflamed areas or minor wounds. Change the poultice daily."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some individuals may experience skin rashes, itching, or swelling.",
+            "2. Skin Irritation: Prolonged use may cause irritation or redness on the skin.",
+            "3. Other Considerations: Always consult a healthcare professional before use, especially for pregnant or lactating women, and individuals with pre-existing skin conditions."
+          ]),
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Paragis Herbal Tea",
-        treatment: "Respiratory Relief",
-        description:
-            "Paragis can be brewed into a soothing tea that helps alleviate coughs and respiratory discomfort.",
-        remedyImages: [Application().remedy.paragis_poultice],
-        ingredients: [
-          "Fresh Paragis leaves (6-8 pieces)",
-          "1 cup of water",
-          "Honey (optional, to taste)",
-        ],
-        steps: [
-          "1. Rinse the Paragis leaves thoroughly.",
-          "2. Boil 1 cup of water in a pot.",
-          "3. Add the leaves to the boiling water.",
-          "4. Let it steep for about 10 minutes.",
-          "5. Strain, sweeten with honey if desired, and drink warm.",
-        ],
-        usage: [
-          "Adults: 1 cup, as needed for respiratory relief.",
-          "Children: Consult a pediatrician before use."
-        ],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Paragis Herbal Tea",
+          treatment: "Respiratory Relief",
+          description:
+              "Paragis can be brewed into a soothing tea that helps alleviate coughs and respiratory discomfort.",
+          remedyImages: [
+            Application().remedy.paragis_poultice
+          ],
+          ingredients: [
+            "Fresh Paragis leaves (6-8 pieces)",
+            "1 cup of water",
+            "Honey (optional, to taste)",
+          ],
+          steps: [
+            "1. Rinse the Paragis leaves thoroughly.",
+            "2. Boil 1 cup of water in a pot.",
+            "3. Add the leaves to the boiling water.",
+            "4. Let it steep for about 10 minutes.",
+            "5. Strain, sweeten with honey if desired, and drink warm.",
+          ],
+          usage: [
+            "Adults: 1 cup, as needed for respiratory relief.",
+            "Children: Consult a pediatrician before use."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some individuals may experience skin rashes, itching, or swelling.",
+            "2. Gastrointestinal Issues: Overconsumption may lead to stomach cramps, nausea, or diarrhea.",
+            "3. Other Considerations: Consult a healthcare professional before use, especially for pregnant or lactating women, and individuals with pre-existing health conditions."
+          ]),
     ],
   ),
   PlantData(
@@ -431,31 +502,36 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Tsaang Gubat Tea",
-        treatment: "Diarrhea Relief",
-        description:
-            "The leaves can be brewed into a tea to help alleviate symptoms of diarrhea and to promote digestion.",
-        remedyImages: [
-          Application().remedy.tsaanGubat_tea,
-        ],
-        ingredients: [
-          "Fresh Tsaang Gubat leaves (5-6 pieces)",
-          "2 cups of water",
-        ],
-        steps: [
-          "1. Wash the Tsaang Gubat leaves thoroughly.",
-          "2. Boil 2 cups of water.",
-          "3. Add the leaves to the boiling water.",
-          "4. Let it simmer for 10-15 minutes.",
-          "5. Strain and drink warm.",
-        ],
-        usage: [
-          "Adults: 1 cup, 2 times a day.",
-          "Children: Consult a pediatrician before use."
-        ],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Tsaang Gubat Tea",
+          treatment: "Diarrhea Relief",
+          description:
+              "The leaves can be brewed into a tea to help alleviate symptoms of diarrhea and to promote digestion.",
+          remedyImages: [
+            Application().remedy.tsaanGubat_tea,
+          ],
+          ingredients: [
+            "Fresh Tsaang Gubat leaves (5-6 pieces)",
+            "2 cups of water",
+          ],
+          steps: [
+            "1. Wash the Tsaang Gubat leaves thoroughly.",
+            "2. Boil 2 cups of water.",
+            "3. Add the leaves to the boiling water.",
+            "4. Let it simmer for 10-15 minutes.",
+            "5. Strain and drink warm.",
+          ],
+          usage: [
+            "Adults: 1 cup, 2 times a day.",
+            "Children: Consult a pediatrician before use."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some individuals may experience skin rashes, itching, or swelling.",
+            "2. Gastrointestinal Issues: Overconsumption may lead to stomach cramps, nausea, or diarrhea.",
+            "3. Dizziness: In some cases, dizziness or lightheadedness may occur.",
+            "4. Other Considerations: Consult a healthcare professional before use, especially for pregnant or lactating women, and individuals with pre-existing health conditions."
+          ]),
     ],
   ),
   PlantData(
@@ -473,31 +549,36 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Lemongrass Tea",
-        treatment: "Digestive Health",
-        description:
-            "Lemongrass tea is consumed to relieve digestive discomfort, reduce anxiety, and support immune health.",
-        remedyImages: [
-          Application().remedy.PLNTRMDY8,
-        ],
-        ingredients: [
-          "Fresh lemongrass stalks (2-3 pieces)",
-          "2 cups of water",
-        ],
-        steps: [
-          "1. Cut the lemongrass stalks into small pieces.",
-          "2. Boil 2 cups of water in a pot.",
-          "3. Add the lemongrass to the boiling water.",
-          "4. Let it simmer for about 10 minutes.",
-          "5. Strain and enjoy warm.",
-        ],
-        usage: [
-          "Adults: 1-2 cups, as needed for digestive relief.",
-          "Children: Consult a pediatrician before use."
-        ],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Tanlad Tea",
+          treatment: "Digestive Relief",
+          description:
+              "The leaves can be brewed into a tea to help alleviate digestive issues and promote digestion.",
+          remedyImages: [
+            Application().remedy.PLNTRMDY8,
+          ],
+          ingredients: [
+            "Fresh Tanlad leaves (5-6 pieces)",
+            "2 cups of water",
+          ],
+          steps: [
+            "1. Wash the Tanlad leaves thoroughly.",
+            "2. Boil 2 cups of water.",
+            "3. Add the leaves to the boiling water.",
+            "4. Let it simmer for 10-15 minutes.",
+            "5. Strain and drink warm.",
+          ],
+          usage: [
+            "Adults: 1 cup, 2 times a day.",
+            "Children: Consult a pediatrician before use."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some individuals may experience skin rashes, itching, or swelling.",
+            "2. Gastrointestinal Issues: Overconsumption may lead to stomach cramps, nausea, or diarrhea.",
+            "3. Dizziness: In some cases, dizziness or lightheadedness may occur.",
+            "4. Other Considerations: Consult a healthcare professional before use, especially for pregnant or lactating women, and individuals with pre-existing health conditions."
+          ]),
     ],
   ),
   PlantData(
@@ -515,25 +596,32 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Aloe Vera Gel",
-        treatment: "Skin Hydration",
-        description:
-            "The gel extracted from the leaves can be applied to the skin to provide moisture and healing.",
-        remedyImages: [
-          Application().remedy.PLNTRMDY9,
-        ],
-        ingredients: [
-          "Fresh Aloe vera leaf (1 piece)",
-        ],
-        steps: [
-          "1. Cut an Aloe vera leaf and slice it open.",
-          "2. Scoop out the gel from inside the leaf.",
-          "3. Apply the gel directly to the skin.",
-        ],
-        usage: ["Apply as needed for skin hydration and healing."],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Aloe Vera Gel",
+          treatment: "Skin Hydration",
+          description:
+              "The gel extracted from the leaves can be applied to the skin to provide moisture and healing.",
+          remedyImages: [
+            Application().remedy.PLNTRMDY9,
+          ],
+          ingredients: [
+            "Fresh Aloe vera leaf (1 piece)",
+          ],
+          steps: [
+            "1. Cut an Aloe vera leaf and slice it open.",
+            "2. Scoop out the gel from inside the leaf.",
+            "3. Apply the gel directly to the skin.",
+          ],
+          usage: [
+            "Apply as needed for skin hydration and healing."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some individuals may experience skin rashes, itching, or swelling.",
+            "2. Skin Irritation: In rare cases, prolonged use may cause irritation or redness on the skin.",
+            "3. Gastrointestinal Issues: If ingested accidentally, it can cause nausea or stomach cramps.",
+            "4. Other Considerations: Always consult a healthcare professional before use, especially for pregnant or lactating women, and individuals with pre-existing skin conditions."
+          ]),
     ],
   ),
   PlantData(
@@ -551,32 +639,37 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Ginger Tea",
-        treatment: "Nausea Relief",
-        description:
-            "Ginger tea is consumed to relieve nausea, improve digestion, and reduce inflammation.",
-        remedyImages: [
-          Application().remedy.PLNTRMDY10,
-        ],
-        ingredients: [
-          "Fresh ginger root (1-2 inches)",
-          "2 cups of water",
-          "Honey (optional)",
-        ],
-        steps: [
-          "1. Peel and slice the ginger root.",
-          "2. Boil 2 cups of water in a pot.",
-          "3. Add the sliced ginger to the boiling water.",
-          "4. Let it simmer for about 10 minutes.",
-          "5. Strain, add honey if desired, and enjoy warm.",
-        ],
-        usage: [
-          "Adults: 1-2 cups, as needed for nausea and digestive relief.",
-          "Children: Consult a pediatrician before use."
-        ],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Ginger Tea",
+          treatment: "Nausea Relief",
+          description:
+              "Ginger tea is consumed to relieve nausea, improve digestion, and reduce inflammation.",
+          remedyImages: [
+            Application().remedy.PLNTRMDY10,
+          ],
+          ingredients: [
+            "Fresh ginger root (1-2 inches)",
+            "2 cups of water",
+            "Honey (optional)",
+          ],
+          steps: [
+            "1. Peel and slice the ginger root.",
+            "2. Boil 2 cups of water in a pot.",
+            "3. Add the sliced ginger to the boiling water.",
+            "4. Let it simmer for about 10 minutes.",
+            "5. Strain, add honey if desired, and enjoy warm.",
+          ],
+          usage: [
+            "Adults: 1-2 cups, as needed for nausea and digestive relief.",
+            "Children: Consult a pediatrician before use."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some individuals may experience skin rashes, itching, or swelling.",
+            "2. Gastrointestinal Issues: Overconsumption may lead to stomach cramps, heartburn, or diarrhea.",
+            "3. Blood Thinning: Ginger has mild blood-thinning properties, so it should be used with caution by individuals taking anticoagulant medications.",
+            "4. Other Considerations: Always consult a healthcare professional before use, especially for pregnant or lactating women, and individuals with pre-existing health conditions."
+          ]),
     ],
   ),
   PlantData(
@@ -594,31 +687,36 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Turmeric Milk",
-        treatment: "Anti-inflammatory",
-        description:
-            "Turmeric milk is consumed to reduce inflammation and improve overall health.",
-        remedyImages: [
-          Application().remedy.PLNTRMDY11,
-        ],
-        ingredients: [
-          "1 teaspoon turmeric powder",
-          "1 cup milk (or plant-based milk)",
-          "Honey (optional)",
-        ],
-        steps: [
-          "1. Boil 1 cup of milk.",
-          "2. Add 1 teaspoon of turmeric powder to the milk.",
-          "3. Stir well and simmer for 5 minutes.",
-          "4. Strain, add honey if desired, and enjoy warm.",
-        ],
-        usage: [
-          "Adults: 1 cup daily for inflammation relief.",
-          "Children: Consult a pediatrician before use."
-        ],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Turmeric Milk",
+          treatment: "Anti-inflammatory",
+          description:
+              "Turmeric milk is consumed to reduce inflammation and improve overall health.",
+          remedyImages: [
+            Application().remedy.PLNTRMDY11,
+          ],
+          ingredients: [
+            "1 teaspoon turmeric powder",
+            "1 cup milk (or plant-based milk)",
+            "Honey (optional)",
+          ],
+          steps: [
+            "1. Boil 1 cup of milk.",
+            "2. Add 1 teaspoon of turmeric powder to the milk.",
+            "3. Stir well and simmer for 5 minutes.",
+            "4. Strain, add honey if desired, and enjoy warm.",
+          ],
+          usage: [
+            "Adults: 1 cup daily for inflammation relief.",
+            "Children: Consult a pediatrician before use."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some individuals may experience skin rashes, itching, or swelling.",
+            "2. Gastrointestinal Issues: Overconsumption may lead to stomach cramps, nausea, or diarrhea.",
+            "3. Blood Thinning: Turmeric has mild blood-thinning properties, so it should be used with caution by individuals taking anticoagulant medications.",
+            "4. Other Considerations: Always consult a healthcare professional before use, especially for pregnant or lactating women, and individuals with pre-existing health conditions."
+          ]),
     ],
   ),
   PlantData(
@@ -635,32 +733,37 @@ List<PlantData> plantList = [
     ],
     remedyList: [
       RemedyInfo(
-        rating: 0,
-        remedyType: "Herbal Remedy",
-        remedyName: "Malungay Smoothie",
-        treatment: "Nutritional Boost",
-        description:
-            "Malungay leaves can be added to smoothies for a nutrient-rich drink.",
-        remedyImages: [
-          Application().remedy.PLNTRMDY12,
-        ],
-        ingredients: [
-          "Fresh Malungay leaves (1/2 cup)",
-          "1 banana",
-          "1 cup of milk (or plant-based milk)",
-          "Honey (optional)",
-        ],
-        steps: [
-          "1. Add fresh Malungay leaves, banana, and milk to a blender.",
-          "2. Blend until smooth.",
-          "3. Add honey if desired, and blend again.",
-          "4. Serve immediately.",
-        ],
-        usage: [
-          "Adults: 1 cup daily as a nutritional boost.",
-          "Children: Consult a pediatrician before use."
-        ],
-      ),
+          rating: 0,
+          remedyType: "Herbal Remedy",
+          remedyName: "Malungay Smoothie",
+          treatment: "Nutritional Boost",
+          description:
+              "Malungay leaves can be added to smoothies for a nutrient-rich drink.",
+          remedyImages: [
+            Application().remedy.PLNTRMDY12,
+          ],
+          ingredients: [
+            "Fresh Malungay leaves (1/2 cup)",
+            "1 banana",
+            "1 cup of milk (or plant-based milk)",
+            "Honey (optional)",
+          ],
+          steps: [
+            "1. Add fresh Malungay leaves, banana, and milk to a blender.",
+            "2. Blend until smooth.",
+            "3. Add honey if desired, and blend again.",
+            "4. Serve immediately.",
+          ],
+          usage: [
+            "Adults: 1 cup daily as a nutritional boost.",
+            "Children: Consult a pediatrician before use."
+          ],
+          sideEffects: [
+            "1. Allergic Reactions: Some individuals may experience skin rashes, itching, or swelling.",
+            "2. Gastrointestinal Issues: Overconsumption may lead to stomach cramps, nausea, or diarrhea.",
+            "3. Hypotension: Excessive consumption of Malungay can lower blood pressure, so it should be used with caution by individuals with low blood pressure or those taking antihypertensive medications.",
+            "4. Other Considerations: Always consult a healthcare professional before use, especially for pregnant or lactating women, and individuals with pre-existing health conditions."
+          ]),
     ],
   ),
 ];

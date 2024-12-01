@@ -62,10 +62,10 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
               ),
               title: Text(
                 'HERBAL PLANT INFO',
-                style: style.displaySmall(
+                style: style.InterSmallText(
                   context,
                   color: color.white,
-                  fontsize: setResponsiveSize(context, baseSize: 14),
+                  fontsize: setResponsiveSize(context, baseSize: 15),
                   fontweight: FontWeight.w500,
                   fontspace: 2,
                   fontstyle: FontStyle.normal,
@@ -126,7 +126,7 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                         children: [
                           Text(
                             widget.plant.plantName,
-                            style: style.displaySmall(context,
+                            style: style.InterSmallText(context,
                                 color: color.primarylow,
                                 fontsize:
                                     setResponsiveSize(context, baseSize: 20),
@@ -161,9 +161,9 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                       ),
                       Text(
                         'Scientific Name: ${widget.plant.scientificName}',
-                        style: style.displaySmall(context,
+                        style: style.InterSmallText(context,
                             color: color.primarylow,
-                            fontsize: setResponsiveSize(context, baseSize: 14),
+                            fontsize: setResponsiveSize(context, baseSize: 15),
                             fontweight: FontWeight.w400,
                             fontstyle: FontStyle.italic),
                       ),
@@ -171,27 +171,27 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                       Gap(setResponsiveSize(context, baseSize: 25)),
                       Text(
                         '▣ DESCRIPTION:',
-                        style: style.displaySmall(context,
+                        style: style.InterSmallText(context,
                             color: color.primarylow,
-                            fontsize: setResponsiveSize(context, baseSize: 14),
+                            fontsize: setResponsiveSize(context, baseSize: 15),
                             fontweight: FontWeight.w700),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 10)),
                       Text(
                         widget.plant.description,
                         textAlign: TextAlign.justify,
-                        style: style.displaySmall(context,
+                        style: style.InterSmallText(context,
                             color: color.primarylow,
                             height: setResponsiveSize(context, baseSize: 1.4),
-                            fontsize: setResponsiveSize(context, baseSize: 13),
+                            fontsize: setResponsiveSize(context, baseSize: 15),
                             fontweight: FontWeight.w400),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 25)),
                       Text(
                         '▣ TREATMENT:',
-                        style: style.displaySmall(context,
+                        style: style.InterSmallText(context,
                             color: color.primarylow,
-                            fontsize: setResponsiveSize(context, baseSize: 14),
+                            fontsize: setResponsiveSize(context, baseSize: 15),
                             fontweight: FontWeight.w700),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 10)),
@@ -225,11 +225,11 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                                 child: Text(
                                   treatment,
                                   textAlign: TextAlign.justify,
-                                  style: style.displaySmall(
+                                  style: style.InterSmallText(
                                     context,
                                     color: color.primarylow,
                                     fontsize: setResponsiveSize(context,
-                                        baseSize: 13.5),
+                                        baseSize: 14),
                                     fontweight: FontWeight.w400,
                                   ),
                                 ),
@@ -241,9 +241,9 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                       Gap(setResponsiveSize(context, baseSize: 20)),
                       Text(
                         '▣ REMEDY:',
-                        style: style.displaySmall(context,
+                        style: style.InterSmallText(context,
                             color: color.primarylow,
-                            fontsize: setResponsiveSize(context, baseSize: 14),
+                            fontsize: setResponsiveSize(context, baseSize: 15),
                             fontweight: FontWeight.w700),
                       ),
                       Gap(setResponsiveSize(context, baseSize: 10)),
@@ -279,11 +279,11 @@ class _PlantInfoScreenState extends State<PlantInfoScreen> with Application {
                                 child: Text(
                                   treatment.remedyName,
                                   textAlign: TextAlign.justify,
-                                  style: style.displaySmall(
+                                  style: style.InterSmallText(
                                     context,
                                     color: color.white,
                                     fontsize: setResponsiveSize(context,
-                                        baseSize: 13.5),
+                                        baseSize: 14),
                                     fontweight: FontWeight.w400,
                                   ),
                                 ),

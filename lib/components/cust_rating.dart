@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:naturemedix/controllers/PlantInfo_Control/plantInfos_controller.dart';
+import 'package:naturemedix/models/feedback_data.dart';
 import 'package:naturemedix/models/remedy_info.dart';
 import 'package:naturemedix/Utils/_initApp.dart';
 import 'package:naturemedix/Utils/responsive.dart';
 
 class CustRating extends StatefulWidget {
-  final Function(double rating) onRatingSubmit;
   final RemedyInfo remedy;
 
   const CustRating({
     super.key,
-    required this.onRatingSubmit,
     required this.remedy,
     required num initialRating,
   });
@@ -20,6 +21,9 @@ class CustRating extends StatefulWidget {
 }
 
 class _CustRatingState extends State<CustRating> with Application {
+  final PlantInfoController plantInfoController =
+      Get.put(PlantInfoController());
+  var feedbackCtrl = TextEditingController();
   double _selectedRating = 1;
 
   @override
@@ -82,7 +86,6 @@ class _CustRatingState extends State<CustRating> with Application {
                         fontweight: FontWeight.w600,
                       ),
                     ),
-                    Gap(setResponsiveSize(context, baseSize: 10)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(5, (index) {
@@ -102,11 +105,43 @@ class _CustRatingState extends State<CustRating> with Application {
                         );
                       }),
                     ),
-                    Gap(setResponsiveSize(context, baseSize: 10)),
                   ],
                 ),
               ),
             ),
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: setResponsiveSize(context, baseSize: 20)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextField(
+                      controller: feedbackCtrl,
+                      maxLines: 7,
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: color.primarylow),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: color.primarylow),
+                        ),
+                        hintText: 'Write your feedback here...',
+                        hintStyle: style.InterSmallText(context,
+                            color: color.primarylow.withOpacity(0.7),
+                            fontsize: setResponsiveSize(context, baseSize: 16),
+                            fontweight: FontWeight.w500),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const Gap(10),
           ],
         ),
       ),
@@ -115,19 +150,24 @@ class _CustRatingState extends State<CustRating> with Application {
           style: TextButton.styleFrom(
             backgroundColor: color.primary,
             padding: EdgeInsets.symmetric(
-              horizontal: setResponsiveSize(context, baseSize: 35),
+              horizontal: setResponsiveSize(context, baseSize: 50),
               vertical: setResponsiveSize(context, baseSize: 10),
             ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
           ),
-          onPressed: () {
+          onPressed: () async {
+            // await plantInfoController.saveRating(
+            //     widget.remedy.remedyName, _selectedRating);
+            // plantInfoController.updateRemedyRating(
+            //     widget.remedy.remedyName, _selectedRating);
+            feedbackList.add(UserFeedback('Codex', Application().image.BG1,
+                _selectedRating, feedbackCtrl.text, DateTime.now()));
             Navigator.of(context).pop();
-            widget.onRatingSubmit(_selectedRating);
           },
           child: Text(
-            'Submit',
+            'SUBMIT',
             textAlign: TextAlign.center,
             style: style.displaySmall(
               context,

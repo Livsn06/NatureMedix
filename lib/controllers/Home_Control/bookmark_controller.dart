@@ -198,12 +198,12 @@ class BookmarkController extends GetxController {
               bookmarkDate.month == now.month &&
               bookmarkDate.year == now.year;
         case 'Yesterday':
-          DateTime yesterday = now.subtract(Duration(days: 1));
+          DateTime yesterday = now.subtract(const Duration(days: 1));
           return bookmarkDate.day == yesterday.day &&
               bookmarkDate.month == yesterday.month &&
               bookmarkDate.year == yesterday.year;
         case 'Old':
-          return bookmarkDate.isBefore(now.subtract(Duration(days: 2)));
+          return bookmarkDate.isBefore(now.subtract(const Duration(days: 2)));
         default: // 'All'
           return true;
       }
@@ -248,12 +248,12 @@ class BookmarkController extends GetxController {
               bookmarkDate.month == now.month &&
               bookmarkDate.year == now.year;
         case 'Yesterday':
-          DateTime yesterday = now.subtract(Duration(days: 1));
+          DateTime yesterday = now.subtract(const Duration(days: 1));
           return bookmarkDate.day == yesterday.day &&
               bookmarkDate.month == yesterday.month &&
               bookmarkDate.year == yesterday.year;
         case 'Old':
-          return bookmarkDate.isBefore(now.subtract(Duration(days: 2)));
+          return bookmarkDate.isBefore(now.subtract(const Duration(days: 2)));
         default: // 'All'
           return true;
       }
@@ -385,20 +385,20 @@ class BookmarkController extends GetxController {
     bookmarkedRemedies.value = remedyList.cast<RemedyInfo>();
 
     // Load from Firestore (online)
-    final docSnapshot =
-        await _firestore.collection('users').doc(user.uid).get();
-    if (docSnapshot.exists) {
-      final data = docSnapshot.data();
-      if (data != null) {
-        final firestorePlants = List.from(data['bookmarkedPlants'] ?? []);
-        final firestoreRemedies = List.from(data['bookmarkedRemedies'] ?? []);
-        // Update bookmarks with Firestore data (if available)
-        bookmarkedPlants.value =
-            firestorePlants.map((e) => PlantData.fromMap(e)).toList();
-        bookmarkedRemedies.value =
-            firestoreRemedies.map((e) => RemedyInfo.fromMap(e)).toList();
-      }
-    }
+    // final docSnapshot =
+    //     await _firestore.collection('users').doc(user.uid).get();
+    // if (docSnapshot.exists) {
+    //   final data = docSnapshot.data();
+    //   if (data != null) {
+    //     final firestorePlants = List.from(data['bookmarkedPlants'] ?? []);
+    //     final firestoreRemedies = List.from(data['bookmarkedRemedies'] ?? []);
+    //     // Update bookmarks with Firestore data (if available)
+    //     bookmarkedPlants.value =
+    //         firestorePlants.map((e) => PlantData.fromMap(e)).toList();
+    //     bookmarkedRemedies.value =
+    //         firestoreRemedies.map((e) => RemedyInfo.fromMap(e)).toList();
+    //   }
+    // }
   }
 
   final borderCust = OutlineInputBorder(

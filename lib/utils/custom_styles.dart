@@ -88,6 +88,25 @@ mixin class CustomTextStyle {
     );
   }
 
+  TextStyle InterSmallText(BuildContext context,
+      {Color color = const Color(0xFF18988B),
+      double? fontspace,
+      double? fontsize,
+      FontWeight? fontweight,
+      double? height = 1.3,
+      FontStyle? fontstyle = FontStyle.normal}) {
+    return GoogleFonts.inter(
+      textStyle: TextStyle(
+        fontStyle: fontstyle,
+        color: color,
+        fontWeight: fontweight,
+        height: height,
+        fontSize: fontsize,
+        letterSpacing: fontspace,
+      ),
+    );
+  }
+
   TextStyle headlineLarge(BuildContext context,
       {Color color = const Color(0xFF18988B)}) {
     return GoogleFonts.roboto(
@@ -154,10 +173,10 @@ mixin class CustomButtonStyle {
     Color overlayColor = Colors.white38,
   }) {
     return ButtonStyle(
-      overlayColor: MaterialStatePropertyAll(overlayColor),
-      fixedSize: MaterialStatePropertyAll(size),
-      backgroundColor: MaterialStatePropertyAll(backgroundColor),
-      shape: MaterialStatePropertyAll(
+      overlayColor: WidgetStatePropertyAll(overlayColor),
+      fixedSize: WidgetStatePropertyAll(size),
+      backgroundColor: WidgetStatePropertyAll(backgroundColor),
+      shape: WidgetStatePropertyAll(
         RoundedRectangleBorder(
           side: BorderSide(color: borderColor, width: borderWidth),
           borderRadius: BorderRadius.all(Radius.circular(radius)),

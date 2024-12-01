@@ -1,3 +1,4 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:naturemedix/helper/_init_dependencies.dart';
 import 'package:naturemedix/routes/screen_routes.dart';
+import 'package:naturemedix/screen/Pages/control_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'SCREEN/SPLASH/splash_screen.dart';
 import 'firebase_options.dart';
@@ -55,10 +57,10 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       initialBinding: InitDep(),
-      initialRoute: ScreenRouter.getSplashscreenRoute,
+      initialRoute: ScreenRouter.getControlscreenRoute,
       getPages: ScreenRouter.routes,
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: const ControlScreen(),
     );
   }
 }

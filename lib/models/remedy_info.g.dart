@@ -27,6 +27,7 @@ class RemedyInfoAdapter extends TypeAdapter<RemedyInfo> {
       usage: (fields[7] as List).cast<String>(),
       bookmarkedAt: fields[8] as DateTime?,
       rating: fields[9] as double,
+      sideEffects: fields[10] as List<String>,
     );
   }
 

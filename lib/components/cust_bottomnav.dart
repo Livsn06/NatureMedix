@@ -17,7 +17,7 @@ class ButtomNav extends StatelessWidget with Application {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: setResponsiveSize(context, baseSize: 90),
+      height: setResponsiveSize(context, baseSize: 100),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(
@@ -36,7 +36,7 @@ class ButtomNav extends StatelessWidget with Application {
                 final isSelected = selectedIndex == index;
                 return Expanded(
                   child: Container(
-                    height: setResponsiveSize(context, baseSize: 8),
+                    height: setResponsiveSize(context, baseSize: 10),
                     margin: EdgeInsets.symmetric(
                       horizontal: setResponsiveSize(context, baseSize: 5),
                     ),
